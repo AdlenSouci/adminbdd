@@ -47,7 +47,8 @@
   <section>
     <h2>Cardinalités <code>min,max</code></h2>
     <p>0 = optionnel · 1 = obligatoire · N = plusieurs. Types : <code>0,1</code> · <code>1,1</code> · <code>0,N</code> · <code>1,N</code>.</p>
-    <p><strong>→ MLD</strong> : côté <code>(0,1)</code> ou <code>(1,1)</code> → souvent <strong>FK</strong> migrée vers l’entité « N » (ex. voiture → personne).</p>
+    <p><strong>Vers le MLD</strong> (association binaire, un côté en <code>0,N</code> ou <code>1,N</code> et l’autre en <code>0,1</code> ou <code>1,1</code>) : c’est l’entité dont la cardinalité <strong>max = 1</strong> (<code>0,1</code> ou <code>1,1</code>) qui <strong>reçoit</strong> l’identifiant de l’autre (qui sera une <strong>clé étrangère</strong> au niveau logique). L’entité côté <strong>max = N</strong> ne reçoit pas la clé dans ce cas.</p>
+    <p><em>Ex. cours</em> PERSONNE <code>1,N</code> — POSSEDER — VOITURE <code>0,1</code> → la table <strong>VOITURE</strong> contient la référence vers <strong>PERSONNE</strong>.</p>
   </section>
 
   <section>

@@ -38,7 +38,7 @@
     <table>
       <tr><th>Cas</th><th>Règle</th></tr>
       <tr><td><strong>1-1</strong></td><td>Fusion <strong>ou</strong> PK entité forte = FK (+ PK) entité faible</td></tr>
-      <tr><td><strong>1-N</strong></td><td>PK côté <strong>1</strong> → <strong>FK</strong> côté <strong>N</strong></td></tr>
+      <tr><td><strong>1-N</strong></td><td>La <strong>PK</strong> de l’entité dont la card. <strong>max = N</strong> (<code>0,N</code> ou <code>1,N</code>) devient une <strong>FK</strong> <em>dans</em> l’entité dont la card. <strong>max = 1</strong> (<code>0,1</code> ou <code>1,1</code>) — comme dans ton PDF « Du MCD au MLD ».</td></tr>
       <tr><td><strong>N-N</strong></td><td><strong>Table pivot</strong> : PK souvent <code>(FK1, FK2)</code></td></tr>
     </table>
   </section>
