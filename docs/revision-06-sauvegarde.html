@@ -3,100 +3,81 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fiche — Sauvegarde &amp; résilience</title>
-  <link rel="stylesheet" href="revision.css?v=2">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Révision — Sauvegarde &amp; résilience</title>
+  <link rel="stylesheet" href="fiche.css?v=2026042314">
 </head>
 <body>
-  <a class="back" href="index.html">← Accueil</a>
-  <header>
-    <h1>Fiche — Sauvegarde &amp; résilience</h1>
-    <p class="sub">Basé sur <strong>Sauvegarde, Restauration et Résilience.pdf</strong> — tout le texte extrait, mis en forme pour réviser.</p>
-  </header>
-  <article>
-<section>
-<p>Séance 5 : Sauvegarde,<br>
-Restauration et Résilience<br>
-V o t r e  fi l e t  d e  s é c u r i t é  u l t i m e</p>
-</section>
-<section>
-<h3>Pourquoi la Sauvegarde est Non Négociable</h3>
-<p>Scénarios Catastrophiques<br>
-💥  Panne matérielle (disque défaillant)<br>
-👨💻  Erreur humaine (DELETE accidentel)<br>
-🦠  Corruption de données<br>
-🔒  Cyberattaque (ransomware)<br>
-Conséquences<br>
-Perte de revenus<br>
-Atteinte à la réputation<br>
-Sanctions RGPD<br>
-Arrêt des opérations<br>
-Une sauvegarde = Assurance vie pour vos données</p>
-</section>
-<section>
-<h3>Les Métriques Clés : RPO et RTO</h3>
-<p>RPO<br>
-Recovery Point Objective<br>
-&quot;Combien de données puis-je<br>
-me permettre de perdre ?&quot;<br>
-Ex: RPO = 1h →<br>
-Sauvegarde<br>
-toutes les<br>
-heures<br>
-RTO<br>
-Recovery Time Objective<br>
-&quot;En combien de temps dois-je<br>
-retrouver mes données ?&quot;<br>
-Ex: RTO = 30min<br>
-→  Restauration<br>
-ultra-rapide<br>
-Types de Sauvegarde<br>
-Complète<br>
-Copie intégrale de la base<br>
-👍  Simple mais gourmand<br>
-Incrémentielle<br>
-Seulement les changements<br>
-👍  Économe mais complexe<br>
-Différentielle</p>
-</section>
-<section>
-<h3>Point-in-Time Recovery (PITR)</h3>
-<p>La Rolls-Royce de la restauration<br>
-Composants<br>
-Sauvegarde complète de base<br>
-Journaux de transactions (binary logs)<br>
-Processus<br>
-1. Restaurer la dernière sauvegarde complète<br>
-2. Appliquer les journaux jusqu&#x27;à l&#x27;instant désiré<br>
-⚠  Sans les binary logs, la PITR est impossible. Toujours les activer en production !<br>
-mysqld<br>
-log-bin=mysql-bin  # Activation des binary logs</p>
-</section>
-<section>
-<h3>Automatisation des</h3>
-<p>Sauvegardes<br>
-Script Type<br>
-Bonnes Pratiques<br>
-📅  Nommage avec date<br>
-🗜  Compression automatique<br>
-📧  Notification en cas d&#x27;erreur<br>
-🗑  Rotation des sauvegardes<br>
-La Règle du 3-2-1<br>
-3-2-1<br>
-Copies · Supports · Localisations<br>
-1. 3 copies de vos données<br>
-2. 2 supports différents (disque + bande)<br>
-3. 1 copie hors site (cloud, coffre-fort)</p>
-</section>
-<section>
-<h3>Atelier Pratique : Simulation de</h3>
-<p>Catastrophe<br>
-1. Créer un script de sauvegarde automatisé<br>
-2. Simuler une suppression accidentelle<br>
-3. Restaurer les données perdues<br>
-4. Mesurer le RTO réel<br>
-V o u s  a l l e z  m a i n t e n a n t  :</p>
-</section>
-  </article>
-  <footer><a href="index.html">Accueil</a> · <a href="pdf-source-06-sauvegarde.html">Version texte brut</a></footer>
+  <p class="top"><a href="index.html?v=2026042314">← Accueil</a> · Fiche révision</p>
+  <h1>Sauvegarde, restauration &amp; résilience</h1>
+  <p class="sub">Pourquoi sauvegarder, métriques, types de backup, PITR, règle 3-2-1 (support cours).</p>
+
+  <section class="card">
+    <h2>Pourquoi c’est non négociable</h2>
+    <ul>
+      <li>Risques : panne disque, erreur humaine (<code>DELETE</code> accidentel), corruption, ransomware.</li>
+      <li>Conséquences : perte de CA, réputation, conformité (ex. RGPD), arrêt d’activité.</li>
+      <li>Une sauvegarde testée = filet de sécurité sur les données.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>RPO et RTO</h2>
+    <ul>
+      <li><strong>RPO</strong> (Recovery Point Objective) : combien de données maximum on accepte de <strong>perdre</strong> dans le temps ? Ex. RPO 1 h → sauvegardes au moins horaires.</li>
+      <li><strong>RTO</strong> (Recovery Time Objective) : en combien de temps il faut être <strong>de nouveau opérationnel</strong> ? Ex. RTO 30 min → procédures et médias adaptés.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Types de sauvegarde</h2>
+    <ul>
+      <li><strong>Complète</strong> : copie intégrale ; simple, mais lourd en temps et espace.</li>
+      <li><strong>Incrémentielle</strong> : seulement les changements depuis la dernière sauvegarde (peu importe le type) ; économique, restauration en chaîne.</li>
+      <li><strong>Différentielle</strong> : changements depuis la dernière <strong>complète</strong> ; compromis entre taille et simplicité de restauration.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>PITR — Point-in-Time Recovery</h2>
+    <ul>
+      <li>Restaurer à un <strong>instant précis</strong> (juste avant la boulette).</li>
+      <li>Ingédients : sauvegarde de base + <strong>journaux de transactions</strong> (ex. binary logs MySQL).</li>
+      <li>Processus typique : restaurer la dernière full, puis rejouer les journaux jusqu’à l’horodatage cible.</li>
+    </ul>
+    <div class="piege">
+      Sans journaux activés en prod, pas de PITR « fine ». Ex. config évoquée : <code>log-bin=mysql-bin</code> sous <code>[mysqld]</code>.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Automatisation — bonnes idées</h2>
+    <ul>
+      <li>Noms de fichiers avec <strong>date</strong> ; <strong>compression</strong>.</li>
+      <li><strong>Alertes</strong> si l’échec du job.</li>
+      <li><strong>Rotation</strong> : ne pas garder une infinité de copies sur le même disque.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Règle 3-2-1</h2>
+    <ul>
+      <li><strong>3</strong> copies des données (dont prod).</li>
+      <li><strong>2</strong> types de supports différents (ex. disque + bande ou autre).</li>
+      <li><strong>1</strong> copie <strong>hors site</strong> (cloud, autre site) pour survivre à un sinistre local.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>Atelier (rappel cours)</h2>
+    <ul>
+      <li>Script de sauvegarde automatisé ; simuler une suppression ; restaurer ; mesurer le <strong>RTO réel</strong>.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <a href="index.html?v=2026042314">Accueil</a> ·
+    <a href="pdf-source-06-sauvegarde.html?v=2026042314">Texte brut extrait du PDF</a>
+  </footer>
 </body>
 </html>
