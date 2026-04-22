@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche — Droits &amp; utilisateurs</title>
+  <link rel="stylesheet" href="revision.css?v=2">
+</head>
+<body>
+  <a class="back" href="index.html">← Accueil</a>
+  <header>
+    <h1>Fiche — Droits &amp; utilisateurs</h1>
+    <p class="sub">Basé sur <strong>gestion_droit.txt</strong> — tout le texte extrait, mis en forme pour réviser.</p>
+  </header>
+  <article>
+<section>
+<p>Dans MySQL (et dans les autres SGBD), il est possible de créer des nouveaux utilisateurs de la base de données, et de configurer leurs droits. Il est aussi possible de créer des rôles et d&#x27;affecter des rôles aux utilisateurs.</p>
+</section>
+<section>
+<p>⚠️ un utilisateur de base de données n&#x27;est pas forcément un utilisateur au sens « applicatif », c&#x27;est-à-dire un utilisateur qui peut s&#x27;enregistrer et de se connecter à votre application. Exemple : la table adhérent correspond à des utilisateurs de l&#x27;application biblio.</p>
+</section>
+<section>
+<p>On a donc un utilisateur qui se connecte par le biais de formulaire (Web par exemple). Pour vérifier la connexion de cet utilisateur, le code PHP doit pouvoir se connecter à la base de données. Pour cela, le code utilise un utilisateur de base de données dédié.</p>
+</section>
+<section>
+<p>Exemple de snippet de connexion donné pour une installation WAMP configurée par défaut :</p>
+</section>
+<section>
+<p>$connexion = new PDO(&#x27;mysql:host=localhost;dbname=mabase&#x27;, &#x27;root&#x27;, &#x27;&#x27;); // Par défaut WAMP ne met pas de mot de passe à l&#x27;utilisateur de base de données root (et c&#x27;est pas bien !!!!)<br>
+Pour voir les utilisateurs de base de données présents dans une base : (MySQL et MariaDb only)</p>
+</section>
+<section>
+<p>SELECT user, host, password <br>
+FROM mysql.user; <br>
+Concepts de base des privilèges MySQL<br>
+Les privilèges (en fait les droits, ce sont des termes équivalents) déterminent ce qu’un utilisateur peut faire dans une base de données. Ces privilèges s’appliquent à différents niveaux :</p>
+</section>
+<section>
+<p>Global : Affecte toutes les bases de données. Exemples : CREATE USER, RELOAD.<br>
+Base de données : Affecte une base spécifique. Exemples : CREATE, SELECT, DROP.<br>
+Table : Affecte des actions sur une table particulière. Exemples : INSERT, UPDATE.<br>
+Colonnes : Permet des actions spécifiques sur des colonnes.<br>
+Routines : Pour les procédures et fonctions stockées.<br>
+Création d&#x27;utilisateur de base de données<br>
+CREATE USER [IF NOT EXISTS] `nom_utilisateur`@`hote` IDENTIFIED BY &#x27;password&#x27;;  -- On peut aussi identifier l&#x27;utilisateur par le biais d&#x27;une socket UNIX : IDENTIFIED VIA unix_socket;<br>
+hote peut prendre comme valeur :</p>
+</section>
+<section>
+<p>localhost (cas le plus courant)<br>
+une adresse IP<br>
+un nom de domaine<br>
+% =&gt; tout domaine/toute ip<br>
+On peut utiliser le caractère % pour indiquer :</p>
+</section>
+<section>
+<h3>un sous réseau : &#x27;192.168.0.%&#x27;</h3>
+<p>n&#x27;importe quel sous domaine : &#x27;%.nomdomaine.org&#x27;<br>
+hote correspond à l&#x27;adresse IP depuis laquelle l&#x27;utilisateur se connecte. On peut donc avoir plusieurs fois le même utilisateur avec des hôtes différents.</p>
+</section>
+<section>
+<p>Les manipulations possibles sur un utilisateur :</p>
+</section>
+<section>
+<h3>la suppression : DROP USER [IF EXISTS] ...</h3>
+<p>la modification : ALTER USER ....<br>
+la création : CREATE USER ...<br>
+Il existe des plugins d&#x27;authentification :</p>
+</section>
+<section>
+<p>unix_socket : l&#x27;utilisateur (standard ou système) qui exécute un script SQL voit sont authentification *déléguée au système par sa socket d&#x27;authentification.<br>
+LDAP :<br>
+Exemple d&#x27;utilisation de socket UNIX : donner les droits sur une base à l&#x27;utilisateur www-data (qui correspond à apache ou nginx) :</p>
+</section>
+<section>
+<p>CREATE USER &#x27;www-data&#x27;@&#x27;localhost&#x27; IDENTIFIED VIA unix_socket; <br>
+CREATE DATABASE web; <br>
+GRANT ALL ON web.* TO &#x27;www-data&#x27;@&#x27;localhost&#x27;; <br>
+Un peu de remplissage :</p>
+</section>
+<section>
+<p>CREATE TABLE test(id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255)); <br>
+INSERT INTO test(name) VALUES(&#x27;Ceci est un test&#x27;); <br>
+On peut maintenant utiliser l&#x27;utilisateur www-data pour se connecter à la base de données web dans un script php qui sera exécuté par apache (www-data) :</p>
+</section>
+<section>
+<p>&lt;?php</p>
+</section>
+<section>
+<p>// On demande à php d&#x27;afficher les erreurs sur la page (attention, ne pas faire cela en production<br>
+ini_set(&#x27;display_errors&#x27;, 1);<br>
+ini_set(&#x27;display_startup_errors&#x27;, 1);<br>
+error_reporting(E_ALL);</p>
+</section>
+<section>
+<div class="table-lines">try {
+	// On se connecte à la base de données avec l&#x27;utilisateur www-data
+        $db = new PDO(&#x27;mysql:host=localhost;dbname=web&#x27;, &#x27;www-data&#x27;, &#x27;&#x27;); 
+	// On indique au driver que s&#x27;il rencontre une erreur, il doit lever une execption. 
+        $db-&gt;setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);</div>
+</section>
+<section>
+<div class="table-lines">// On crée une requête qui récupère toutes les données de la table test
+        $rqt = &quot;select * from test&quot;; 
+	// On execute la requête 
+        $stmt =  $db-&gt;query($rqt); 
+	// fetchAll permet de récupérer l&#x27;ensemble des résultats de la requête. 
+        print_r($stmt-&gt;fetchAll());  // On &quot;dump&quot; les résultats à l&#x27;écran
+} catch (Exception $e) {
+	// Si on rencontre une exception (par exemple une erreur de connexion, on affiche le problème rencontré). 
+        echo &quot;echec &quot;. $e-&gt;getMessage();  // Ne pas afficher le message &quot;directement&quot; en production
+}
+Si l&#x27;on place ce fichier que l&#x27;on nomme test-db.php dans le répertoire /var/www/html, celui-ci sera exécuté par apache (dans sa configuration par défaut). On peut le tester se rendant sur l&#x27;url http://localhost/test-db.php</div>
+</section>
+<section>
+<p>sudo chown www-data /var/www/html/test-db.php # On donne la propriété du fichier à www-data<br>
+On peut aussi tester le script directement avec l&#x27;utilisateur local :</p>
+</section>
+<section>
+<p>php /var/www/html/test-db.php<br>
+On obtient l&#x27;erreur suivante (car l&#x27;utilisateur courant n&#x27;est pas www-data) :</p>
+</section>
+<section>
+<p>echec SQLSTATE[HY000] [1698] Access denied for user &#x27;www-data&#x27;@&#x27;localhost&#x27;<br>
+⚠️ ce n&#x27;est pas parcequ&#x27;il est possible d&#x27;attribuer les droits à l&#x27;utilisateur www-data que c&#x27;est une bonne idée de le faire !!!!</p>
+</section>
+<section>
+<h3>Les droits</h3>
+<p>Créer des utilisateurs c&#x27;est bien, mais souvent, on en crée des nouveaux pour leur donner des droits particuliers.</p>
+</section>
+<section>
+<p>Les droits courants sur les opérations de manipulation (DML) :</p>
+</section>
+<section>
+<h3>SELECT</h3>
+<p>INSERT<br>
+UPDATE<br>
+DELETE<br>
+Ces droits s&#x27;appliquent sur des tables, mais on peut aussi restreindre aux colonnes.</p>
+</section>
+<section>
+<p>Quelques ressources :</p>
+</section>
+<section>
+<p>https://sqlpro.developpez.com/cours/sqlaz/dcl/<br>
+https://www.mysqltutorial.org/mysql-grant.aspx<br>
+https://dev.mysql.com/doc/refman/8.0/en/grant.html<br>
+https://openclassrooms.com/fr/courses/1959476-administrez-vos-bases-de-donnees-avec-mysql/1975880-gestion-des-utilisateurs<br>
+Il existe des droits pour :</p>
+</section>
+<section>
+<h3>l&#x27;exécution de routines</h3>
+<p>la création de vue, de routine, de base, de table, d&#x27;utilisateur,<br>
+la suppression (idem).<br>
+Il existe aussi des droits relatifs à l&#x27;administration :</p>
+</section>
+<section>
+<p>shutdown : arrêter le serveur.<br>
+...<br>
+Transmission des droits.<br>
+Si l&#x27;on donne des droits à un utilisateur avec l&#x27;instruction WITH GRANT OPTION, cet utilisateur peut transmettre les droits dont il dispose à un autre utilisateur.</p>
+</section>
+<section>
+<p>Un utilisateur peut-il transmettre ses droits à un autre s&#x27;il n&#x27;a pas la possibilité de créer un utilisateur ?</p>
+</section>
+<section>
+<p>oui</p>
+</section>
+<section>
+<p>Un exemple : on se connecte en root à mysql pour créer 2 utilisateurs user1 et user2, ainsi qu&#x27;une base test qui contiendra la table livre. user1 aura la possibilité de transmettre ses droits.</p>
+</section>
+<section>
+<p>CREATE USER user1@localhost IDENTIFIED BY &#x27;password&#x27;; <br>
+CREATE USER user2@localhost IDENTIFIED BY &#x27;password&#x27;;</p>
+</section>
+<section>
+<div class="table-lines">CREATE DATABASE IF NOT EXISTS test; 
+USE test; -- on se positionne sur la base test; 
+-- On crée une table
+CREATE TABLE livre (
+	id INT PRIMARY KEY AUTO_INCREMENT, 
+	title VARCHAR(255), 
+	description TEXT
+);
+-- On insère une ligne
+INSERT INTO livre (title) VALUES(&quot;Le SQL c&#x27;est génial (ou presque)&quot;);</div>
+</section>
+<section>
+<p>-- On donne les droits SELECT à user1 sur la table test.livre<br>
+GRANT SELECT ON test.livre TO user1@localhost  WITH GRANT OPTION;</p>
+</section>
+<section>
+<p>On se connecte avec user1 : mysql -u user1 -p. On essaye de jouer avec les droits de user1 en testant :</p>
+</section>
+<section>
+<h3>l&#x27;utilisation d&#x27;une base qui n&#x27;est pas test. =&gt; impossible</h3>
+<p>l&#x27;utilisation de la base test. =&gt; ok<br>
+la sélection des données de test.livre =&gt; ok<br>
+l&#x27;insertion de données dans test.livre =&gt; impossible<br>
+la transmission des droits SELECT à user2 =&gt; ok<br>
+la transmission des droits INSERT à user2 =&gt; impossible<br>
+USE web; -- ERROR 1044 (42000): Access denied for user &#x27;test&#x27;@&#x27;localhost&#x27; to database &#x27;web&#x27;<br>
+USE test;  -- Ok<br>
+SELECT * FROM livre; -- &gt; ok<br>
+INSERT INTO livre(title) VALUES (&#x27;Insertion impossible&#x27;); -- ERROR 1142 (42000): INSERT command denied to user &#x27;test&#x27;@&#x27;localhost&#x27; for table &#x27;livre&#x27;<br>
+GRANT SELECT ON test.livre TO user2@localhost; --&gt; ok<br>
+GRANT INSERT ON test.livre TO user2@localhost; --&gt; ERROR 1044 (42000): Access denied for user &#x27;test&#x27;@&#x27;localhost&#x27; to database &#x27;test&#x27;;<br>
+On vérifie que user2 a bien les droits en lecture sur test.livre : mysql -D test -u user2 -p</p>
+</section>
+<section>
+<p>SELECT * FROM livre; -- &gt; ok <br>
+Révocation des droits<br>
+La révocation de droit consiste à enlever des droits à des utilisateurs. La syntaxe est très similaire au GRANT :</p>
+</section>
+<section>
+<p>REVOKE SELECT ON test.livre FROM user2@localhost; <br>
+⚠️ user2 garde les droits sur la durée de session.</p>
+</section>
+<section>
+<p>La révocation ne s&#x27;effectue pas en cascade : user1 donne les droits à user2 qui les donne à son tour à user3. Si on revoque les droits de user2, user3 garde les siens.</p>
+</section>
+<section>
+<h3>la portée des droits.</h3>
+<p>Certains droits ont différentes portées :</p>
+</section>
+<section>
+<p>global =&gt; toute les base<br>
+table =&gt; au niveau d&#x27;une table<br>
+column =&gt; au niveau d&#x27;une colonne.<br>
+Exercice : Faites en sorte que user2 puisse lire les colonnes de livre, insérer un titre et le modifier, mais pas supprimer de livre. Il ne pourra pas insérer de données dans la colonne description, ni la modifier.</p>
+</section>
+<section>
+<p>Version de Tristan (ok, car pas beaucoup de colonnes)</p>
+</section>
+<section>
+<p>GRANT select, insert(`title`), update(`title`) ON test.livre to user2@localhost;<br>
+Si on a beaucoup de colonnes et que l&#x27;on veut restreindre sur un petit nombre, on peut accorder les droits sur toutes les colonnes et restreindre par la suite :</p>
+</section>
+<section>
+<p>GRANT select, insert, update ON test.livre to user2@localhost;<br>
+REVOKE insert(`description`), update(`description`) ON test.livre FROM user2@localhost;<br>
+Vérification des droits des utilisateurs<br>
+On peut vérifier les droits d&#x27;un utilisateur avec la commande suivante :</p>
+</section>
+<section>
+<p>SHOW GRANTS FOR user2@locahost; <br>
++---------------------------------------------------------------------------------------+<br>
+| Grants for user2@localhost                                                            |<br>
++---------------------------------------------------------------------------------------+<br>
+| GRANT USAGE ON *.* TO `user2`@`localhost`                                             |<br>
+| GRANT SELECT ON `test`.* TO `user2`@`localhost` WITH GRANT OPTION                     |<br>
+| GRANT SELECT, INSERT (title), UPDATE (title) ON `test`.`livre` TO `user2`@`localhost` |<br>
++---------------------------------------------------------------------------------------+<br>
+Les rôles<br>
+Depuis MySQL 8.0 / Maria 10 (me semble-t-il), il est possible de définir des rôles utilisateurs. Le principe est le suivant :</p>
+</section>
+<section>
+<p>on crée un rôle et on lui affecte la politique de droit adéquate.<br>
+on crée un utilisateur et on lui assigne un rôle.<br>
+La syntaxe :</p>
+</section>
+<section>
+<p>CREATE ROLE &#x27;mon_role&#x27;; <br>
+GRANT liste_droit TO db.* TO &#x27;mon_role&#x27;; <br>
+On a donné une liste de droit au rôle, maintenant on donne les droits du rôle à l&#x27;utilisateur :</p>
+</section>
+<section>
+<p>GRANT &#x27;mon_role&#x27; TO &#x27;toto&#x27;@&#x27;localhost&#x27;, &#x27;titi&#x27;@&#x27;localhost&#x27;; <br>
+Il est aussi possible d&#x27;imbriquer les rôles (c&#x27;est à dire créer un rôle depuis un autre rôle), ce qui permet de gérer des droits dans des hiérachies complèxe. Par exemple, nn rôle manager pourrait inclure le rôle employé pour hériter de ses privilèges.</p>
+</section>
+<section>
+<p>GRANT &#x27;role_employe&#x27; TO &#x27;role_manager&#x27;;<br>
+Activer un rôle<br>
+Un rôle attribué n’est actif qu’après activation. Vous pouvez activer un rôle avec :</p>
+</section>
+<section>
+<p>SET ROLE &#x27;nom_role&#x27;;<br>
+Exemple :</p>
+</section>
+<section>
+<p>SET ROLE &#x27;analyste&#x27;;<br>
+Pour activer automatiquement un rôle lorsqu’un utilisateur se connecte :</p>
+</section>
+<section>
+<p>SET DEFAULT ROLE &#x27;nom_role&#x27; FOR &#x27;utilisateur&#x27;@&#x27;hote&#x27;;<br>
+Révoquer un rôle<br>
+Pour retirer un rôle d’un utilisateur :</p>
+</section>
+<section>
+<p>REVOKE &#x27;nom_role&#x27; FROM &#x27;utilisateur&#x27;@&#x27;hote&#x27;;<br>
+Supprimer un rôle<br>
+Si un rôle n’est plus nécessaire, vous pouvez le supprimer :</p>
+</section>
+<section>
+<p>DROP ROLE &#x27;nom_role&#x27;;<br>
+Exemple pratique complet<br>
+Étape 1 : Création des utilisateurs<br>
+Créez deux utilisateurs :</p>
+</section>
+<section>
+<p>CREATE USER &#x27;alice&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;password&#x27;;<br>
+CREATE USER &#x27;bob&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;password&#x27;;<br>
+Étape 2 : Création des rôles<br>
+Créez deux rôles :</p>
+</section>
+<section>
+<p>CREATE ROLE &#x27;lecteur&#x27;;<br>
+CREATE ROLE &#x27;editeur&#x27;;<br>
+Étape 3 : Attribution des privilèges aux rôles<br>
+Donnez les privilèges suivants aux rôles :</p>
+</section>
+<section>
+<p>Le rôle lecteur peut lire les données d’une base de données.<br>
+Le rôle editeur peut lire et modifier les données.<br>
+GRANT SELECT ON ma_base.* TO &#x27;lecteur&#x27;;<br>
+GRANT SELECT, INSERT, UPDATE ON ma_base.* TO &#x27;editeur&#x27;;<br>
+Étape 4 : Assigner des rôles aux utilisateurs<br>
+Attribuez les rôles :</p>
+</section>
+<section>
+<p>GRANT &#x27;lecteur&#x27; TO &#x27;lucie&#x27;@&#x27;localhost&#x27;;<br>
+GRANT &#x27;editeur&#x27; TO &#x27;paul&#x27;@&#x27;localhost&#x27;;<br>
+Étape 5 : Activer les rôles par défaut<br>
+Configurez les rôles pour qu’ils soient activés automatiquement :</p>
+</section>
+<section>
+<p>SET DEFAULT ROLE &#x27;lecteur&#x27; FOR &#x27;alice&#x27;@&#x27;localhost&#x27;;<br>
+SET DEFAULT ROLE &#x27;editeur&#x27; FOR &#x27;bob&#x27;@&#x27;localhost&#x27;;<br>
+Étape 6 : Vérifier les privilèges<br>
+Connectez-vous en tant que alice ou bob et vérifiez les droits actifs :</p>
+</section>
+<section>
+<p>SHOW GRANTS FOR &#x27;alice&#x27;@&#x27;localhost&#x27;;<br>
+SHOW GRANTS FOR &#x27;bob&#x27;@&#x27;localhost&#x27;;<br>
+4. Exercice : Gestion des rôles<br>
+Objectif :<br>
+Créer et utiliser des rôles pour une base de données d’entreprise contenant les tables suivantes : employees, departments, et salaries.</p>
+</section>
+<section>
+<p>Instructions :<br>
+Créez les rôles suivants :</p>
+</section>
+<section>
+<p>admin : tous les privilèges sur toutes les tables.<br>
+analyste : droit de lecture (SELECT) sur toutes les tables.<br>
+gestionnaire : droit de lecture et de modification (SELECT, UPDATE) sur les tables employees et departments.<br>
+Associez les rôles à ces utilisateurs :</p>
+</section>
+<section>
+<p>admin pour l’utilisateur admin_user (mot de passe : securepass).<br>
+analyste pour l’utilisateur data_user (mot de passe : analyzepass).<br>
+gestionnaire pour l’utilisateur manager_user (mot de passe : managerpass).<br>
+Activez les rôles par défaut et testez les privilèges en exécutant les commandes suivantes pour chaque utilisateur :</p>
+</section>
+<section>
+<p>Lire les données de la table employees.<br>
+Modifier un enregistrement dans la table departments.<br>
+Correction<br>
+Creation de la base emptemp :<br>
+CREATE DATABASE IF NOT EXISTS emptemp; <br>
+USE emptemp;</p>
+</section>
+<section>
+<p>CREATE TABLE departments(<br>
+        id INT AUTO_INCREMENT PRIMARY KEY,<br>
+        name VARCHAR(255) UNIQUE<br>
+);</p>
+</section>
+<section>
+<p>CREATE TABLE employees( <br>
+        id INT AUTO_INCREMENT PRIMARY KEY,<br>
+        first_name VARCHAR(255),<br>
+        last_name VARCHAR(255),<br>
+        department_id INT NOT NULL,<br>
+        FOREIGN KEY (department_id) REFERENCES departments(id)<br>
+);</p>
+</section>
+<section>
+<p>CREATE TABLE salaries( <br>
+        id INT AUTO_INCREMENT PRIMARY KEY,<br>
+        amount DECIMAL(10,2)        ,<br>
+        from_date DATE DEFAULT CURRENT_DATE,<br>
+        to_date DATE DEFAULT &#x27;9999-01-01&#x27;,<br>
+        employee_id INT NOT NULL,<br>
+        FOREIGN KEY (employee_id) REFERENCES departments(id)<br>
+);</p>
+</section>
+<section>
+<p>INSERT INTO departments(name) VALUES (&#x27;IT&#x27;), (&#x27;RH&#x27;);<br>
+INSERT INTO employees(first_name, last_name, department_id) VALUES (&#x27;toto&#x27;, &#x27;leharicot&#x27;, (SELECT id FROM departments WHERE name = &#x27;IT&#x27;)), (&#x27;titi&#x27;, &#x27;letirlibibi&#x27;, (SELECT id FROM departments WHERE name = &#x27;RH&#x27;));</p>
+</section>
+<section>
+<h3>Création des rôles :</h3>
+<p>CREATE ROLE admin;<br>
+CREATE ROLE analyste;<br>
+CREATE ROLE gestionnaire;</p>
+</section>
+<section>
+<p>-- Gestion des privilèges pour les rôles :</p>
+</section>
+<section>
+<p>GRANT ALL on emptemp.* TO admin; <br>
+GRANT SELECT on emptemp.* TO analyste; <br>
+GRANT SELECT, UPDATE on emptemp.employees TO gestionnaire; <br>
+GRANT SELECT, UPDATE on emptemp.departments TO gestionnaire; <br>
+Association des rôles et des utilisateurs :<br>
+-- Création des utilisateurs au préalable<br>
+CREATE USER admin_user@localhost IDENTIFIED BY &#x27;securepass&#x27;;<br>
+CREATE USER data_user@localhost IDENTIFIED BY &#x27;analyzepass&#x27;;<br>
+CREATE USER manager_user@localhost IDENTIFIED BY &#x27;managerpass&#x27;;</p>
+</section>
+<section>
+<p>-- Affectation des rôles : <br>
+GRANT admin TO admin_user@localhost;<br>
+GRANT analyste TO data_user@localhost;<br>
+GRANT gestionnaire TO manager_user@localhost; <br>
+Activation des rôles :<br>
+SET DEFAULT ROLE admin FOR admin_user@localhost;<br>
+SET DEFAULT ROLE analyste FOR data_user@localhost;<br>
+SET DEFAULT ROLE gestionnaire FOR manager_user@localhost;<br>
+Test pour chaque utilisateur :</p>
+</section>
+<section>
+<h3>mysql -u admin_user -p emptemp;</h3>
+<p>SELECT * FROM employees;<br>
+UPDATE departments SET name = &#x27;HR&#x27; WHERE name = &#x27;RH&#x27;;<br>
+mysql -u data_user -p emptemp;<br>
+mysql -u manager_user -p emptemp;</p>
+</section>
+  </article>
+  <footer><a href="index.html">Accueil</a> · <a href="pdf-source-08-droits.html">Version texte brut</a></footer>
+</body>
+</html>

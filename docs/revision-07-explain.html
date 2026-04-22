@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche — EXPLAIN</title>
+  <link rel="stylesheet" href="revision.css?v=2">
+</head>
+<body>
+  <a class="back" href="index.html">← Accueil</a>
+  <header>
+    <h1>Fiche — EXPLAIN</h1>
+    <p class="sub">Basé sur <strong>explain.txt</strong> — tout le texte extrait, mis en forme pour réviser.</p>
+  </header>
+  <article>
+<section>
+<h3>Analyse des Performances avec EXPLAIN (MySQL et PostgreSQL)</h3>
+<p>La commande EXPLAIN est une pierre angulaire de l’optimisation SQL. Elle permet de comprendre comment le moteur de base de données planifie et exécute une requête. En analysant ces plans d&#x27;exécution, les développeurs et administrateurs peuvent identifier les problèmes de performance et les optimiser efficacement.</p>
+</section>
+<section>
+<h3>Pourquoi et Quand Utiliser EXPLAIN ?</h3>
+<p>Scénarios typiques<br>
+Requêtes lentes :</p>
+</section>
+<section>
+<p>Une requête qui prend plus de temps que prévu peut être optimisée en analysant son plan d&#x27;exécution.<br>
+Création ou ajustement d&#x27;index :</p>
+</section>
+<section>
+<p>Vérifier si les index existants sont utilisés ou s&#x27;il est nécessaire d’en créer de nouveaux.<br>
+Optimisation des jointures :</p>
+</section>
+<section>
+<p>Comprendre l’ordre d’exécution des jointures et leur méthode (par hachage, boucle imbriquée, etc.).<br>
+Sous-requêtes imbriquées ou complexes :</p>
+</section>
+<section>
+<p>Identifier si une sous-requête est exécutée plusieurs fois ou si elle est optimisée par le moteur.<br>
+EXPLAIN en MySQL<br>
+Syntaxe<br>
+EXPLAIN [EXTENDED] [PARTITIONS] SELECT ...;<br>
+Variantes<br>
+EXPLAIN EXTENDED :</p>
+</section>
+<section>
+<p>Ajoute des détails supplémentaires sur la transformation de la requête par l&#x27;optimiseur SQL. Utilisez ensuite SHOW WARNINGS pour voir ces informations.<br>
+EXPLAIN FORMAT=JSON :</p>
+</section>
+<section>
+<p>Retourne un plan d&#x27;exécution au format JSON, idéal pour les analyses complexes.<br>
+Le résultat de la commande EXPLAIN est le suivant :</p>
+</section>
+<section>
+<p>id : L&#x27;identifiant unique de l&#x27;étape dans le plan d&#x27;exécution. Chaque sous-requête ou étape complexe reçoit un identifiant différent.</p>
+</section>
+<section>
+<p>Valeurs possibles : Un numéro entier qui identifie chaque étape ou sous-requête dans le plan d&#x27;exécution.<br>
+select_type : Indique le type de la requête ou de l&#x27;opération qui est en cours d&#x27;exécution. Cette colonne donne des informations sur la structure de la requête (par exemple, si c&#x27;est une requête simple, une sous-requête, ou une jointure).</p>
+</section>
+<section>
+<p>Valeurs possibles :<br>
+SIMPLE : Requête simple, sans sous-requêtes ni unions.<br>
+PRIMARY : Requête principale dans le cas de sous-requêtes.<br>
+SUBQUERY : Sous-requête utilisée dans une clause WHERE, FROM, ou SELECT.<br>
+DERIVED : Sous-requête dans la clause FROM.<br>
+UNION : Requête faisant partie d’une union.<br>
+DEPENDENT SUBQUERY : Sous-requête corrélée.<br>
+UNCACHEABLE SUBQUERY : Sous-requête qui ne peut pas être mise en cache.<br>
+table : Le nom de la table utilisée dans l&#x27;étape spécifique de l&#x27;exécution de la requête.</p>
+</section>
+<section>
+<p>Valeurs possibles : Le nom de la table concernée par l&#x27;étape ou sous-requête. Cela peut aussi être le nom d’une sous-requête dans le cas d’une requête dérivée.<br>
+type : Le type de jointure ou la méthode d&#x27;accès aux lignes dans la table. Il reflète l&#x27;efficacité de l&#x27;accès aux données.</p>
+</section>
+<section>
+<p>Valeurs possibles (de la moins efficace à la plus efficace) :<br>
+ALL : Scan complet de la table. Inefficace, surtout pour les grandes tables<br>
+index : Scan complet de l&#x27;index sans filtrer (plus rapide qu&#x27;un scan complet de la table).<br>
+range : Recherche d&#x27;un intervalle de valeurs dans un index (efficace pour des requêtes avec des comparateurs comme BETWEEN, &gt;, &lt;).<br>
+ref : Utilisation d’un index pour trouver des lignes spécifiques.<br>
+eq_ref : Utilisation d&#x27;un index avec une correspondance 1:1 (très efficace). C&#x27;est en général un accès par clé primaire ou unique. Une seule ligne est retournée.<br>
+const : Une constante est utilisée, accès très rapide. Une seule ligne est retournée (très efficace).<br>
+system : Table contenant une seule ligne (cas rare, similaire à const).<br>
+possible_keys : Liste des index que MySQL pourrait utiliser pour exécuter la requête.</p>
+</section>
+<section>
+<p>Valeurs possibles : Le nom des index disponibles pour cette table ou NULL si aucun index n&#x27;est disponible (le nom peut être PRIMARY si la clé primaire est utilisée)<br>
+key : L&#x27;index effectivement utilisé pour cette étape du plan d&#x27;exécution.</p>
+</section>
+<section>
+<p>Valeurs possibles : Le nom de l&#x27;index utilisé, ou NULL si aucun index n&#x27;est utilisé.<br>
+key_len : La longueur de l&#x27;index utilisé, exprimée en octets. Cela montre combien de colonnes de l&#x27;index sont utilisées pour accéder aux données.</p>
+</section>
+<section>
+<p>Valeurs possibles : La longueur de l&#x27;index utilisé, généralement en octets, ou NULL si aucun index n&#x27;est utilisé.<br>
+ref : Les colonnes ou valeurs utilisées pour associer les tables, généralement lors des jointures. Elle montre quelle colonne ou combinaison de colonnes est utilisée dans la condition de jointure.</p>
+</section>
+<section>
+<p>Valeurs possibles : Les colonnes de la table utilisées dans la jointure, ou NULL si aucune colonne n&#x27;est impliquée dans la jointure.<br>
+rows : Le nombre estimé de lignes que MySQL doit examiner pour cette étape. C&#x27;est une estimation basée sur les statistiques de la table.</p>
+</section>
+<section>
+<p>Valeurs possibles : Un nombre entier représentant le nombre de lignes estimé, ou NULL si l&#x27;estimation est inconnue.<br>
+Extra : Informations supplémentaires concernant l&#x27;exécution de la requête. Cette colonne fournit des détails sur l&#x27;utilisation de certaines techniques d&#x27;optimisation.</p>
+</section>
+<section>
+<p>Valeurs possibles :<br>
+Using where : Indique que des filtres sont appliqués après l&#x27;accès aux données.<br>
+Using index : Montre que l&#x27;accès aux données a été effectué directement via l&#x27;index sans avoir besoin de scanner la table.<br>
+Using temporary : Utilisation d&#x27;une table temporaire pour stocker les résultats intermédiaires.<br>
+Using filesort : Tri externe utilisé, généralement pour les requêtes avec des ordres complexes.<br>
+Using join buffer : Utilisation d’un tampon de jointure pour exécuter la jointure.<br>
+Using index condition : Les conditions de la clause WHERE sont appliquées directement via l&#x27;index.<br>
+No matching min/max row : Aucune ligne ne correspond aux conditions de la requête, ce qui peut être optimisé.<br>
+L’analyse du plan d&#x27;exécution à l’aide de la commande EXPLAIN est essentielle pour comprendre comment MySQL exécute une requête et identifier les domaines où des optimisations peuvent être apportées. En particulier, les colonnes type et Extra sont cruciales pour identifier les points de ralentissement, tels que les scans complets de table ou l&#x27;absence d&#x27;utilisation d&#x27;index. En combinant les informations de ces colonnes avec des stratégies d&#x27;indexation appropriées, vous pouvez considérablement améliorer la performance de vos requêtes.</p>
+</section>
+<section>
+<h3>Exemple détaillé en MySQL</h3>
+<div class="table-lines">Requête initiale
+SELECT e.emp_no, e.first_name, s.salary
+FROM employees e
+JOIN salaries s ON e.emp_no = s.emp_no
+WHERE s.salary &gt; 50000 AND CURRENT_DATE BETWEEN s.from_date AND s.to_date;
+Plan d’exécution
+EXPLAIN SELECT e.emp_no, e.first_name, s.salary
+FROM employees e
+JOIN salaries s ON e.emp_no = s.emp_no
+WHERE s.salary &gt; 50000 AND CURRENT_DATE BETWEEN s.from_date AND s.to_date;
+id	select_type	table	type	possible_keys	key	key_len	ref	rows	Extra
+1	SIMPLE	s	ALL	PRIMARY	NULL	NULL	NULL	299379	Using where
+1	SIMPLE	e	eq_ref	PRIMARY	PRIMARY	4	employees.s.emp_no	1
+Analyse des résultats de EXPLAIN
+Colonne	Valeur	Interprétation
+id	1	Une seule étape dans le plan d&#x27;exécution.
+select_type	SIMPLE	Une requête simple, sans sous-requêtes ou unions.
+table	s	La table salaries est la première table analysée.
+type	ALL	Une recherche complète (scan de table) est effectuée sur salaries, inefficace.
+possible_keys	PRIMARY	L&#x27;index PRIMARY est une option possible pour optimiser la recherche.
+key	NULL	Aucun index n’est utilisé pour salaries.
+key_len	NULL	La longueur de l&#x27;index est non applicable car aucun index n&#x27;est utilisé.
+ref	NULL	Pas de colonne spécifique référencée dans cette étape.
+rows	299379	299379 lignes sont estimées à analyser.
+Extra	Using where	La condition WHERE est appliquée après la lecture complète de la table.
+table	e	La table employees est analysée en deuxième position.
+type	eq_ref	Accès direct par clé primaire, très efficace.
+key	PRIMARY	La clé primaire de la table employees est utilisée.
+key_len	4	Longueur de l&#x27;index utilisé (4 octets pour emp_no).
+ref	employees.s.emp_no	La jointure s’appuie sur emp_no de salaries.
+rows	299379	9 lignes sont analysées pour chaque ligne correspondante de salaries.
+Problème identifié
+Scan complet de la table salaries (type = ALL) :</div>
+</section>
+<section>
+<p>Cela signifie que MySQL parcourt toutes les lignes de salaries pour appliquer le filtre s.salary &gt; 50000 et la condition de temporalité.<br>
+Cette approche est inefficace, surtout pour des tables contenant un grand nombre de lignes.<br>
+Index non utilisé sur salaries :</p>
+</section>
+<section>
+<p>Bien que PRIMARY soit listé comme un index possible, aucun index n’est réellement utilisé (key = NULL).<br>
+Cela peut être dû à l’absence d’un index couvrant la condition sur salary et la plage de dates.<br>
+Suggestions pour l’optimisation<br>
+Créer un index sur salary et les colonnes de temporalité (from_date, to_date) :</p>
+</section>
+<section>
+<p>CREATE INDEX idx_salary_dates ON salaries (salary, from_date, to_date);<br>
+Cela permettra d’améliorer la recherche sur la combinaison de salary &gt; 50000 et de la plage de dates.</p>
+</section>
+<section>
+<p>Revoir l’ordre des jointures (si pertinent) : Dans ce cas précis, l’ordre des jointures semble optimal car salaries est analysée avant employees.</p>
+</section>
+<section>
+<p>Vérifier les statistiques de la table : Si l’index existe déjà, I lest possible de mettre à jour les statistiques pour permettre à MySQL d’utiliser les index efficacement :</p>
+</section>
+<section>
+<p>ANALYZE TABLE salaries;<br>
+Plan d&#x27;exécution attendu après optimisation<br>
+Après avoir créé un index approprié, le plan d&#x27;exécution devrait ressembler à ceci :</p>
+</section>
+<section>
+<div class="table-lines">id	select_type	table	type	possible_keys	key	key_len	ref	rows	Extra
+1	SIMPLE	salaries	range	PRIMARY, idx_salary_dates	idx_salary_dates	8	NULL	500	Using index condition
+1	SIMPLE	employees	eq_ref	PRIMARY	PRIMARY	4	salaries.emp_no	1	NULL
+Explications des changements
+type = range pour salaries :</div>
+</section>
+<section>
+<p>L&#x27;index idx_salary_dates est utilisé pour parcourir uniquement les lignes correspondant au filtre s.salary &gt; 50000 et à la plage de dates.<br>
+Extra = Using index condition :</p>
+</section>
+<section>
+<div class="table-lines">Les conditions du WHERE sont appliquées directement via l’index, réduisant la charge.
+EXPLAIN en PostgreSQL
+Syntaxe
+EXPLAIN [ (options) ] SELECT ...;
+Options principales
+Option	Description
+ANALYZE	Exécute réellement la requête et mesure les temps réels pour chaque étape du plan d&#x27;exécution.
+VERBOSE	Fournit des détails supplémentaires sur les nœuds du plan.
+BUFFERS	Montre l’utilisation des tampons mémoire (cache disque).
+COSTS	Active ou désactive l’affichage des coûts estimés.
+TIMING	Inclut ou exclut les mesures de temps d&#x27;exécution.
+Détails des Nœuds dans PostgreSQL
+Nœud	Description
+Seq Scan	Parcours séquentiel de la table entière.
+Index Scan	Utilisation d’un index pour trouver des lignes spécifiques.
+Bitmap Heap Scan	Lecture via un bitmap pour regrouper les lectures disque.
+Hash Join	Jointure basée sur une table de hachage (performant pour les grandes données).
+Nested Loop	Jointure par boucle imbriquée (inefficace pour les grandes tables).
+Exemple détaillé en PostgreSQL
+Requête
+SELECT e.emp_no, e.first_name, s.salary
+FROM employees e
+JOIN salaries s ON e.emp_no = s.emp_no
+WHERE s.salary &gt; 50000 AND CURRENT_DATE BETWEEN s.from_date AND s.to_date;
+Plan d&#x27;exécution avec ANALYZE
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT e.emp_no, e.first_name, s.salary
+FROM employees e
+JOIN salaries s ON e.emp_no = s.emp_no
+WHERE s.salary &gt; 50000 AND CURRENT_DATE BETWEEN s.from_date AND s.to_date;
+Résultat du plan d&#x27;exécution
+Gather  (cost=7274.91..67667.00 rows=181569 width=15) (actual time=33.550..136.515 rows=219816 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=12267 read=5605
+  -&gt;  Parallel Hash Join  (cost=6274.91..48510.10 rows=75654 width=15) (actual time=31.354..123.507 rows=73272 loops=3)
+        Hash Cond: (s.emp_no = e.emp_no)
+        Buffers: shared hit=12267 read=5605
+        -&gt;  Parallel Seq Scan on salaries s  (cost=0.00..42036.59 rows=75654 width=8) (actual time=0.038..73.901 rows=73272 loops=3)
+              Filter: ((salary &gt; 50000) AND (CURRENT_DATE &gt;= from_date) AND (CURRENT_DATE &lt;= to_date))
+              Rows Removed by Filter: 874744
+              Buffers: shared hit=11429 read=3945
+        -&gt;  Parallel Hash  (cost=4068.85..4068.85 rows=176485 width=11) (actual time=30.166..30.167 rows=100008 loops=3)
+              Buckets: 524288  Batches: 1  Memory Usage: 18144kB
+              Buffers: shared hit=645 read=1659
+              -&gt;  Parallel Seq Scan on employees e  (cost=0.00..4068.85 rows=176485 width=11) (actual time=0.017..9.187 rows=100008 loops=3)
+                    Buffers: shared hit=645 read=1659
+Planning:
+  Buffers: shared hit=221 read=30 dirtied=2
+  Planning Time: 1.014 ms
+Execution Time: 143.514 ms
+1. Gather
+Gather : Cette étape représente l&#x27;agrégation des résultats parallèles. PostgreSQL exécute la requête en parallèle, ce qui permet de diviser le travail entre plusieurs processus.</div>
+</section>
+<section>
+<p>Coût estimé : 7274.91 à 67667.00, ce qui correspond à la plage de coûts estimée pour cette opération.</p>
+</section>
+<section>
+<p>Temps réel : 33.550 à 136.515 ms.</p>
+</section>
+<section>
+<p>Lignes traitées : La requête a retourné 219816 lignes dans cette étape, bien plus que le nombre de lignes estimé (181569), indiquant que la requête a été plus &quot;effective&quot; qu&#x27;attendu.</p>
+</section>
+<section>
+<p>Workers Planned : 2 travailleurs étaient prévus pour effectuer cette opération en parallèle.</p>
+</section>
+<section>
+<p>Workers Launched : Effectivement, 2 travailleurs ont été lancés.</p>
+</section>
+<section>
+<p>Buffers :</p>
+</section>
+<section>
+<p>shared hit=12267 : Nombre de blocs de données récupérés directement à partir du cache partagé.<br>
+read=5605 : Nombre de blocs lus depuis le disque.<br>
+2. Parallel Hash Join<br>
+Parallel Hash Join : C&#x27;est la méthode utilisée pour effectuer la jointure entre salaries et employees. Elle fonctionne en construisant une table de hachage à partir des données de la table employees et en associant les lignes de salaries qui correspondent à la clé emp_no.</p>
+</section>
+<section>
+<p>Coût estimé : 6274.91 à 48510.10.</p>
+</section>
+<section>
+<p>Temps réel : 31.354 à 123.507 ms.</p>
+</section>
+<section>
+<p>Lignes traitées : 73272 lignes traitées dans chaque boucle parallèle.</p>
+</section>
+<section>
+<p>Hash Cond: (s.emp_no = e.emp_no) : La condition de jointure est effectuée sur la colonne emp_no.</p>
+</section>
+<section>
+<p>Buffers :</p>
+</section>
+<section>
+<p>shared hit=12267 : Les blocs récupérés à partir du cache partagé.<br>
+read=5605 : Les blocs lus depuis le disque.<br>
+3. Parallel Seq Scan sur salaries<br>
+Parallel Seq Scan on salaries s : PostgreSQL a effectué une scan séquentielle parallèle sur la table salaries, ce qui signifie que les données sont lues dans leur intégralité pour appliquer le filtre (et non via un index).</p>
+</section>
+<section>
+<p>Coût estimé : 0.00 à 42036.59.</p>
+</section>
+<section>
+<p>Temps réel : 0.038 à 73.901 ms.</p>
+</section>
+<section>
+<p>Lignes traitées : 73272 lignes traitées dans chaque boucle parallèle.</p>
+</section>
+<section>
+<p>Filter: ((salary &gt; 50000) AND (CURRENT_DATE &gt;= from_date) AND (CURRENT_DATE &lt;= to_date)) : Le filtre appliqué pour n&#x27;inclure que les lignes où le salaire est supérieur à 50 000 et où la date actuelle est entre from_date et to_date.</p>
+</section>
+<section>
+<p>Rows Removed by Filter: 874744 : 874 744 lignes ont été ignorées par ce filtre.</p>
+</section>
+<section>
+<p>Buffers :</p>
+</section>
+<section>
+<p>shared hit=11429 : Les blocs récupérés à partir du cache partagé.<br>
+read=3945 : Les blocs lus depuis le disque.<br>
+4. Parallel Hash<br>
+Parallel Hash : Cette étape consiste à créer une table de hachage pour la jointure avec la table employees.</p>
+</section>
+<section>
+<p>Coût estimé : 4068.85 à 4068.85.</p>
+</section>
+<section>
+<p>Temps réel : 30.166 à 30.167 ms.</p>
+</section>
+<section>
+<p>Buckets: 524288 : La table de hachage a utilisé 524 288 seaux pour organiser les données.</p>
+</section>
+<section>
+<p>Memory Usage: 18144kB : 18 Mo de mémoire ont été utilisés pour cette opération.</p>
+</section>
+<section>
+<p>Buffers :</p>
+</section>
+<section>
+<p>shared hit=645 : Les blocs récupérés à partir du cache partagé.<br>
+read=1659 : Les blocs lus depuis le disque.<br>
+5. Parallel Seq Scan on employees e<br>
+Parallel Seq Scan on employees e : Une autre scan séquentielle parallèle est effectuée sur la table employees.</p>
+</section>
+<section>
+<p>Coût estimé : 0.00 à 4068.85.</p>
+</section>
+<section>
+<p>Temps réel : 0.017 à 9.187 ms.</p>
+</section>
+<section>
+<p>Lignes traitées : 100008 lignes traitées dans chaque boucle parallèle.</p>
+</section>
+<section>
+<p>Buffers :</p>
+</section>
+<section>
+<p>shared hit=645 : Les blocs récupérés à partir du cache partagé.<br>
+read=1659 : Les blocs lus depuis le disque.<br>
+6. Temps de Planification et Temps d&#x27;Exécution<br>
+Temps de planification (Planning Time) : 1.014 ms.</p>
+</section>
+<section>
+<p>Cela indique le temps pris pour générer le plan d&#x27;exécution.<br>
+Temps d&#x27;exécution (Execution Time) : 143.514 ms.</p>
+</section>
+<section>
+<p>C&#x27;est le temps total nécessaire pour exécuter la requête après la génération du plan.<br>
+Interprétation générale<br>
+Scans parallèles : La requête utilise des scans séquentiels parallèles sur les tables salaries et employees, ce qui montre que PostgreSQL a réparti le travail entre plusieurs processus pour accélérer l&#x27;exécution.</p>
+</section>
+<section>
+<p>Jointure par hachage parallèle : L&#x27;utilisation d&#x27;une jointure par hachage parallèle permet de traiter efficacement les grandes tables, mais cela dépend de la façon dont les données sont réparties.</p>
+</section>
+<section>
+<p>Filtres appliqués : Le filtre sur salary &gt; 50000 et les dates (CURRENT_DATE BETWEEN from_date AND to_date) a réduit un grand nombre de lignes. Cependant, un grand nombre de lignes (874 744) a été rejeté lors de l&#x27;application du filtre, ce qui montre qu&#x27;une grande partie des données ne correspondait pas aux critères.</p>
+</section>
+<section>
+<p>Accès au disque : Bien que des blocs aient été lus depuis le disque (read), une partie importante des données a été lue depuis le cache (shared hit), ce qui améliore la performance globale de la requête.</p>
+</section>
+<section>
+<h3>Suggestions d&#x27;optimisation</h3>
+<p>Indexer les colonnes utilisées dans les filtres : Pour améliorer la recherche, vous pouvez envisager de créer un index combiné sur les colonnes salary, from_date, et to_date dans la table salaries. Cela aidera PostgreSQL à éviter des scans séquentiels complets et à accélérer l&#x27;application du filtre.</p>
+</section>
+<section>
+<p>Exemple de création d&#x27;un index :</p>
+</section>
+<section>
+<p>CREATE INDEX idx_salary_date ON salaries (salary, from_date, to_date);<br>
+Analyser les statistiques des tables : Si la base de données contient des mises à jour ou des insertions ré</p>
+</section>
+<section>
+<p>centes, assurez-vous que les statistiques sont à jour, ce qui permet à PostgreSQL de générer des plans d&#x27;exécution optimaux :</p>
+</section>
+<section>
+<p>ANALYZE salaries;<br>
+ANALYZE employees;<br>
+Optimiser les jointures et les scans : Si la table employees est assez grande, vous pourriez envisager d&#x27;ajouter des index supplémentaires pour accélérer l&#x27;exécution de la jointure.<br>
+En résumé, bien que la requête utilise une approche parallèle efficace, il existe des possibilités d&#x27;optimisation, en particulier en ce qui concerne l&#x27;indexation et la gestion des données dans les scans séquentiels.</p>
+</section>
+<section>
+<h3>Comparaison : MySQL vs PostgreSQL</h3>
+<div class="table-lines">Critère	MySQL	PostgreSQL
+Mesures en temps réel	Non, sauf avec des outils externes.	Oui, avec l’option ANALYZE.
+Richesse des détails	Moins détaillé.	Informations plus granulaires.
+JSON	Support natif avec FORMAT=JSON.	Non (mais peut être simulé avec des outils).
+Exercices pratiques
+1. Diagnostiquer une requête lente
+SELECT d.dept_name, COUNT(e.emp_no)
+FROM departments d
+LEFT JOIN dept_emp de ON d.dept_no = de.dept_no
+LEFT JOIN employees e ON de.emp_no = e.emp_no
+GROUP BY d.dept_name;
+Tâche : Exécutez EXPLAIN pour analyser l’utilisation des index et optimisez la requête si nécessaire.
+2. Comparaison de deux types de jointures
+Testez les performances de ces deux requêtes en analysant les plans d&#x27;exécution :</div>
+</section>
+<section>
+<p>Jointure 1 : INNER JOIN<br>
+SELECT e.emp_no, t.title<br>
+FROM employees e<br>
+JOIN titles t ON e.emp_no = t.emp_no;<br>
+Jointure 2 : LEFT JOIN<br>
+SELECT e.emp_no, t.title</p>
+</section>
+<section>
+<p>FROM employees e<br>
+LEFT JOIN titles t ON e.emp_no = t.emp_no;<br>
+Exercices :</p>
+</section>
+<section>
+<p>Comparez les plans d&#x27;exécution des deux requêtes. Laquelle est plus performante ? Pourquoi ?<br>
+Testez les requêtes avec et sans index sur emp_no. Comment cela affecte-t-il les performances ?<br>
+Dans quel cas métier utiliseriez-vous une LEFT JOIN plutôt qu&#x27;une INNER JOIN ?<br>
+Quels autres facteurs (autres que les performances) influencent votre choix de jointure ?<br>
+3. Analyse avancée avec PostgreSQL<br>
+Ajoutez l’option ANALYZE pour identifier les tampons utilisés dans cette requête :</p>
+</section>
+<section>
+<p>SELECT e.emp_no, e.first_name, MAX(s.salary)<br>
+FROM employees e<br>
+JOIN salaries s ON e.emp_no = s.emp_no<br>
+GROUP BY e.emp_no, e.first_name;<br>
+Question : Quel impact a la clause MAX() sur le plan d&#x27;exécution ?<br>
+Conclusion<br>
+EXPLAIN est un outil fondamental pour diagnostiquer et améliorer les performances SQL. MySQL offre une base solide pour l’analyse des index et des jointures, tandis que PostgreSQL propose une analyse avancée avec des mesures en temps réel et des statistiques détaillées. Maîtriser ces commandes est essentiel pour tout professionnel travaillant avec des bases de données.</p>
+</section>
+  </article>
+  <footer><a href="index.html">Accueil</a> · <a href="pdf-source-07-explain.html">Version texte brut</a></footer>
+</body>
+</html>
