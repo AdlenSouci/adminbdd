@@ -15,6 +15,9 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = Path(__file__).resolve().parent
 EX = ROOT / "_pdf_extracts"
 
+# Fiche MCD : rédigée à la main (revision-01-mcd.html) — ne pas écraser avec l’auto.
+SKIP_AUTO = {"revision-01-mcd.html"}
+
 COURSES = [
     (EX / "Modèle_Conceptuel_de_Données_MCD.txt", "revision-01-mcd.html", "Fiche — MCD (MERISE)", "Modèle Conceptuel de Données (MCD).pdf"),
     (EX / "Du_MCD_au_MLD.txt", "revision-02-mcd-mld.html", "Fiche — Du MCD au MLD", "Du MCD au MLD.pdf"),
@@ -148,6 +151,9 @@ PDF_SOURCE = {
 
 def main() -> None:
     for src, out_name, title, label in COURSES:
+        if out_name in SKIP_AUTO:
+            print("SKIP (fiche manuelle)", out_name)
+            continue
         if not src.is_file():
             print("SKIP", src)
             continue
