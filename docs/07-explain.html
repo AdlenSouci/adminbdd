@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>07 — EXPLAIN</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="back" href="index.html">← Toutes les fiches</a>
+  <header>
+    <h1>07 — EXPLAIN</h1>
+    <p class="sub">MySQL &amp; PostgreSQL</p>
+  </header>
+
+  <section>
+    <h2>À quoi ça sert</h2>
+    <p>Voir le <strong>plan</strong> : scans, index, jointures → optimiser les requêtes lentes.</p>
+  </section>
+
+  <section>
+    <h2>MySQL — commandes</h2>
+    <p><code>EXPLAIN SELECT …</code> · <code>EXPLAIN EXTENDED</code> + <code>SHOW WARNINGS</code> · <code>EXPLAIN FORMAT=JSON</code></p>
+  </section>
+
+  <section>
+    <h2>MySQL — lire le plan</h2>
+    <ul>
+      <li><strong>type</strong> (pire → mieux) : <strong>ALL</strong> → index → <strong>range</strong> → <strong>ref</strong> → <strong>eq_ref</strong> → <strong>const</strong> / system</li>
+      <li><strong>key</strong> : index utilisé (<code>NULL</code> = problème)</li>
+      <li><strong>rows</strong> : estimation</li>
+      <li><strong>Extra</strong> : Using where · Using index · Using temporary · Using filesort · Using index condition</li>
+      <li><strong>select_type</strong> : SIMPLE, PRIMARY, SUBQUERY, DERIVED, UNION…</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>MySQL — action type</h2>
+    <p>Full scan sur gros filtre → <strong>index</strong> adapté + <code>ANALYZE TABLE</code> si stats vieilles.</p>
+  </section>
+
+  <section>
+    <h2>PostgreSQL</h2>
+    <p><code>EXPLAIN (ANALYZE, BUFFERS) SELECT …</code><br>
+    <strong>ANALYZE</strong> = temps réels · <strong>BUFFERS</strong> = cache vs disque.<br>
+    Nœuds : Seq Scan · Index Scan · Bitmap Heap Scan · Hash Join · Nested Loop · Parallel…<br>
+    Lire : <strong>actual time</strong> · lignes réelles vs estimées · Rows Removed by Filter · shared hit / read.</p>
+  </section>
+
+  <section>
+    <h2>MySQL vs PG</h2>
+    <p>PG : mesures <strong>réelles</strong> natives. MySQL : plan surtout <strong>estimé</strong>. MySQL : <code>FORMAT=JSON</code> natif.</p>
+  </section>
+
+  <footer><a href="06-sauvegarde.html">← Sauvegarde</a> · <a href="08-droits.html">Droits →</a></footer>
+</body>
+</html>

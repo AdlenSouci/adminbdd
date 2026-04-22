@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>08 — Droits</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="back" href="index.html">← Toutes les fiches</a>
+  <header>
+    <h1>08 — Droits &amp; utilisateurs</h1>
+    <p class="sub">MySQL · DCL · rôles</p>
+  </header>
+
+  <section>
+    <h2>Rappel</h2>
+    <p><strong>Compte MySQL</strong> ≠ utilisateur <strong>appli</strong> (ligne en table). L’appli utilise un <strong>user BDD</strong> dédié (éviter <code>root</code> vide en prod).</p>
+  </section>
+
+  <section>
+    <h2>Lister les comptes</h2>
+    <p><code>SELECT user, host FROM mysql.user;</code> (détails selon version / plugin d’auth)</p>
+  </section>
+
+  <section>
+    <h2>Niveaux de privilèges</h2>
+    <p><strong>Global</strong> (<code>*.*</code>) · <strong>Base</strong> (<code>db.*</code>) · <strong>Table</strong> · <strong>Colonne</strong> · <strong>Routines</strong></p>
+  </section>
+
+  <section>
+    <h2>Comptes</h2>
+    <p><code>CREATE USER 'u'@'h' IDENTIFIED BY '…';</code> · <code>ALTER USER</code> · <code>DROP USER</code><br>
+    Hôte : localhost, IP, <code>%</code>, sous-réseau, sous-domaine. Même nom + hôte différent = 2 comptes.<br>
+    <code>unix_socket</code> : auth système (ex. www-data) — à manier avec prudence.</p>
+  </section>
+
+  <section>
+    <h2>GRANT / REVOKE</h2>
+    <p><code>GRANT SELECT ON db.t TO 'u'@'h';</code> · <code>REVOKE … FROM …</code><br>
+    <strong>WITH GRANT OPTION</strong> : peut transmettre les <strong>mêmes</strong> droits reçus.<br>
+    Révocation : <strong>pas de cascade</strong> sur une chaîne user1→user2→user3. Effet <strong>session</strong> possible.<br>
+    Droits par colonne : <code>GRANT SELECT, INSERT(col) ON …</code><br>
+    <code>SHOW GRANTS FOR 'u'@'localhost';</code></p>
+  </section>
+
+  <section>
+    <h2>Rôles (MySQL 8+)</h2>
+    <p><code>CREATE ROLE</code> · <code>GRANT … TO role</code> · <code>GRANT 'role' TO 'u'@'h'</code><br>
+    Rôles imbriqués : <code>GRANT 'r1' TO 'r2'</code><br>
+    <code>SET ROLE</code> · <code>SET DEFAULT ROLE … FOR …</code> · <code>REVOKE role FROM</code> · <code>DROP ROLE</code></p>
+  </section>
+
+  <section>
+    <h2>Exo emptemp (rappel)</h2>
+    <p>Rôles admin / analyste / gestionnaire · utilisateurs · <code>SET DEFAULT ROLE</code> · tests <code>mysql -u …</code></p>
+  </section>
+
+  <footer><a href="07-explain.html">← EXPLAIN</a> · <a href="index.html">Accueil</a></footer>
+</body>
+</html>

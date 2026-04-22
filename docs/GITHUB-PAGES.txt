@@ -1,0 +1,40 @@
+GITHUB PAGES — mettre les fiches en ligne (gratuit)
+====================================================
+
+1) Cree un depot GitHub.
+
+2) Pour que Pages marche : il suffit que le repo contienne le dossier "docs/"
+   a la racine (fichiers HTML + CSS). Le reste (PDF, .md, scripts) n'est PAS
+   obligatoire — tu peux le garder seulement sur ton PC.
+
+   Exemple minimal :
+     README.md     (optionnel)
+     docs/
+       index.html
+       styles.css
+       01-mcd.html
+       ...
+
+3) Sur GitHub : Settings (du depot) > Pages
+
+4) Source : Deploy from a branch
+   Branch : main (ou master)
+   Folder : /docs
+   Save
+
+5) Attends 1–2 minutes. L’URL sera du type :
+   https://TON_USER.github.io/NOM_DU_REPO/
+   (GitHub affiche l’URL exacte dans la section Pages.)
+
+6) Sur ton telephone : ouvre cette URL dans Chrome / Safari. Ajoute aux favoris.
+
+Notes
+-----
+- Si le site affiche 404 : verifie que "docs" est bien a la racine du depot et que index.html est dedans.
+- Tu peux mettre a jour les .html et faire git push ; le site se met a jour tout seul.
+- Pas besoin de Jekyll : fichiers HTML statiques suffisent.
+
+Alternative sans GitHub
+-----------------------
+Ouvre docs/index.html en local (double-clic) : ca marche sur ton PC.
+Sur telephone : envoie le dossier docs en zip sur Drive et ouvre index.html avec un navigateur (selon appareil, chemins relatifs vers styles.css peuvent poser souci) — GitHub Pages evite ce probleme.

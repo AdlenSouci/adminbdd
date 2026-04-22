@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 — Normalisation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="back" href="index.html">← Toutes les fiches</a>
+  <header>
+    <h1>03 — Normalisation</h1>
+    <p class="sub">1NF → BCNF</p>
+  </header>
+
+  <section>
+    <h2>Pourquoi</h2>
+    <p>Moins de <strong>redondance</strong> · moins d’<strong>incohérences</strong> · éviter anomalies <strong>insert / update / delete</strong>.</p>
+  </section>
+
+  <section>
+    <h2>1NF</h2>
+    <ul>
+      <li>Valeurs <strong>atomiques</strong> (une valeur par cellule).</li>
+      <li>Pas de <strong>liste</strong> dans une colonne → une ligne par fait.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>2NF</h2>
+    <p>1NF + tout attribut <strong>non-clé</strong> dépend de la <strong>clé entière</strong>, pas d’une <strong>partie</strong> seulement (clé composée). Ex. ville étudiant ne dépend que de l’étudiant → <strong>scinder</strong>.</p>
+  </section>
+
+  <section>
+    <h2>3NF</h2>
+    <p>2NF + aucun non-clé ne dépend <strong>transitivement</strong> de la clé via <strong>un autre</strong> non-clé. Ex. Cours→Prof→Département → <strong>décomposer</strong>.</p>
+  </section>
+
+  <section>
+    <h2>BCNF</h2>
+    <p>Pour toute DF <strong>X → Y</strong> : <strong>X</strong> est <strong>superclé</strong>. Plus stricte que 3NF.</p>
+  </section>
+
+  <section>
+    <h2>Mémo</h2>
+    <p><strong>1NF</strong> atomique · <strong>2NF</strong> pas de dépendance <strong>partielle</strong> · <strong>3NF</strong> pas de <strong>transitive</strong> · <strong>BCNF</strong> tout déterminant = clé.</p>
+  </section>
+
+  <footer><a href="02-mcd-mld.html">← MCD au MLD</a> · <a href="04-ddl.html">DDL →</a></footer>
+</body>
+</html>

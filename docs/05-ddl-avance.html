@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05 — DDL avancé</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="back" href="index.html">← Toutes les fiches</a>
+  <header>
+    <h1>05 — DDL avancé &amp; optimisation</h1>
+    <p class="sub">Partitions · index · OLTP / OLAP</p>
+  </header>
+
+  <section>
+    <h2>Objectif DBA</h2>
+    <p>Tables <strong>très grosses</strong> gérables · admin simple · intégrité forte.</p>
+  </section>
+
+  <section>
+    <h2>3 piliers</h2>
+    <ol>
+      <li><strong>Partitionnement</strong></li>
+      <li><strong>Index avancés</strong></li>
+      <li><strong>OLTP vs OLAP</strong></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Partitionnement</h2>
+    <table>
+      <tr><th>Type</th><th>Idée</th><th>Usage</th></tr>
+      <tr><td><strong>RANGE</strong></td><td>Tranches (ex. année)</td><td>Logs, commandes · <strong>partition pruning</strong></td></tr>
+      <tr><td><strong>LIST</strong></td><td>Valeurs discrètes</td><td>Région, statut…</td></tr>
+      <tr><td><strong>HASH</strong></td><td><code>hash(col) % N</code></td><td>Répartir écritures · éviter hot spot</td></tr>
+    </table>
+    <p>Souvent : colonne de partition dans la <strong>PK</strong>. SQL : <code>PARTITION BY RANGE</code> · <code>LIST COLUMNS</code> · <code>HASH(id) PARTITIONS n</code>.</p>
+  </section>
+
+  <section>
+    <h2>Index</h2>
+    <ul>
+      <li><strong>Composite</strong> : ordre des colonnes = <strong>sélectivité</strong> d’abord (<code>dept_id</code> puis <code>status</code>).</li>
+      <li><strong>Couverture</strong> : toutes les colonnes du SELECT dans l’index → souvent sans lecture table.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>OLTP vs OLAP</h2>
+    <table>
+      <tr><th></th><th>OLTP</th><th>OLAP</th></tr>
+      <tr><td>Charge</td><td>petites transactions</td><td>gros SELECT / agrégats</td></tr>
+      <tr><td>Schéma</td><td>normalisé (3NF)</td><td>dénormalisé · étoile/flocon</td></tr>
+      <tr><td>Index</td><td>fins</td><td>larges · couverture · partitions</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Atelier (cours)</h2>
+    <p>Partitionner <strong>orders</strong> par date · index composites · justifier pour e-commerce.</p>
+  </section>
+
+  <footer><a href="04-ddl.html">← DDL</a> · <a href="06-sauvegarde.html">Sauvegarde →</a></footer>
+</body>
+</html>
