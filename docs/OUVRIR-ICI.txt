@@ -9,13 +9,16 @@ OUVRIR LES FICHES AU BON ENDROIT
 
 2) Comment savoir que c’est la bonne version ?
 
-   En haut de l’accueil tu dois lire : « Build 15 » (pas « build 12 », pas de bandeau jaune ancien).
+   En haut de l’accueil tu dois lire : « Build 16 » (pas un vieux numéro).
 
    Si ce n’est pas le cas : Ctrl + Shift + R  (ou fenêtre de navigation privée).
 
 3) Les pages « Texte brut » (pdf-source-…) restent des extraits bruts du PDF : c’est normal qu’elles soient moches.
 
-   Les pages « revision-… » sont les fiches de révision : le style est DÉJÀ dans le fichier HTML (build 15).
+   Les pages « revision-… » sont les fiches de révision : le style est DÉJÀ dans le fichier HTML.
+
+   URL du site en ligne (GitHub Pages), à ne pas confondre avec la page « Code » du dépôt :
+   https://adlensouci.github.io/adminbdd/
 
 4) GitHub Pages (adresse github.io)
 

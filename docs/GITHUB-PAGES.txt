@@ -26,6 +26,9 @@ GITHUB PAGES — mettre les fiches en ligne (gratuit)
    https://TON_USER.github.io/NOM_DU_REPO/
    (GitHub affiche l’URL exacte dans la section Pages.)
 
+   Pour CE projet : https://adlensouci.github.io/adminbdd/
+   Ce n’est PAS la page https://github.com/AdlenSouci/adminbdd (c’est le dépôt, pas le site).
+
 6) Sur ton telephone : ouvre cette URL dans Chrome / Safari. Ajoute aux favoris.
 
 Notes
