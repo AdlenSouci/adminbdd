@@ -3,42 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Révision — Admin BDD</title>
+  <title>Révision — Admin BDD (texte des PDF)</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
     <h1>Révision Admin BDD</h1>
-    <p class="sub">8 fiches courtes + pour chaque cours le <strong>texte intégral extrait</strong> du PDF (ou du .txt).</p>
+    <p class="sub">Chaque page = <strong>texte extrait</strong> du support (PDF ou fichier cours). Aucune fiche « réécrite » : si un passage est faux, c’est l’extraction ou le PDF source.</p>
   </header>
 
-  <nav class="toc" aria-label="Fiches par cours">
-    <a href="01-mcd.html">01 — MCD (MERISE)<small>Entités, cardinalités, identifiants</small></a>
-    <a href="02-mcd-mld.html">02 — Du MCD au MLD<small>Règles 1-1, 1-N, N-N</small></a>
-    <a href="03-normalisation.html">03 — Normalisation<small>1NF → BCNF</small></a>
-    <a href="04-ddl.html">04 — DDL<small>CREATE, contraintes, FK</small></a>
-    <a href="05-ddl-avance.html">05 — DDL avancé<small>Partitions, index, OLTP/OLAP</small></a>
-    <a href="06-sauvegarde.html">06 — Sauvegarde & résilience<small>RPO, RTO, PITR, 3-2-1</small></a>
-    <a href="07-explain.html">07 — EXPLAIN<small>MySQL & PostgreSQL</small></a>
-    <a href="08-droits.html">08 — Droits & utilisateurs<small>DCL, rôles MySQL</small></a>
+  <nav class="toc" aria-label="Cours dans l’ordre des fichiers">
+    <a href="pdf-source-01-mcd.html"><strong>1.</strong> Modèle Conceptuel de Données (MCD)<small>PDF → texte extrait</small></a>
+    <a href="pdf-source-02-mcd-mld.html"><strong>2.</strong> Du MCD au MLD<small>PDF → texte extrait</small></a>
+    <a href="pdf-source-03-normalisation.html"><strong>3.</strong> Normalisation des bases de données<small>PDF → texte extrait</small></a>
+    <a href="pdf-source-04-ddl.html"><strong>4.</strong> DDL — Data Definition Language<small>PDF → texte extrait</small></a>
+    <a href="pdf-source-05-ddl-avance.html"><strong>5.</strong> DDL avancé et optimisation des schémas<small>PDF → texte extrait</small></a>
+    <a href="pdf-source-06-sauvegarde.html"><strong>6.</strong> Sauvegarde, restauration et résilience<small>PDF → texte extrait</small></a>
+    <a href="pdf-source-07-explain.html"><strong>7.</strong> EXPLAIN (MySQL / PostgreSQL)<small>fichier explain.txt du dossier</small></a>
+    <a href="pdf-source-08-droits.html"><strong>8.</strong> Gestion des droits / utilisateurs<small>fichier gestion_droit.txt</small></a>
   </nav>
 
-  <section style="margin-top:1.75rem">
-    <h2 style="font-size:1rem;margin-bottom:0.6rem">Sources complètes (extrait automatique du PDF)</h2>
-    <nav class="toc" aria-label="Sources PDF">
-      <a href="pdf-source-01-mcd.html">PDF 01 — MCD<small>texte extrait intégral</small></a>
-      <a href="pdf-source-02-mcd-mld.html">PDF 02 — MCD → MLD</a>
-      <a href="pdf-source-03-normalisation.html">PDF 03 — Normalisation</a>
-      <a href="pdf-source-04-ddl.html">PDF 04 — DDL</a>
-      <a href="pdf-source-05-ddl-avance.html">PDF 05 — DDL avancé</a>
-      <a href="pdf-source-06-sauvegarde.html">PDF 06 — Sauvegarde</a>
-      <a href="pdf-source-07-explain.html">07 — EXPLAIN<small>explain.txt</small></a>
-      <a href="pdf-source-08-droits.html">08 — Droits<small>gestion_droit.txt</small></a>
-    </nav>
+  <section style="margin-top:1.5rem;font-size:0.9rem;color:var(--muted)">
+    <p><strong>Mettre à jour après changement de PDF :</strong> à la racine du projet, <code>python _extract_pdf.py</code> puis <code>python docs/_build_sources_from_pdf_extracts.py</code>, puis repousser le dossier <code>docs/</code>.</p>
+    <p>Hébergement GitHub Pages : <code>GITHUB-PAGES.txt</code>.</p>
   </section>
-
-  <footer>
-    <p>Hébergement : <code>GITHUB-PAGES.txt</code>. Après changement de PDF : lancer <code>python docs/_build_sources_from_pdf_extracts.py</code> à la racine du projet puis repousser <code>docs/</code>.</p>
-  </footer>
 </body>
 </html>

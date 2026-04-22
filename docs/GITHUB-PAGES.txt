@@ -3,17 +3,17 @@ GITHUB PAGES — mettre les fiches en ligne (gratuit)
 
 1) Cree un depot GitHub.
 
-2) Pour que Pages marche : il suffit que le repo contienne le dossier "docs/"
-   a la racine (fichiers HTML + CSS). Le reste (PDF, .md, scripts) n'est PAS
-   obligatoire — tu peux le garder seulement sur ton PC.
+2) Pour que Pages marche : le dossier "docs/" a la racine du repo avec au
+   minimum index.html, styles.css, pdf-source-*.html (pages = texte extrait
+   des PDF). Le reste du projet sur ton PC n'est pas obligatoire sur GitHub.
 
    Exemple minimal :
      README.md     (optionnel)
      docs/
        index.html
        styles.css
-       01-mcd.html
-       ...
+       pdf-source-01-mcd.html ... pdf-source-08-droits.html
+       _build_sources_from_pdf_extracts.py (optionnel)
 
 3) Sur GitHub : Settings (du depot) > Pages
 

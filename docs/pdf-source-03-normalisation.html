@@ -3,24 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Source PDF — Normalisation (texte extrait)</title>
+  <title>PDF — Normalisation des bases de données</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    .src { font-size: 0.92rem; line-height: 1.5; margin: 0.6rem 0; white-space: normal; word-break: break-word; }
+    .src { font-size: 0.92rem; line-height: 1.5; margin: 0.6rem 0; word-break: break-word; }
     .banner { background: var(--card); border: 1px solid var(--border); padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.88rem; color: var(--muted); }
   </style>
 </head>
 <body>
   <a class="back" href="index.html">Accueil</a>
-  <a class="back" href="03-normalisation.html">Fiche 03</a>
   <header>
-    <h1>Source PDF — Normalisation (texte extrait)</h1>
-    <p class="sub">Contenu genere automatiquement depuis l'extraction texte du support (sans mise en page d'origine).</p>
+    <h1>PDF — Normalisation des bases de données</h1>
+    <p class="sub">Fichier source : <code>Normalisation_des_bases_de_données_.pdf</code> — contenu copié depuis l’extraction automatique (pas de réécriture).</p>
   </header>
-  <div class="banner">Ce texte provient exclusivement du fichier source indique dans le script de generation — pas une reecriture par l'IA.</div>
+  <div class="banner">Si un mot ou une mise en page manque, c’est une limite de l’extraction PDF → texte, pas un autre cours.</div>
   <article>
 <p class="src">Normalisation des bases de<br>données<br>Objectifs du cours<br>Comprendre les principales formes normales (1NF, 2NF, 3NF, BCNF)<br>Identifier les anomalies dues à une mauvaise conception relationnelle<br>Apprendre à décomposer un schéma pour garantir cohérence et absence de redondance</p><p class="src">Introduction<br>Pourquoi normaliser ?<br>Une base de données non normalisée peut présenter :<br>des redondances (informations répétées inutilement),<br>des incohérences (valeurs contradictoires pour un même fait),<br>des anomalies de mise à jour, notamment :<br>d’insertion (impossibilité d’ajouter une donnée partielle),<br>de modification (nécessité de mettre à jour plusieurs lignes),<br>de suppression (perte accidentelle d’informations).<br>L’objectif de la normalisation est de structurer les relations de manière à éliminer ces problèmes.</p><p class="src">Exemple de départ<br>Étudiant Cours Professeur Département<br>Alice Bases de données Dupont Informatique<br>Alice Réseaux Martin Informatique<br>Bob Bases de données Dupont Informatique<br>Problèmes observés :<br>Redondance du département « Informatique »<br>Difficulté de mise à jour si le département change de nom<br>Possibilité d’incohérences entre les professeurs et leurs départements<br>Ta bl e Étu dia ntsC o u rs</p><p class="src">Première forme normale (1NF)<br>Définition<br>Une table est en première forme normale (1NF) si :<br>toutes les valeurs des attributs sont atomiques (indivisibles),<br>il n’existe aucun groupe de valeurs répétées.</p><p class="src">Exemple non conforme<br>Étudiant Cours Professeurs<br>Alice BD, Réseaux Dupont, Martin<br>Bob BD Dupont<br>La colonne Cours contient plusieurs valeurs : la table viole la 1NF.</p><p class="src">Exemple conforme (1NF atteinte)<br>Étudiant Cours Professeur<br>Alice BD Dupont<br>Alice Réseaux Martin<br>Bob BD Dupont<br>Chaque cellule contient une valeur unique et indivisible.</p><p class="src">Deuxième forme normale (2NF)<br>Définition<br>Une table est en deuxième forme normale (2NF) si :<br>1. Elle est en 1NF,<br>2. Chaque attribut non-clé dépend entièrement de la clé primaire (et non d’une partie de celle-ci).</p><p class="src">Exemple non conforme à la 2NF<br>Clé primaire : (Étudiant, Cours)<br>Étudiant Cours Professeur Département VilleÉtudiant<br>Alice BD Dupont Informatique Paris<br>Alice Réseaux Martin Informatique Paris<br>Bob BD Dupont Informatique Lyon<br>Problème : VilleÉtudiant dépend seulement de Étudiant, pas de la clé entière (Étudiant, Cours).</p><p class="src">Décomposition en 2NF<br>Étudiant<br>Étudiant VilleÉtudiant<br>Alice Paris<br>Bob Lyon<br>Cours<br>Cours Professeur Département<br>BD Dupont Informatique<br>Réseaux Martin Informatique<br>Inscription<br>Étudiant Cours<br>Alice BD<br>Alice Réseaux<br>Bob BD<br>Les dépendances partielles ont été supprimées.</p><p class="src">Troisième forme normale (3NF)<br>Définition<br>Une table est en troisième forme normale (3NF) si :<br>1. Elle est en 2NF,<br>2. Aucun attribut non-clé ne dépend transitivement de la clé primaire.<br>Autrement dit, tout attribut non-clé dépend directement de la clé, et non d’un autre attribut non-clé.</p><p class="src">Exemple non conforme à la 3NF<br>Cours Professeur Département<br>BD Dupont Informatique<br>Réseaux Martin Informatique<br>Dépendances fonctionnelles :<br>Cours →  Professeur<br>Professeur →  Département<br>Donc Cours →  Département (dépendance transitive).</p><p class="src">Décomposition en 3NF<br>Cours<br>Cours Professeur<br>BD Dupont<br>Réseaux Martin<br>Professeur<br>Professeur Département<br>Dupont Informatique<br>Martin Informatique<br>Chaque attribut dépend désormais directement de la clé.</p><p class="src">Forme normale de Boyce-Codd (BCNF)<br>Définition<br>Une table est en BCNF si, pour chaque dépendance fonctionnelle X →  Y, X est une clé candidate.<br>C’est une version plus stricte de la 3NF.</p>
   </article>
-  <footer><a href="03-normalisation.html">Retour fiche</a></footer>
+  <footer><a href="index.html">Retour accueil</a></footer>
 </body>
 </html>
