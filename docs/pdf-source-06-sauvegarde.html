@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Source PDF — Sauvegarde &amp; résilience (texte extrait)</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .src { font-size: 0.92rem; line-height: 1.5; margin: 0.6rem 0; white-space: normal; word-break: break-word; }
+    .banner { background: var(--card); border: 1px solid var(--border); padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.88rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">Accueil</a>
+  <a class="back" href="06-sauvegarde.html">Fiche 06</a>
+  <header>
+    <h1>Source PDF — Sauvegarde &amp; résilience (texte extrait)</h1>
+    <p class="sub">Contenu genere automatiquement depuis l'extraction texte du support (sans mise en page d'origine).</p>
+  </header>
+  <div class="banner">Ce texte provient exclusivement du fichier source indique dans le script de generation — pas une reecriture par l'IA.</div>
+  <article>
+<p class="src">Séance 5 : Sauvegarde,<br>Restauration et Résilience<br>V o t r e  fi l e t  d e  s é c u r i t é  u l t i m e</p><p class="src">Pourquoi la Sauvegarde est Non Négociable<br>Scénarios Catastrophiques<br>💥  Panne matérielle (disque défaillant)<br>👨💻  Erreur humaine (DELETE accidentel)<br>🦠  Corruption de données<br>🔒  Cyberattaque (ransomware)<br>Conséquences<br>Perte de revenus<br>Atteinte à la réputation<br>Sanctions RGPD<br>Arrêt des opérations<br>Une sauvegarde = Assurance vie pour vos données</p><p class="src">Les Métriques Clés : RPO et RTO<br>RPO<br>Recovery Point Objective<br>&quot;Combien de données puis-je<br>me permettre de perdre ?&quot;<br>Ex: RPO = 1h →<br>Sauvegarde<br>toutes les<br>heures<br>RTO<br>Recovery Time Objective<br>&quot;En combien de temps dois-je<br>retrouver mes données ?&quot;<br>Ex: RTO = 30min<br>→  Restauration<br>ultra-rapide<br>Types de Sauvegarde<br>Complète<br>Copie intégrale de la base<br>👍  Simple mais gourmand<br>Incrémentielle<br>Seulement les changements<br>👍  Économe mais complexe<br>Différentielle</p><p class="src">Point-in-Time Recovery (PITR)<br>La Rolls-Royce de la restauration<br>Composants<br>Sauvegarde complète de base<br>Journaux de transactions (binary logs)<br>Processus<br>1. Restaurer la dernière sauvegarde complète<br>2. Appliquer les journaux jusqu&#x27;à l&#x27;instant désiré<br>⚠  Sans les binary logs, la PITR est impossible. Toujours les activer en production !<br>mysqld<br>log-bin=mysql-bin  # Activation des binary logs</p><p class="src">Automatisation des<br>Sauvegardes<br>Script Type<br>Bonnes Pratiques<br>📅  Nommage avec date<br>🗜  Compression automatique<br>📧  Notification en cas d&#x27;erreur<br>🗑  Rotation des sauvegardes<br>La Règle du 3-2-1<br>3-2-1<br>Copies · Supports · Localisations<br>1. 3 copies de vos données<br>2. 2 supports différents (disque + bande)<br>3. 1 copie hors site (cloud, coffre-fort)</p><p class="src">Atelier Pratique : Simulation de<br>Catastrophe<br>1. Créer un script de sauvegarde automatisé<br>2. Simuler une suppression accidentelle<br>3. Restaurer les données perdues<br>4. Mesurer le RTO réel<br>V o u s  a l l e z  m a i n t e n a n t  :</p>
+  </article>
+  <footer><a href="06-sauvegarde.html">Retour fiche</a></footer>
+</body>
+</html>

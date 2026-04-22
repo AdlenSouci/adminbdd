@@ -9,7 +9,7 @@
 <body>
   <header>
     <h1>Révision Admin BDD</h1>
-    <p class="sub">8 fiches · ouvre dans le navigateur (téléphone OK)</p>
+    <p class="sub">8 fiches courtes + pour chaque cours le <strong>texte intégral extrait</strong> du PDF (ou du .txt).</p>
   </header>
 
   <nav class="toc" aria-label="Fiches par cours">
@@ -23,8 +23,22 @@
     <a href="08-droits.html">08 — Droits & utilisateurs<small>DCL, rôles MySQL</small></a>
   </nav>
 
+  <section style="margin-top:1.75rem">
+    <h2 style="font-size:1rem;margin-bottom:0.6rem">Sources complètes (extrait automatique du PDF)</h2>
+    <nav class="toc" aria-label="Sources PDF">
+      <a href="pdf-source-01-mcd.html">PDF 01 — MCD<small>texte extrait intégral</small></a>
+      <a href="pdf-source-02-mcd-mld.html">PDF 02 — MCD → MLD</a>
+      <a href="pdf-source-03-normalisation.html">PDF 03 — Normalisation</a>
+      <a href="pdf-source-04-ddl.html">PDF 04 — DDL</a>
+      <a href="pdf-source-05-ddl-avance.html">PDF 05 — DDL avancé</a>
+      <a href="pdf-source-06-sauvegarde.html">PDF 06 — Sauvegarde</a>
+      <a href="pdf-source-07-explain.html">07 — EXPLAIN<small>explain.txt</small></a>
+      <a href="pdf-source-08-droits.html">08 — Droits<small>gestion_droit.txt</small></a>
+    </nav>
+  </section>
+
   <footer>
-    <p>Hébergement : voir <code>GITHUB-PAGES.txt</code> à la racine de <code>docs/</code>.</p>
+    <p>Hébergement : <code>GITHUB-PAGES.txt</code>. Après changement de PDF : lancer <code>python docs/_build_sources_from_pdf_extracts.py</code> à la racine du projet puis repousser <code>docs/</code>.</p>
   </footer>
 </body>
 </html>

@@ -67,6 +67,15 @@ h1 {
   margin: 0;
 }
 
+.source-link {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+}
+
+.source-link a {
+  font-weight: 600;
+}
+
 nav.toc {
   display: flex;
   flex-direction: column;
