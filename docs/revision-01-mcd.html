@@ -3,235 +3,204 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fiche de révision — MCD (MERISE)</title>
-  <link rel="stylesheet" href="revision.css?v=3">
-  <style>
-    .callout { border-left: 4px solid #0b57d0; padding: 0.5rem 0 0.5rem 1rem; margin: 1rem 0; background: rgba(11,87,208,.06); border-radius: 0 8px 8px 0; }
-    .diagram { font-family: ui-monospace, Consolas, monospace; font-size: 0.88rem; background: rgba(0,0,0,.05); padding: 0.75rem 1rem; border-radius: 8px; white-space: pre-wrap; margin: 0.75rem 0; }
-    @media (prefers-color-scheme: dark) { .diagram { background: rgba(255,255,255,.06); } .callout { background: rgba(110,168,254,.1); } }
-    table.fiche { width: 100%; border-collapse: collapse; font-size: 0.92rem; margin: 0.75rem 0; }
-    table.fiche th, table.fiche td { border: 1px solid var(--border, #d5dde6); padding: 0.4rem 0.5rem; text-align: left; vertical-align: top; }
-    table.fiche th { font-weight: 600; }
-  </style>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Révision — MCD (MERISE)</title>
+  <link rel="stylesheet" href="fiche.css?v=2026042313">
 </head>
 <body>
-  <a class="back" href="index.html">← Accueil</a>
-  <header>
-    <h1>Fiche de révision — Modèle conceptuel de données (MCD)</h1>
-    <p class="sub">MERISE · synthèse fidèle au cours PDF <strong>« Modèle Conceptuel de Données (MCD) »</strong> (texte nettoyé et structuré pour réviser).</p>
-  </header>
+  <p class="top"><a href="index.html?v=2026042313">← Accueil</a> · Fiche révision (lisible, pas extrait PDF brut)</p>
+  <h1>MCD — MERISE</h1>
+  <p class="sub">Points à retenir alignés sur le cours PDF « Modèle conceptuel de données ».</p>
 
-  <article>
-    <section>
-      <h2>1. Objectifs du cours</h2>
-      <ul>
-        <li>Comprendre le <strong>MCD</strong> dans la méthode <strong>MERISE</strong>.</li>
-        <li>Savoir définir <strong>entités</strong>, <strong>attributs</strong>, <strong>associations</strong>, <strong>identifiants</strong>, <strong>cardinalités</strong>.</li>
-        <li>Être capable de lire et critiquer un MCD (y compris <strong>ternaires</strong> et <strong>réflexives</strong>).</li>
-        <li>Préparer la passage au <strong>MLD</strong> (notamment via les cardinalités).</li>
-      </ul>
-    </section>
+  <section class="card">
+    <h2>Objectifs</h2>
+    <ul>
+      <li>Situer le <strong>MCD</strong> dans <strong>MERISE</strong>.</li>
+      <li>Définir <strong>entité</strong>, <strong>attribut</strong>, <strong>association</strong>, <strong>identifiant</strong>, <strong>cardinalités</strong>.</li>
+      <li>Lire / critiquer un schéma (dont <strong>ternaire</strong> et <strong>réflexive</strong>).</li>
+      <li>Préparer le passage au <strong>MLD</strong> (surtout via les cardinalités).</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>2. Plan du cours (14 parties)</h2>
-      <ol>
-        <li>Modèle conceptuel de données (MCD)</li>
-        <li>Plan du cours</li>
-        <li>Qu’est-ce que MERISE ?</li>
-        <li>Place du MCD dans MERISE</li>
-        <li>Les entités</li>
-        <li>Les attributs</li>
-        <li>Les associations</li>
-        <li>Identifiants — concepts de base</li>
-        <li>Clés candidates et clé primaire</li>
-        <li>Cardinalités — les bases</li>
-        <li>Cardinalités — exemples pratiques</li>
-        <li>Impact des cardinalités (vers le MLD)</li>
-        <li>Associations ternaires</li>
-        <li>Associations réflexives</li>
-      </ol>
-    </section>
+  <section class="card">
+    <h2>Plan du cours (rappel)</h2>
+    <ul>
+      <li>MCD · MERISE · entités · attributs · associations</li>
+      <li>Identifiants · clés candidates / primaire · cardinalités</li>
+      <li>Exemples · impact MLD · ternaires · réflexives · cas bibliothèque</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>3. Qu’est-ce que MERISE ?</h2>
-      <p>Méthode française de conception de <strong>systèmes d’information</strong>, développée dans les années 1970.</p>
-      <p><strong>Trois niveaux d’abstraction :</strong></p>
-      <table class="fiche">
-        <tr><th>Niveau</th><th>Question</th><th>Modèle</th></tr>
-        <tr><td>Conceptuel</td><td>Que fait-on ? (quelles données ?)</td><td><strong>MCD</strong></td></tr>
-        <tr><td>Logique</td><td>Comment organise-t-on les données ?</td><td><strong>MLD</strong></td></tr>
-        <tr><td>Physique</td><td>Avec quels outils / SGBD ?</td><td><strong>MPD</strong></td></tr>
-      </table>
-      <p><strong>Séparation données / traitements</strong> : MERISE modélise les données (MCD, MLD, MPD) à part des traitements (MCT, MOT, etc., hors fiche).</p>
-    </section>
+  <section class="card">
+    <h2>MERISE — trois niveaux</h2>
+    <table class="mini-table">
+      <tr><th>Niveau</th><th>Question</th><th>Modèle</th></tr>
+      <tr><td>Conceptuel</td><td>Quelles données ?</td><td><strong>MCD</strong></td></tr>
+      <tr><td>Logique</td><td>Comment les organiser ?</td><td><strong>MLD</strong></td></tr>
+      <tr><td>Physique</td><td>Quel SGBD / implémentation ?</td><td><strong>MPD</strong></td></tr>
+    </table>
+    <ul>
+      <li>Méthode française, années 1970 ; <strong>données</strong> modélisées à part des <strong>traitements</strong>.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>4. Place du MCD dans MERISE</h2>
-      <ul>
-        <li><strong>MCD</strong> : <em>quelles informations</em> le système doit connaître ?</li>
-        <li><strong>MLD</strong> : <em>comment</em> les organiser (tables, clés, normalisation) ?</li>
-        <li><strong>MPD</strong> : <em>avec quoi</em> les implémenter (SQL, types, index…) ?</li>
-      </ul>
-      <p class="callout">Le MCD décrit la structure des <strong>informations indépendamment des contraintes techniques</strong> (pas encore de tables SQL).</p>
-    </section>
+  <section class="card">
+    <h2>MCD, MLD, MPD</h2>
+    <ul>
+      <li><strong>MCD</strong> : quelles informations le SI doit connaître (sans tables SQL).</li>
+      <li><strong>MLD</strong> : tables, clés, normalisation.</li>
+      <li><strong>MPD</strong> : types, index, contraintes physiques.</li>
+      <li>Le MCD ignore les contraintes techniques : il doit rester <strong>lisible métier</strong>.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>5. Les entités</h2>
-      <p><strong>Définition :</strong> objet du monde réel sur lequel on conserve des <strong>informations</strong>, avec une <strong>existence propre</strong>, identifiable, et des occurrences aux <strong>mêmes propriétés</strong>.</p>
-      <p><strong>Règles de nommage :</strong> nom au <strong>singulier</strong>, explicite « métier », sans abréviation ambiguë.</p>
-      <p><strong>Exemples d’entités (cours) :</strong></p>
-      <div class="diagram">CLIENT — numero_client, nom, prenom, email
-PRODUIT — code_produit, libelle, prix, stock
-COMMANDE — numero_commande, date_commande, montant_total</div>
-      <p>✅ Bon : <code>CLIENT</code>, <code>PRODUIT</code> · ❌ À éviter : <code>CLIENTS</code>, <code>CLI</code>, <code>TBL_CLIENT</code></p>
-    </section>
+  <section class="card">
+    <h2>Entité</h2>
+    <ul>
+      <li>Objet du réel dont on garde des infos ; <strong>existence propre</strong> ; occurrences aux <strong>mêmes propriétés</strong>.</li>
+      <li>Nom : <strong>singulier</strong>, explicite, pas d’abréviation floue.</li>
+      <li>Ex. cours : <code>CLIENT</code>, <code>PRODUIT</code>, <code>COMMANDE</code> avec attributs typiques (n°, nom, prix…).</li>
+      <li>Éviter : pluriel (<code>CLIENTS</code>), sigles obscurs (<code>CLI</code>), préfixes type <code>TBL_</code>.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>6. Les attributs</h2>
-      <p><strong>Types (cours) :</strong></p>
-      <ul>
-        <li><strong>Simple</strong> : non décomposable (une valeur atomique).</li>
-        <li><strong>Calculé</strong> : dérivé d’autres attributs (ex. <code>age</code> à partir de <code>date_naissance</code>).</li>
-        <li><strong>Composition implicite</strong> : ex. <code>numero_secu</code> (genre, année, mois de naissance, …) — attention en conception.</li>
-      </ul>
-      <p class="callout">💡 <strong>Conseil :</strong> privilégier des attributs <strong>atomiques</strong> dans le MCD pour faciliter la <strong>1NF</strong> au niveau logique.</p>
-    </section>
+  <section class="card">
+    <h2>Attributs</h2>
+    <ul>
+      <li><strong>Simple</strong> : une valeur atomique.</li>
+      <li><strong>Calculé</strong> : dérivé (ex. âge depuis date de naissance).</li>
+      <li><strong>Composition</strong> : ex. n° sécu — attention à la granularité en conception.</li>
+      <li>Viser l’<strong>atomicité</strong> pour faciliter la <strong>1NF</strong> au MLD.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>7. Les associations</h2>
-      <p><strong>Définition :</strong> lien <strong>sémantique</strong> entre deux ou plusieurs entités.</p>
-      <p><strong>Types :</strong> <strong>binaire</strong> (2 entités), <strong>ternaire</strong> (3), <strong>n-aire</strong> (n), <strong>réflexive</strong> (une même entité reliée à elle-même).</p>
-      <p><strong>Association binaire (ex.)</strong> <code>CONTENIR</code> entre <code>COMMANDE</code> et <code>PRODUIT</code> avec attribut <code>quantite</code> ; cardinalités typiques sur le schéma du cours.</p>
-      <p><strong>Association réflexive (ex.)</strong> <code>SUPERVISER</code> sur <code>EMPLOYE</code> : un employé supervise 0 à N employés ; un employé est supervisé par 0 ou 1 employé.</p>
-      <p>Les associations peuvent porter leurs <strong>propres attributs</strong> (ex. date sur une liaison).</p>
-    </section>
+  <section class="card">
+    <h2>Associations</h2>
+    <ul>
+      <li>Lien <strong>sémantique</strong> entre entités.</li>
+      <li><strong>Binaire</strong> (2), <strong>ternaire</strong> (3), <strong>n-aire</strong>, <strong>réflexive</strong> (même entité).</li>
+      <li>Ex. <code>CONTENIR</code> COMMANDE–PRODUIT avec <code>quantite</code> sur l’association.</li>
+      <li>Réflexive ex. <code>SUPERVISER</code> sur <code>EMPLOYE</code> : hiérarchie, sens à préciser.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>8. Identifiants — concepts de base</h2>
-      <p>Un identifiant est le (les) attribut(s) qui distinguent <strong>uniquement</strong> chaque occurrence.</p>
-      <p><strong>Propriétés obligatoires :</strong></p>
-      <ul>
-        <li>🔑 <strong>Unicité</strong> : pas deux occurrences identiques</li>
-        <li>❗ <strong>Non-nullité</strong> : jamais vide</li>
-        <li>📌 <strong>Stabilité</strong> : ne change pas (ou peu) dans le temps</li>
-        <li>⚡ <strong>Minimalité</strong> : aucun sous-ensemble d’attributs ne suffit à identifier</li>
-      </ul>
-      <p><strong>Exemple (ETUDIANT) :</strong> bon identifiant <code>numero_etudiant</code> ; mauvais : <code>nom + prenom</code> (homonymes, changements).</p>
-    </section>
+  <section class="card">
+    <h2>Identifiant</h2>
+    <ul>
+      <li><strong>Unicité</strong> : une occurrence = une valeur d’identifiant.</li>
+      <li><strong>Non-nullité</strong> obligatoire.</li>
+      <li><strong>Stabilité</strong> dans le temps.</li>
+      <li><strong>Minimalité</strong> : aucun sous-ensemble d’attributs ne suffit seul.</li>
+      <li>Ex. <code>numero_etudiant</code> oui ; <code>nom + prenom</code> non (homonymes, changements).</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>9. Clés candidates et clé primaire</h2>
-      <ul>
-        <li><strong>Clés candidates :</strong> tous les identifiants possibles pour une entité.</li>
-        <li><strong>Clé primaire :</strong> la clé candidate <strong>choisie</strong> (souvent notée <code>#</code> sur les schémas).</li>
-        <li><strong>Critères de choix :</strong> stabilité, simplicité, performance future, sens métier.</li>
-      </ul>
-      <p>Ex. : <code>numero_etudiant</code> retenu ; <code>email</code> possible seulement si <strong>toujours</strong> unique ; le tuple <code>(nom, prenom, date_naissance)</code> sans garantie d’unicité = mauvais candidat.</p>
-    </section>
+  <section class="card">
+    <h2>Clés candidates et clé primaire</h2>
+    <ul>
+      <li><strong>Candidats</strong> : tous les identifiants possibles pour l’entité.</li>
+      <li><strong>Primaire</strong> : le candidat <strong>choisi</strong> (souvent noté <code>#</code>).</li>
+      <li>Choix : stabilité, simplicité, perf future, sens métier.</li>
+      <li><code>email</code> = candidat seulement si <strong>garanti unique</strong> à vie.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>10. Cardinalités — notation <code>min, max</code></h2>
-      <p><strong>Définition :</strong> nombre <strong>minimum</strong> et <strong>maximum</strong> de participations d’une entité à une association.</p>
-      <ul>
-        <li><strong>0</strong> : participation optionnelle · <strong>1</strong> : obligatoire · <strong>N</strong> : plusieurs</li>
-        <li><strong>0,1</strong> : au plus une fois · <strong>1,1</strong> : exactement une fois</li>
-        <li><strong>0,N</strong> : zéro ou plusieurs · <strong>1,N</strong> : au moins une fois</li>
-      </ul>
-      <p><strong>Lecture (ex. PASSER client → commande) :</strong> un client passe au minimum <strong>1</strong> commande et au maximum <strong>N</strong> ; une commande est passée par <strong>1</strong> client et un seul.</p>
-    </section>
+  <section class="card">
+    <h2>Cardinalités (min, max)</h2>
+    <ul>
+      <li><strong>0</strong> optionnel · <strong>1</strong> obligatoire · <strong>N</strong> plusieurs.</li>
+      <li><strong>0,1</strong> au plus une fois · <strong>1,1</strong> exactement une fois.</li>
+      <li><strong>0,N</strong> zéro ou plusieurs · <strong>1,N</strong> au moins une fois.</li>
+    </ul>
+    <h3>Lecture (ex. client — commande)</h3>
+    <ul>
+      <li>Côté client « passe une commande » : souvent <strong>1,N</strong> vers commande.</li>
+      <li>Côté commande : <strong>1,1</strong> vers un seul client.</li>
+      <li>Toujours valider avec le <strong>métier</strong> (un client sans commande ?).</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>11. Cardinalités — exemples</h2>
-      <h3>Employé — Département (APPARTENIR)</h3>
-      <p>Un département a <strong>1 à N</strong> employés ; un employé appartient à <strong>1 et 1 seul</strong> département.</p>
-      <h3>Produit — Commande (CONTENIR)</h3>
-      <p>Questions métier : un produit peut-il ne jamais être commandé ? → souvent <strong>0,N</strong>. Une commande peut-elle être « vide » ? → en général <strong>1,N</strong> côté lignes de commande (selon règle métier du cours).</p>
-    </section>
+  <section class="card">
+    <h2>Exemples cardinalités</h2>
+    <ul>
+      <li><strong>EMPLOYE — DEPARTEMENT</strong> (APPARTENIR) : un employé dans <strong>1</strong> dept ; un dept a <strong>1,N</strong> employés.</li>
+      <li><strong>PRODUIT — COMMANDE</strong> (CONTENIR) : produit jamais commandé → souvent <strong>0,N</strong> ; lignes de commande selon règle métier.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>12. Impact des cardinalités (MCD → MLD)</h2>
-      <p><strong>Exemple POSSEDER :</strong> <code>PERSONNE</code> (1,N) — <code>VOITURE</code> (0,1). Une personne possède 1 à N voitures ; une voiture est possédée par 0 ou 1 personne.</p>
-      <p><strong>Transformation :</strong> la table <strong>VOITURE</strong> contiendra une <strong>clé étrangère</strong> vers <strong>PERSONNE</strong> ; pas de table d’association nécessaire pour ce cas binaire.</p>
-      <div class="callout">
-        <p><strong>Règle du cours (à retenir pour le MLD) :</strong> pour une association binaire avec un côté en <strong>0,N</strong> ou <strong>1,N</strong> et l’autre en <strong>0,1</strong> ou <strong>1,1</strong>, l’<strong>identifiant</strong> de l’entité « côté <strong>N</strong> » (max = N) est <strong>recopié</strong> dans l’entité « côté <strong>1</strong> » (max = 1) : c’est elle qui portera la <strong>clé étrangère</strong> au niveau logique.</p>
-        <p><em>Ex. :</em> clé de <strong>PERSONNE</strong> → colonne(s) FK dans <strong>VOITURE</strong>.</p>
-      </div>
-      <p>💡 Les cardinalités <strong>guident</strong> toute la transformation MCD → MLD.</p>
-    </section>
+  <section class="card">
+    <h2>MCD → MLD (règle binaire)</h2>
+    <ul>
+      <li>Ex. <strong>POSSEDER</strong> : PERSONNE (1,N) — VOITURE (0,1).</li>
+      <li>Une personne possède 1 à N voitures ; une voiture : 0 ou 1 propriétaire.</li>
+    </ul>
+    <div class="piege">
+      <strong>À retenir :</strong> côté cardinalité <strong>max = N</strong> (0,N ou 1,N) vs côté <strong>max = 1</strong> (0,1 ou 1,1) → l’<strong>identifiant</strong> de l’entité « côté <strong>N</strong> » est recopié dans l’entité « côté <strong>1</strong> » : <strong>clé étrangère</strong> dans la table du côté 1 (ex. FK personne dans <strong>VOITURE</strong>).
+    </div>
+  </section>
 
-    <section>
-      <h2>13. Associations ternaires</h2>
-      <p><strong>Quand :</strong> trois entités liées <strong>simultanément</strong> ; impossible de décomposer sans perdre le sens.</p>
-      <p><strong>Exemple (cours) :</strong> un joueur d’une équipe participe à un match — il faut les <strong>trois</strong> concepts (JOUEUR, EQUIPE, MATCH) pour définir PARTICIPATION.</p>
-      <p>⚠ Les ternaires sont <strong>plus complexes</strong> : ne les utiliser que si une modélisation binaire ne suffit pas.</p>
-    </section>
+  <section class="card">
+    <h2>Ternaire</h2>
+    <ul>
+      <li>Trois entités liées <strong>en même temps</strong> ; une décomposition binaire perd le sens.</li>
+      <li>Ex. participation : JOUEUR + EQUIPE + MATCH.</li>
+      <li>Réserver aux cas nécessaires (complexité).</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>14. Associations réflexives</h2>
-      <p>Une entité liée à <strong>elle-même</strong> (ex. hiérarchie d’employés, catégories / sous-catégories, articles liés).</p>
-      <p><strong>Précaution :</strong> bien définir le <strong>sens</strong> de la relation (qui supervise qui, lecture dans les deux sens).</p>
-    </section>
+  <section class="card">
+    <h2>Réflexive</h2>
+    <ul>
+      <li>Une entité reliée à elle-même (hiérarchie, catégories, etc.).</li>
+      <li>Clarifier le <strong>sens</strong> des deux rôles (superviseur / supervisé).</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>15. Cas d’étude — bibliothèque</h2>
-      <h3>Étape 1 — Entités de base</h3>
-      <p>LIVRE, AUTEUR, ADHERENT (attributs du cours : ISBN, dates, etc.). Questions : que manque-t-il ? comment lier ?</p>
-      <h3>Étape 2 — Associations simples</h3>
-      <p><strong>ECRIRE</strong> entre LIVRE et AUTEUR (N,N typique). <strong>EMPRUNTER</strong> entre ADHERENT et LIVRE avec dates d’emprunt / retour. Problème soulevé : un seul exemplaire par livre ? historique des emprunts ?</p>
-      <h3>Étape 3 — Enrichissement</h3>
-      <p>Entité <strong>EXEMPLAIRE</strong> (état, date d’acquisition) liée à LIVRE ; catégories avec association LIVRE–CATEGORIE.</p>
-      <p><strong>Modèle complet :</strong> regrouper LIVRE, AUTEUR, ADHERENT, EXEMPLAIRE, CATEGORIE et les associations ECRIRE, EMPRUNTER, APPARTENIR, ETRE_EXEMPLAIRE comme sur le schéma final du cours.</p>
-    </section>
+  <section class="card">
+    <h2>Cas bibliothèque (résumé)</h2>
+    <ul>
+      <li>Entités de base : LIVRE, AUTEUR, ADHERENT (+ attributs ISBN, dates…).</li>
+      <li><strong>ECRIRE</strong> LIVRE–AUTEUR (souvent N,N). <strong>EMPRUNTER</strong> ADHERENT–LIVRE avec dates.</li>
+      <li>Questions : un seul exemplaire ? historique ? → entité <strong>EXEMPLAIRE</strong>, lien avec LIVRE.</li>
+      <li>Catégories : association LIVRE–CATEGORIE ; schéma final du cours à recoller mentalement.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>16. Normalisation « dans l’esprit » du MCD</h2>
-      <p>Éviter redondance, assurer cohérence, faciliter la maintenance.</p>
-      <p><strong>Règles de base :</strong> atomicité des attributs ; chaque information une fois ; attributs dépendant de la clé « entière » au niveau logique.</p>
-    </section>
+  <section class="card">
+    <h2>« Normalisation » au stade MCD</h2>
+    <ul>
+      <li>Moins de redondance, attributs cohérents avec la clé (esprit 2NF/3NF au MLD).</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>17. Choix des identifiants — technique vs métier</h2>
-      <p><strong>Métier seul (ex. code-barres)</strong> : risque de changement ou de règles externes.</p>
-      <p><strong>Technique (recommandé dans le cours) :</strong> <code>id_produit</code> stable + conserver <code>code_barre</code> comme attribut.</p>
-      <p><strong>Pourquoi l’identifiant technique :</strong> stabilité, performance, indépendance vis-à-vis des règles métier, simplicité côté système.</p>
-    </section>
+  <section class="card">
+    <h2>Identifiant technique vs métier</h2>
+    <ul>
+      <li>Seul le code-barres = risque si règles externes changent.</li>
+      <li>Cours : souvent <strong>id_…</strong> stable + garder code-barres en attribut.</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>18. Erreurs courantes (rappel cours)</h2>
-      <ol>
-        <li><strong>Entité vs attribut</strong> : ex. adresse → parfois entité ADRESSE avec association HABITER.</li>
-        <li><strong>Cardinalités</strong> : se poser si un client peut avoir 0 commande ; valider avec le métier.</li>
-        <li><strong>Identifiants instables</strong> : email, téléphone, nom/prénom seuls — préférer un identifiant stable + garder ces données en attributs.</li>
-      </ol>
-    </section>
+  <section class="card">
+    <h2>Erreurs fréquentes</h2>
+    <ul>
+      <li>Confondre entité et attribut (ex. adresse → parfois entité ADRESSE + HABITER).</li>
+      <li>Cardinalités non validées avec le métier.</li>
+      <li>Identifiants instables (email, téléphone, nom seul).</li>
+    </ul>
+  </section>
 
-    <section>
-      <h2>19. Conseils pour un MCD maintenable</h2>
-      <p>Documenter les choix ; valider avec les utilisateurs ; anticiper ; rester simple ; respecter les conventions.</p>
-      <p><strong>Vérifications finales :</strong> identifiants stables ? cardinalités cohérentes ? pas de redondance inutile ? entités et associations justifiées ?</p>
-      <p class="callout">🎯 <strong>Règle d’or (cours) :</strong> un bon MCD doit être <strong>compréhensible par les utilisateurs métier</strong>.</p>
-    </section>
-
-    <section>
-      <h2>20. Problèmes d’identification fréquents</h2>
-      <ul>
-        <li>Identifiants <strong>composés trop complexes</strong> (&gt; 3 attributs → revoir).</li>
-        <li>Confusion <strong>identifiant</strong> / <strong>référence</strong> (la référence = clé étrangère au MLD).</li>
-        <li>Oubli de la <strong>minimalité</strong>.</li>
-        <li>Identifiants <strong>métier trop risqués</strong> sans identifiant technique.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>21. Récapitulatif — bénéfices &amp; suite</h2>
-      <p><strong>Bénéfices d’un bon MCD :</strong> compréhension métier partagée ; base solide pour MLD/MPD ; maintenance ; performance ; cohérence des données.</p>
-      <p><strong>Étapes suivantes (cours) :</strong> transformation MCD → MLD ; optimisation pour le SGBD ; implémentation physique.</p>
-    </section>
-  </article>
+  <section class="card">
+    <h2>Contrôle final</h2>
+    <ul>
+      <li>Identifiants stables ? Cardinalités cohérentes ? Pas de redondance inutile ?</li>
+      <li><strong>Règle d’or :</strong> le MCD doit être compréhensible par les <strong>utilisateurs métier</strong>.</li>
+    </ul>
+  </section>
 
   <footer>
-    <a href="index.html">Accueil</a> ·
-    <a href="pdf-source-01-mcd.html">Texte brut extrait du PDF</a>
+    <a href="index.html?v=2026042313">Accueil</a> ·
+    <a href="pdf-source-01-mcd.html?v=2026042313">Texte brut extrait du PDF</a> (référence seulement)
   </footer>
 </body>
 </html>

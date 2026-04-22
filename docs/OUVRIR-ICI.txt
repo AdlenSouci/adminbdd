@@ -1,0 +1,25 @@
+Pour voir les MAJ du site (quand "ca ne se met pas a jour")
+============================================================
+
+1) Ouvre le BON fichier sur ton PC
+   Chemin typique :
+   C:\Users\adlen\Downloads\adminbdd\docs\index.html
+   (clic droit > Ouvrir avec > Chrome / Edge / Firefox)
+
+2) Force le rechargement (le navigateur garde l'ancienne page en memoire)
+   - Windows : Ctrl + Shift + R   ou   Ctrl + F5
+   - Ou : fenetre de navigation privee / incognito
+
+3) Tu dois voir un bandeau JAUNE en haut de l'accueil :
+   "Mise a jour page : 2026-04-23 (build 12)"
+   Si tu ne le vois pas, ce n'est pas la bonne copie du fichier ou le cache bloque encore.
+
+4) Si tu utilises GitHub Pages (adresse github.io)
+   - Les changements sur ton PC ne s'affichent PAS en ligne tant que tu n'as pas fait :
+     git add docs
+     git commit -m "maj docs"
+     git push
+   - Attends 1 a 3 minutes apres le push, puis recharge (idealement en navigation privee).
+
+5) Si Cursor ouvre un autre dossier que "Downloads\adminbdd"
+   - Ouvre l'explorateur Windows et va dans Downloads\adminbdd\docs manuellement.

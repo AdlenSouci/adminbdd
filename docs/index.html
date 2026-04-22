@@ -4,43 +4,48 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
   <title>Révision — Admin BDD</title>
-  <link rel="stylesheet" href="styles.css?v=3">
+  <!-- Change v= quand tu modifies le site pour forcer le rechargement du CSS -->
+  <link rel="stylesheet" href="styles.css?v=2026042313">
 </head>
 <body>
+  <p style="margin:0 0 1rem;padding:0.5rem 0.75rem;background:var(--card,#f8fafc);border-radius:8px;font-size:0.88rem;border:1px solid var(--border,#e2e8f0);color:var(--muted,#64748b)">
+    Build <strong>13</strong> (2026-04-23). Si rien ne change : <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>. Ouvre <code>docs\index.html</code> en local (voir <code>OUVRIR-ICI.txt</code>).
+  </p>
   <header>
     <h1>Révision Admin BDD</h1>
-    <p class="sub"><strong>Fiches</strong> = texte des PDF mis en page (titres, paragraphes). <strong>Texte brut</strong> = même contenu sans mise en forme.</p>
+    <p class="sub"><strong>Fiches 1 et 3</strong> : révision type « cartes + puces » (<code>fiche.css</code>), lisibles. <strong>2, 4–8</strong> : génération auto à partir des PDF (moins confortable). <strong>Texte brut</strong> = extrait sans rédaction.</p>
   </header>
 
   <nav class="toc" aria-label="Fiches de révision">
-    <a href="revision-01-mcd.html"><strong>1.</strong> MCD (MERISE)<small>fiche lisible</small></a>
-    <a href="revision-02-mcd-mld.html"><strong>2.</strong> Du MCD au MLD</a>
-    <a href="revision-03-normalisation.html"><strong>3.</strong> Normalisation</a>
-    <a href="revision-04-ddl.html"><strong>4.</strong> DDL</a>
-    <a href="revision-05-ddl-avance.html"><strong>5.</strong> DDL avancé</a>
-    <a href="revision-06-sauvegarde.html"><strong>6.</strong> Sauvegarde &amp; résilience</a>
-    <a href="revision-07-explain.html"><strong>7.</strong> EXPLAIN</a>
-    <a href="revision-08-droits.html"><strong>8.</strong> Droits &amp; utilisateurs</a>
+    <a href="revision-01-mcd.html?v=2026042313"><strong>1.</strong> MCD (MERISE)<small>fiche révision</small></a>
+    <a href="revision-02-mcd-mld.html?v=2026042313"><strong>2.</strong> Du MCD au MLD</a>
+    <a href="revision-03-normalisation.html?v=2026042313"><strong>3.</strong> Normalisation<small>fiche révision</small></a>
+    <a href="revision-04-ddl.html?v=2026042313"><strong>4.</strong> DDL</a>
+    <a href="revision-05-ddl-avance.html?v=2026042313"><strong>5.</strong> DDL avancé</a>
+    <a href="revision-06-sauvegarde.html?v=2026042313"><strong>6.</strong> Sauvegarde &amp; résilience</a>
+    <a href="revision-07-explain.html?v=2026042313"><strong>7.</strong> EXPLAIN</a>
+    <a href="revision-08-droits.html?v=2026042313"><strong>8.</strong> Droits &amp; utilisateurs</a>
   </nav>
 
   <section style="margin-top:1.75rem">
     <h2 style="font-size:1rem;margin-bottom:0.6rem">Texte brut (optionnel)</h2>
     <nav class="toc" aria-label="Sources brutes">
-      <a href="pdf-source-01-mcd.html">Brut 1 — MCD</a>
-      <a href="pdf-source-02-mcd-mld.html">Brut 2 — MCD→MLD</a>
-      <a href="pdf-source-03-normalisation.html">Brut 3</a>
-      <a href="pdf-source-04-ddl.html">Brut 4 — DDL</a>
-      <a href="pdf-source-05-ddl-avance.html">Brut 5</a>
-      <a href="pdf-source-06-sauvegarde.html">Brut 6</a>
-      <a href="pdf-source-07-explain.html">Brut 7</a>
-      <a href="pdf-source-08-droits.html">Brut 8</a>
+      <a href="pdf-source-01-mcd.html?v=2026042313">Brut 1 — MCD</a>
+      <a href="pdf-source-02-mcd-mld.html?v=2026042313">Brut 2 — MCD→MLD</a>
+      <a href="pdf-source-03-normalisation.html?v=2026042313">Brut 3</a>
+      <a href="pdf-source-04-ddl.html?v=2026042313">Brut 4 — DDL</a>
+      <a href="pdf-source-05-ddl-avance.html?v=2026042313">Brut 5</a>
+      <a href="pdf-source-06-sauvegarde.html?v=2026042313">Brut 6</a>
+      <a href="pdf-source-07-explain.html?v=2026042313">Brut 7</a>
+      <a href="pdf-source-08-droits.html?v=2026042313">Brut 8</a>
     </nav>
   </section>
 
   <footer style="margin-top:2rem;font-size:0.88rem;color:var(--muted)">
-    <p>Regénérer les fiches après changement de PDF : <code>python _extract_pdf.py</code> puis <code>python docs/build_revision_fiches.py</code> (et éventuellement <code>python docs/_build_sources_from_pdf_extracts.py</code> pour les pages « brut »).</p>
-    <p>GitHub Pages : <code>GITHUB-PAGES.txt</code>.</p>
+    <p><strong>GitHub Pages :</strong> après <code>git push</code>, attends 1–3 minutes puis recharge en privé. Tant que tu ne pousses pas, le site en ligne ne change pas.</p>
+    <p>Scripts : <code>GITHUB-PAGES.txt</code></p>
   </footer>
 </body>
 </html>

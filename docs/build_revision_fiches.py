@@ -15,8 +15,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DOCS = Path(__file__).resolve().parent
 EX = ROOT / "_pdf_extracts"
 
-# Fiche MCD : rédigée à la main (revision-01-mcd.html) — ne pas écraser avec l’auto.
-SKIP_AUTO = {"revision-01-mcd.html"}
+# Fiches rédigées à la main (format « cartes ») — ne pas écraser avec l’auto.
+SKIP_AUTO = {"revision-01-mcd.html", "revision-03-normalisation.html"}
 
 COURSES = [
     (EX / "Modèle_Conceptuel_de_Données_MCD.txt", "revision-01-mcd.html", "Fiche — MCD (MERISE)", "Modèle Conceptuel de Données (MCD).pdf"),
