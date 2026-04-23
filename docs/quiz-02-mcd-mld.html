@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz — Du MCD au MLD</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--accent-soft:#e3f2fd;--border:#d0d7e0;--ok:#2e7d32;--ok-bg:#e8f5e9;--ok-border:#43a047;--err:#c62828;--err-bg:#ffebee;--err-border:#ef9a9a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1419;--card:#1a2332;--text:#e8edf3;--muted:#9aa8b8;--accent:#64b5f6;--accent-soft:#1e3a5f;--border:#2d3d52;--ok:#66bb6a;--ok-bg:#1b3a1f;--ok-border:#388e3c;--err:#ef9a9a;--err-bg:#3b1515;--err-border:#c62828}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+nav.sitenav{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .75rem;background:#1565c0;position:sticky;top:0;z-index:100}
+nav.sitenav a{color:#fff;text-decoration:none;font-size:.82rem;font-weight:600;padding:.25rem .5rem;border-radius:5px;white-space:nowrap;opacity:.85}
+nav.sitenav a:hover{opacity:1;background:rgba(255,255,255,.18)}
+.container{max-width:38rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+h1{font-size:1.3rem;font-weight:800;margin-bottom:.2rem}
+.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.qblock{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.9rem;transition:border-color .2s}
+.qnum{font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.qtxt{font-weight:600;font-size:.98rem;margin-bottom:.75rem}
+.opts{display:flex;flex-direction:column;gap:.4rem}
+.opt{display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;padding:.35rem .45rem;border-radius:7px;border:1px solid transparent;transition:background .15s}
+.opt:hover{background:var(--accent-soft)}
+.opt input{margin-top:.2rem;flex-shrink:0;accent-color:var(--accent)}
+.opt span{font-size:.93rem}
+.feedback{font-size:.88rem;font-weight:600;margin-top:.6rem;padding:.4rem .6rem;border-radius:7px;display:none}
+.feedback.ok{display:block;color:var(--ok);background:var(--ok-bg);border:1px solid var(--ok-border)}
+.feedback.err{display:block;color:var(--err);background:var(--err-bg);border:1px solid var(--err-border)}
+.qblock.correct{border-color:var(--ok-border)}
+.qblock.wrong{border-color:var(--err-border)}
+.btn{display:block;width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1rem;letter-spacing:.02em}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+#result{display:none;background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:1.5rem;text-align:center;margin-top:1.2rem}
+#result .score{font-size:3rem;font-weight:900;color:var(--accent);line-height:1}
+#result .label{font-size:1.05rem;margin-top:.4rem;color:var(--muted)}
+#result .mention{font-size:1.2rem;font-weight:700;margin-top:.6rem}
+.restart{display:inline-block;margin-top:1rem;padding:.6rem 1.2rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none}
+code{font-size:.88em;background:rgba(0,0,0,.07);padding:.1em .35em;border-radius:4px}
+@media(prefers-color-scheme:dark){code{background:rgba(255,255,255,.12)}}
+</style>
+</head>
+<body>
+<nav class="sitenav">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="revision-01-mcd.html">1. MCD</a>
+  <a href="revision-02-mcd-mld.html">2. MCD→MLD</a>
+  <a href="revision-03-normalisation.html">3. Normalisation</a>
+  <a href="revision-04-ddl.html">4. DDL</a>
+  <a href="revision-05-ddl-avance.html">5. DDL Avancé</a>
+  <a href="revision-06-sauvegarde.html">6. Sauvegarde</a>
+  <a href="revision-07-explain.html">7. EXPLAIN</a>
+  <a href="revision-08-droits.html">8. Droits</a>
+  <span style="opacity:.35;margin:0 .2rem">|</span>
+  <a href="quiz-01-mcd.html" style="background:rgba(255,255,255,.15)">Quiz 1</a>
+  <a href="quiz-02-mcd-mld.html" style="background:rgba(255,255,255,.15)">Quiz 2</a>
+  <a href="quiz-03-normalisation.html" style="background:rgba(255,255,255,.15)">Quiz 3</a>
+  <a href="quiz-04-ddl.html" style="background:rgba(255,255,255,.15)">Quiz 4</a>
+  <a href="quiz-05-ddl-avance.html" style="background:rgba(255,255,255,.15)">Quiz 5</a>
+  <a href="quiz-06-sauvegarde.html" style="background:rgba(255,255,255,.15)">Quiz 6</a>
+  <a href="quiz-07-explain.html" style="background:rgba(255,255,255,.15)">Quiz 7</a>
+  <a href="quiz-08-droits.html" style="background:rgba(255,255,255,.15)">Quiz 8</a>
+</nav>
+<div class="container">
+  <h1>Quiz — Du MCD au MLD</h1>
+  <p class="sub">Transformation MERISE, 4 règles · 10 questions · note sur 20</p>
+  <form id="quizform">
+
+    <div class="qblock" id="qb0">
+      <p class="qnum">Question 1 / 10</p>
+      <p class="qtxt">Quelle est la première règle de transformation MCD → MLD ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q0" value="0"><span>Toute association devient une table</span></label><label class="opt"><input type="radio" name="q0" value="1"><span>Toute entité devient une table</span></label><label class="opt"><input type="radio" name="q0" value="2"><span>Toute cardinalité 1,1 crée une FK</span></label><label class="opt"><input type="radio" name="q0" value="3"><span>Les attributs calculés sont supprimés</span></label></div>
+      <p class="feedback" id="fb0"></p>
+    </div>
+    <div class="qblock" id="qb1">
+      <p class="qnum">Question 2 / 10</p>
+      <p class="qtxt">Dans une relation One-To-Many (1:N), où se place la clé étrangère ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q1" value="0"><span>Dans la table côté max = N</span></label><label class="opt"><input type="radio" name="q1" value="1"><span>Dans une table d'association séparée</span></label><label class="opt"><input type="radio" name="q1" value="2"><span>Dans la table côté max = 1</span></label><label class="opt"><input type="radio" name="q1" value="3"><span>Dans les deux tables</span></label></div>
+      <p class="feedback" id="fb1"></p>
+    </div>
+    <div class="qblock" id="qb2">
+      <p class="qnum">Question 3 / 10</p>
+      <p class="qtxt">Dans une relation Many-To-Many (N:N), que crée-t-on ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q2" value="0"><span>Une clé étrangère dans chaque table</span></label><label class="opt"><input type="radio" name="q2" value="1"><span>Une table d'association avec PK composée des deux FK</span></label><label class="opt"><input type="radio" name="q2" value="2"><span>On fusionne les deux tables</span></label><label class="opt"><input type="radio" name="q2" value="3"><span>On duplique les données</span></label></div>
+      <p class="feedback" id="fb2"></p>
+    </div>
+    <div class="qblock" id="qb3">
+      <p class="qnum">Question 4 / 10</p>
+      <p class="qtxt">Dans une relation One-To-One (1:1), quelle option N'est PAS possible ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q3" value="0"><span>Fusionner les deux tables</span></label><label class="opt"><input type="radio" name="q3" value="1"><span>Clé primaire de l'entité forte = FK + PK de l'entité faible</span></label><label class="opt"><input type="radio" name="q3" value="2"><span>Créer une table d'association avec 3 colonnes</span></label><label class="opt"><input type="radio" name="q3" value="3"><span>Garder deux tables séparées avec FK</span></label></div>
+      <p class="feedback" id="fb3"></p>
+    </div>
+    <div class="qblock" id="qb4">
+      <p class="qnum">Question 5 / 10</p>
+      <p class="qtxt">Quelle est l'étape 'Analyse' dans MERISE ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q4" value="0"><span>Traduire le MLD en SQL</span></label><label class="opt"><input type="radio" name="q4" value="1"><span>Comprendre le domaine et créer le MCD</span></label><label class="opt"><input type="radio" name="q4" value="2"><span>Optimiser les index</span></label><label class="opt"><input type="radio" name="q4" value="3"><span>Installer le SGBD</span></label></div>
+      <p class="feedback" id="fb4"></p>
+    </div>
+    <div class="qblock" id="qb5">
+      <p class="qnum">Question 6 / 10</p>
+      <p class="qtxt">Quel outil est cité dans le cours pour créer des MCD et générer du SQL ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q5" value="0"><span>MySQL Workbench</span></label><label class="opt"><input type="radio" name="q5" value="1"><span>MOCODO.net</span></label><label class="opt"><input type="radio" name="q5" value="2"><span>pgAdmin</span></label><label class="opt"><input type="radio" name="q5" value="3"><span>DBeaver</span></label></div>
+      <p class="feedback" id="fb5"></p>
+    </div>
+    <div class="qblock" id="qb6">
+      <p class="qnum">Question 7 / 10</p>
+      <p class="qtxt">Dans la relation MERISE : pays(1,N) — ville(1,1) via 'possede'. Quelle table a une FK ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q6" value="0"><span>pays</span></label><label class="opt"><input type="radio" name="q6" value="1"><span>ville</span></label><label class="opt"><input type="radio" name="q6" value="2"><span>possede (table d'association)</span></label><label class="opt"><input type="radio" name="q6" value="3"><span>Les deux</span></label></div>
+      <p class="feedback" id="fb6"></p>
+    </div>
+    <div class="qblock" id="qb7">
+      <p class="qnum">Question 8 / 10</p>
+      <p class="qtxt">Le GDF est utilisé lors de quelle étape ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q7" value="0"><span>Analyse conceptuelle</span></label><label class="opt"><input type="radio" name="q7" value="1"><span>Conception logique (transformation MCD→MLD)</span></label><label class="opt"><input type="radio" name="q7" value="2"><span>Réalisation physique</span></label><label class="opt"><input type="radio" name="q7" value="3"><span>Recueil des besoins</span></label></div>
+      <p class="feedback" id="fb7"></p>
+    </div>
+    <div class="qblock" id="qb8">
+      <p class="qnum">Question 9 / 10</p>
+      <p class="qtxt">Que sont les 'entretiens' dans la phase d'analyse MERISE ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q8" value="0"><span>Des réunions entre développeurs pour coder</span></label><label class="opt"><input type="radio" name="q8" value="1"><span>Des discussions avec les utilisateurs pour comprendre leurs besoins</span></label><label class="opt"><input type="radio" name="q8" value="2"><span>Des tests de performance</span></label><label class="opt"><input type="radio" name="q8" value="3"><span>Des validations SQL</span></label></div>
+      <p class="feedback" id="fb8"></p>
+    </div>
+    <div class="qblock" id="qb9">
+      <p class="qnum">Question 10 / 10</p>
+      <p class="qtxt">Le MCD est indépendant de quoi ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q9" value="0"><span>Des entités métier</span></label><label class="opt"><input type="radio" name="q9" value="1"><span>De toute contrainte technique (pas de SGBD, pas de tables SQL)</span></label><label class="opt"><input type="radio" name="q9" value="2"><span>Des utilisateurs</span></label><label class="opt"><input type="radio" name="q9" value="3"><span>Des données</span></label></div>
+      <p class="feedback" id="fb9"></p>
+    </div>
+    <button class="btn" type="submit">Corriger et voir ma note</button>
+  </form>
+  <div id="result">
+    <div class="score" id="scoreVal"></div>
+    <div class="label">/ 20</div>
+    <div class="mention" id="mention"></div>
+    <br>
+    <button class="restart" onclick="location.reload()">Recommencer</button>
+    &nbsp;
+    <a class="restart" href="index.html">Accueil</a>
+  </div>
+</div>
+<script>
+const ANSWERS = [1,2,1,2,1,1,1,1,1,1];
+const EXPL = ["Règle 1 : toute entité du MCD devient une table dans le MLD.","La FK se place du côté max = 1, elle référence la table côté max = N.","Ex : acteur(1,N) — film(1,N) → table 'jouer'(acteur_id FK, film_id FK, role).","Pour le 1:1 : fusion ou FK=PK côté faible. Pas de table d'association à 3 colonnes.","Analyse = comprendre le domaine, identifier entités/attributs/relations → MCD.","MOCODO.net et Looping sont cités comme outils de modélisation MERISE.","Côté max = 1 (ville) reçoit la FK vers pays (côté max = N).","Le GDF (Graphe des Dépendances Fonctionnelles) aide à la transformation MCD→MLD.","Techniques de recueil : entretiens, questionnaires, analyse de documents.","Le MCD est une vue conceptuelle pure, sans considération technique."];
+const N = 10;
+document.getElementById('quizform').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let correct = 0;
+  for (let i = 0; i < N; i++) {
+    const sel = this.querySelector('input[name="q'+i+'"]:checked');
+    const fb = document.getElementById('fb'+i);
+    const qb = document.getElementById('qb'+i);
+    const opts = qb.querySelectorAll('.opt');
+    // disable
+    qb.querySelectorAll('input').forEach(r => r.disabled = true);
+    if (sel && parseInt(sel.value) === ANSWERS[i]) {
+      correct++;
+      fb.textContent = '✓ Bonne réponse !' + (EXPL[i] ? ' ' + EXPL[i] : '');
+      fb.className = 'feedback ok';
+      qb.className = 'qblock correct';
+    } else {
+      const correctOpt = opts[ANSWERS[i]].querySelector('span').textContent;
+      fb.textContent = '✗ Mauvaise réponse. Bonne réponse : ' + correctOpt + (EXPL[i] ? ' — ' + EXPL[i] : '');
+      fb.className = 'feedback err';
+      qb.className = 'qblock wrong';
+    }
+  }
+  const note = Math.round((correct / N) * 20 * 10) / 10;
+  document.getElementById('scoreVal').textContent = note.toString().replace('.',',');
+  let mention = '';
+  if (note >= 18) mention = '🏆 Excellent !';
+  else if (note >= 14) mention = '👍 Bien !';
+  else if (note >= 10) mention = '📚 Assez bien — relis la fiche.';
+  else mention = '⚠️ À retravailler — relis le cours.';
+  document.getElementById('mention').textContent = mention + '  (' + correct + '/' + N + ' bonnes réponses)';
+  document.getElementById('result').style.display = 'block';
+  document.querySelector('.btn').disabled = true;
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>

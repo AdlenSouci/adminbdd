@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz — MCD — Modèle Conceptuel de Données</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--accent-soft:#e3f2fd;--border:#d0d7e0;--ok:#2e7d32;--ok-bg:#e8f5e9;--ok-border:#43a047;--err:#c62828;--err-bg:#ffebee;--err-border:#ef9a9a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1419;--card:#1a2332;--text:#e8edf3;--muted:#9aa8b8;--accent:#64b5f6;--accent-soft:#1e3a5f;--border:#2d3d52;--ok:#66bb6a;--ok-bg:#1b3a1f;--ok-border:#388e3c;--err:#ef9a9a;--err-bg:#3b1515;--err-border:#c62828}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+nav.sitenav{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .75rem;background:#1565c0;position:sticky;top:0;z-index:100}
+nav.sitenav a{color:#fff;text-decoration:none;font-size:.82rem;font-weight:600;padding:.25rem .5rem;border-radius:5px;white-space:nowrap;opacity:.85}
+nav.sitenav a:hover{opacity:1;background:rgba(255,255,255,.18)}
+.container{max-width:38rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+h1{font-size:1.3rem;font-weight:800;margin-bottom:.2rem}
+.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.qblock{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.9rem;transition:border-color .2s}
+.qnum{font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.qtxt{font-weight:600;font-size:.98rem;margin-bottom:.75rem}
+.opts{display:flex;flex-direction:column;gap:.4rem}
+.opt{display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;padding:.35rem .45rem;border-radius:7px;border:1px solid transparent;transition:background .15s}
+.opt:hover{background:var(--accent-soft)}
+.opt input{margin-top:.2rem;flex-shrink:0;accent-color:var(--accent)}
+.opt span{font-size:.93rem}
+.feedback{font-size:.88rem;font-weight:600;margin-top:.6rem;padding:.4rem .6rem;border-radius:7px;display:none}
+.feedback.ok{display:block;color:var(--ok);background:var(--ok-bg);border:1px solid var(--ok-border)}
+.feedback.err{display:block;color:var(--err);background:var(--err-bg);border:1px solid var(--err-border)}
+.qblock.correct{border-color:var(--ok-border)}
+.qblock.wrong{border-color:var(--err-border)}
+.btn{display:block;width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1rem;letter-spacing:.02em}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+#result{display:none;background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:1.5rem;text-align:center;margin-top:1.2rem}
+#result .score{font-size:3rem;font-weight:900;color:var(--accent);line-height:1}
+#result .label{font-size:1.05rem;margin-top:.4rem;color:var(--muted)}
+#result .mention{font-size:1.2rem;font-weight:700;margin-top:.6rem}
+.restart{display:inline-block;margin-top:1rem;padding:.6rem 1.2rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none}
+code{font-size:.88em;background:rgba(0,0,0,.07);padding:.1em .35em;border-radius:4px}
+@media(prefers-color-scheme:dark){code{background:rgba(255,255,255,.12)}}
+</style>
+</head>
+<body>
+<nav class="sitenav">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="revision-01-mcd.html">1. MCD</a>
+  <a href="revision-02-mcd-mld.html">2. MCD→MLD</a>
+  <a href="revision-03-normalisation.html">3. Normalisation</a>
+  <a href="revision-04-ddl.html">4. DDL</a>
+  <a href="revision-05-ddl-avance.html">5. DDL Avancé</a>
+  <a href="revision-06-sauvegarde.html">6. Sauvegarde</a>
+  <a href="revision-07-explain.html">7. EXPLAIN</a>
+  <a href="revision-08-droits.html">8. Droits</a>
+  <span style="opacity:.35;margin:0 .2rem">|</span>
+  <a href="quiz-01-mcd.html" style="background:rgba(255,255,255,.15)">Quiz 1</a>
+  <a href="quiz-02-mcd-mld.html" style="background:rgba(255,255,255,.15)">Quiz 2</a>
+  <a href="quiz-03-normalisation.html" style="background:rgba(255,255,255,.15)">Quiz 3</a>
+  <a href="quiz-04-ddl.html" style="background:rgba(255,255,255,.15)">Quiz 4</a>
+  <a href="quiz-05-ddl-avance.html" style="background:rgba(255,255,255,.15)">Quiz 5</a>
+  <a href="quiz-06-sauvegarde.html" style="background:rgba(255,255,255,.15)">Quiz 6</a>
+  <a href="quiz-07-explain.html" style="background:rgba(255,255,255,.15)">Quiz 7</a>
+  <a href="quiz-08-droits.html" style="background:rgba(255,255,255,.15)">Quiz 8</a>
+</nav>
+<div class="container">
+  <h1>Quiz — MCD — Modèle Conceptuel de Données</h1>
+  <p class="sub">MERISE, entités, associations, cardinalités · 12 questions · note sur 20</p>
+  <form id="quizform">
+
+    <div class="qblock" id="qb0">
+      <p class="qnum">Question 1 / 12</p>
+      <p class="qtxt">Que signifie l'acronyme MCD dans MERISE ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q0" value="0"><span>Modèle Conceptuel de Données</span></label><label class="opt"><input type="radio" name="q0" value="1"><span>Modèle Concret de Données</span></label><label class="opt"><input type="radio" name="q0" value="2"><span>Méthode Commune de Design</span></label><label class="opt"><input type="radio" name="q0" value="3"><span>Modèle de Conception Dynamique</span></label></div>
+      <p class="feedback" id="fb0"></p>
+    </div>
+    <div class="qblock" id="qb1">
+      <p class="qnum">Question 2 / 12</p>
+      <p class="qtxt">Quels sont les 3 niveaux d'abstraction de MERISE (dans l'ordre) ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q1" value="0"><span>Logique, Conceptuel, Physique</span></label><label class="opt"><input type="radio" name="q1" value="1"><span>Conceptuel, Logique, Physique</span></label><label class="opt"><input type="radio" name="q1" value="2"><span>Physique, Logique, Conceptuel</span></label><label class="opt"><input type="radio" name="q1" value="3"><span>Conceptuel, Physique, Logique</span></label></div>
+      <p class="feedback" id="fb1"></p>
+    </div>
+    <div class="qblock" id="qb2">
+      <p class="qnum">Question 3 / 12</p>
+      <p class="qtxt">Qu'est-ce qu'une entité dans un MCD ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q2" value="0"><span>Un attribut calculé</span></label><label class="opt"><input type="radio" name="q2" value="1"><span>Un objet du monde réel sur lequel on conserve des informations</span></label><label class="opt"><input type="radio" name="q2" value="2"><span>Une contrainte d'intégrité</span></label><label class="opt"><input type="radio" name="q2" value="3"><span>Un lien entre deux tables</span></label></div>
+      <p class="feedback" id="fb2"></p>
+    </div>
+    <div class="qblock" id="qb3">
+      <p class="qnum">Question 4 / 12</p>
+      <p class="qtxt">Quelle règle de nommage s'applique aux entités ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q3" value="0"><span>Pluriel, avec préfixe TBL_</span></label><label class="opt"><input type="radio" name="q3" value="1"><span>Singulier, explicite, sans abréviation ambiguë</span></label><label class="opt"><input type="radio" name="q3" value="2"><span>Majuscules uniquement, max 4 lettres</span></label><label class="opt"><input type="radio" name="q3" value="3"><span>Minuscules avec underscores</span></label></div>
+      <p class="feedback" id="fb3"></p>
+    </div>
+    <div class="qblock" id="qb4">
+      <p class="qnum">Question 5 / 12</p>
+      <p class="qtxt">Un attribut 'age' calculé depuis 'date_naissance' est un attribut de quel type ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q4" value="0"><span>Simple</span></label><label class="opt"><input type="radio" name="q4" value="1"><span>Composé</span></label><label class="opt"><input type="radio" name="q4" value="2"><span>Calculé</span></label><label class="opt"><input type="radio" name="q4" value="3"><span>Réflexif</span></label></div>
+      <p class="feedback" id="fb4"></p>
+    </div>
+    <div class="qblock" id="qb5">
+      <p class="qnum">Question 6 / 12</p>
+      <p class="qtxt">Quelle cardinalité signifie 'exactement une fois' ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q5" value="0"><span>0,N</span></label><label class="opt"><input type="radio" name="q5" value="1"><span>0,1</span></label><label class="opt"><input type="radio" name="q5" value="2"><span>1,N</span></label><label class="opt"><input type="radio" name="q5" value="3"><span>1,1</span></label></div>
+      <p class="feedback" id="fb5"></p>
+    </div>
+    <div class="qblock" id="qb6">
+      <p class="qnum">Question 7 / 12</p>
+      <p class="qtxt">Quelle cardinalité signifie 'au moins une fois, potentiellement plusieurs' ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q6" value="0"><span>0,N</span></label><label class="opt"><input type="radio" name="q6" value="1"><span>1,N</span></label><label class="opt"><input type="radio" name="q6" value="2"><span>1,1</span></label><label class="opt"><input type="radio" name="q6" value="3"><span>0,1</span></label></div>
+      <p class="feedback" id="fb6"></p>
+    </div>
+    <div class="qblock" id="qb7">
+      <p class="qnum">Question 8 / 12</p>
+      <p class="qtxt">Une association réflexive est une association entre :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q7" value="0"><span>Deux entités différentes</span></label><label class="opt"><input type="radio" name="q7" value="1"><span>Une entité et elle-même</span></label><label class="opt"><input type="radio" name="q7" value="2"><span>Trois entités</span></label><label class="opt"><input type="radio" name="q7" value="3"><span>Une entité et une association</span></label></div>
+      <p class="feedback" id="fb7"></p>
+    </div>
+    <div class="qblock" id="qb8">
+      <p class="qnum">Question 9 / 12</p>
+      <p class="qtxt">Quand utilise-t-on une association ternaire ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q8" value="0"><span>Quand une entité a plus de 3 attributs</span></label><label class="opt"><input type="radio" name="q8" value="1"><span>Quand 3 entités sont liées simultanément et qu'on ne peut pas décomposer sans perte de sens</span></label><label class="opt"><input type="radio" name="q8" value="2"><span>À chaque fois qu'on a 3 entités</span></label><label class="opt"><input type="radio" name="q8" value="3"><span>Quand une cardinalité est 0,1</span></label></div>
+      <p class="feedback" id="fb8"></p>
+    </div>
+    <div class="qblock" id="qb9">
+      <p class="qnum">Question 10 / 12</p>
+      <p class="qtxt">Pourquoi préférer un identifiant technique à un identifiant métier ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q9" value="0"><span>Il est plus court</span></label><label class="opt"><input type="radio" name="q9" value="1"><span>Il est stable, numérique, indépendant de la logique métier</span></label><label class="opt"><input type="radio" name="q9" value="2"><span>Il est imposé par MERISE</span></label><label class="opt"><input type="radio" name="q9" value="3"><span>Il permet d'éviter les clés composées</span></label></div>
+      <p class="feedback" id="fb9"></p>
+    </div>
+    <div class="qblock" id="qb10">
+      <p class="qnum">Question 11 / 12</p>
+      <p class="qtxt">La règle importante sur les cardinalités (0,1) ou (1,1) lors de la transformation vers le MLD est :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q10" value="0"><span>On crée une table d'association</span></label><label class="opt"><input type="radio" name="q10" value="1"><span>On fusionne les deux entités</span></label><label class="opt"><input type="radio" name="q10" value="2"><span>L'identifiant migre vers cette entité (clé étrangère)</span></label><label class="opt"><input type="radio" name="q10" value="3"><span>On supprime l'entité</span></label></div>
+      <p class="feedback" id="fb10"></p>
+    </div>
+    <div class="qblock" id="qb11">
+      <p class="qnum">Question 12 / 12</p>
+      <p class="qtxt">Quelle propriété N'est PAS requise pour un identifiant ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q11" value="0"><span>Unicité</span></label><label class="opt"><input type="radio" name="q11" value="1"><span>Non-nullité</span></label><label class="opt"><input type="radio" name="q11" value="2"><span>Être un attribut calculé</span></label><label class="opt"><input type="radio" name="q11" value="3"><span>Stabilité</span></label></div>
+      <p class="feedback" id="fb11"></p>
+    </div>
+    <button class="btn" type="submit">Corriger et voir ma note</button>
+  </form>
+  <div id="result">
+    <div class="score" id="scoreVal"></div>
+    <div class="label">/ 20</div>
+    <div class="mention" id="mention"></div>
+    <br>
+    <button class="restart" onclick="location.reload()">Recommencer</button>
+    &nbsp;
+    <a class="restart" href="index.html">Accueil</a>
+  </div>
+</div>
+<script>
+const ANSWERS = [0,1,1,1,2,3,1,1,1,1,2,2];
+const EXPL = ["MCD = Modèle Conceptuel de Données.","Conceptuel (MCD) → Logique (MLD) → Physique (MPD).","Une entité a une existence propre et est identifiable uniquement.","Ex : CLIENT (correct) vs CLIENTS (pluriel) ou CLI (abréviation floue).","Attribut calculé = dérivé d'autres attributs.","1,1 = au minimum 1 ET au maximum 1 = exactement une fois.","1,N = minimum 1, maximum N.","Ex : SUPERVISER sur EMPLOYE (un employé supervise d'autres employés).","Ex : JOUEUR + ÉQUIPE + MATCH liés par PARTICIPATION.","Ex : id_produit (stable) vs code_barre (peut changer).","Cardinalité max = 1 → migration de l'identifiant de l'autre entité vers celle-ci.","Un identifiant doit être unique, non nul, stable et minimal. Un attribut calculé peut changer."];
+const N = 12;
+document.getElementById('quizform').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let correct = 0;
+  for (let i = 0; i < N; i++) {
+    const sel = this.querySelector('input[name="q'+i+'"]:checked');
+    const fb = document.getElementById('fb'+i);
+    const qb = document.getElementById('qb'+i);
+    const opts = qb.querySelectorAll('.opt');
+    // disable
+    qb.querySelectorAll('input').forEach(r => r.disabled = true);
+    if (sel && parseInt(sel.value) === ANSWERS[i]) {
+      correct++;
+      fb.textContent = '✓ Bonne réponse !' + (EXPL[i] ? ' ' + EXPL[i] : '');
+      fb.className = 'feedback ok';
+      qb.className = 'qblock correct';
+    } else {
+      const correctOpt = opts[ANSWERS[i]].querySelector('span').textContent;
+      fb.textContent = '✗ Mauvaise réponse. Bonne réponse : ' + correctOpt + (EXPL[i] ? ' — ' + EXPL[i] : '');
+      fb.className = 'feedback err';
+      qb.className = 'qblock wrong';
+    }
+  }
+  const note = Math.round((correct / N) * 20 * 10) / 10;
+  document.getElementById('scoreVal').textContent = note.toString().replace('.',',');
+  let mention = '';
+  if (note >= 18) mention = '🏆 Excellent !';
+  else if (note >= 14) mention = '👍 Bien !';
+  else if (note >= 10) mention = '📚 Assez bien — relis la fiche.';
+  else mention = '⚠️ À retravailler — relis le cours.';
+  document.getElementById('mention').textContent = mention + '  (' + correct + '/' + N + ' bonnes réponses)';
+  document.getElementById('result').style.display = 'block';
+  document.querySelector('.btn').disabled = true;
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>

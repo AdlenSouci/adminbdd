@@ -5,63 +5,122 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Révision — Admin BDD</title>
 <style>
-:root{--bg:#f0f4ff;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--border:#d0d7e0}
+:root{--bg:#f0f4ff;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--accent2:#2e7d32;--border:#d0d7e0}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem}
-h1{font-size:2rem;font-weight:900;text-align:center;margin-bottom:.4rem;letter-spacing:-.03em;color:var(--accent)}
-.sub{text-align:center;color:var(--muted);font-size:1rem;margin-bottom:2.5rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;width:100%;max-width:760px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.3rem;text-decoration:none;color:var(--text);transition:box-shadow .15s,transform .12s;box-shadow:0 1px 3px rgba(0,0,0,.07)}
-.card:hover{box-shadow:0 6px 20px rgba(21,101,192,.18);transform:translateY(-2px)}
-.card .num{font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
-.card .title{font-size:1rem;font-weight:700;margin-bottom:.25rem}
-.card .desc{font-size:.82rem;color:var(--muted);line-height:1.4}
+body{font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);padding:2rem 1rem 4rem}
+.hero{text-align:center;margin-bottom:2.5rem}
+h1{font-size:2rem;font-weight:900;letter-spacing:-.03em;color:var(--accent);margin-bottom:.3rem}
+.hero p{color:var(--muted);font-size:1rem}
+.section-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.75rem;padding-left:.2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:.85rem;max-width:780px;margin:0 auto 2.5rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.1rem 1.2rem;text-decoration:none;color:var(--text);display:block;transition:box-shadow .15s,transform .12s;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card:hover{box-shadow:0 6px 20px rgba(21,101,192,.16);transform:translateY(-2px)}
+.card.quiz-card:hover{box-shadow:0 6px 20px rgba(46,125,50,.18);transform:translateY(-2px)}
+.card .num{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.28rem}
+.card.fiche-card .num{color:var(--accent)}
+.card.quiz-card .num{color:var(--accent2)}
+.card .title{font-size:.98rem;font-weight:700;margin-bottom:.22rem}
+.card .desc{font-size:.8rem;color:var(--muted);line-height:1.4}
+.badge{display:inline-block;font-size:.72rem;font-weight:700;padding:.15rem .45rem;border-radius:20px;margin-left:.3rem;vertical-align:middle}
+.badge-blue{background:#e3f2fd;color:#1565c0}
+.badge-green{background:#e8f5e9;color:#2e7d32}
+.wrap{max-width:780px;margin:0 auto}
 </style>
 </head>
 <body>
-<h1>Admin BDD — Révision</h1>
-<p class="sub">8 fiches de révision · clique sur un cours pour réviser</p>
-<div class="grid">
-  <a class="card" href="revision-01-mcd.html">
-    <div class="num">Cours 1</div>
-    <div class="title">MCD (MERISE)</div>
-    <div class="desc">Entités, attributs, associations, cardinalités, ternaires, réflexives</div>
-  </a>
-  <a class="card" href="revision-02-mcd-mld.html">
-    <div class="num">Cours 2</div>
-    <div class="title">Du MCD au MLD</div>
-    <div class="desc">4 règles de transformation : 1:1, 1:N, N:N, entité→table</div>
-  </a>
-  <a class="card" href="revision-03-normalisation.html">
-    <div class="num">Cours 3</div>
-    <div class="title">Normalisation</div>
-    <div class="desc">1NF, 2NF, 3NF, BCNF — anomalies et décompositions</div>
-  </a>
-  <a class="card" href="revision-04-ddl.html">
-    <div class="num">Cours 4</div>
-    <div class="title">DDL</div>
-    <div class="desc">CREATE, ALTER, DROP, types, contraintes, clés, FK, FAQ</div>
-  </a>
-  <a class="card" href="revision-05-ddl-avance.html">
-    <div class="num">Cours 5</div>
-    <div class="title">DDL Avancé</div>
-    <div class="desc">Partitionnement RANGE/LIST/HASH, index composites, OLTP vs OLAP</div>
-  </a>
-  <a class="card" href="revision-06-sauvegarde.html">
-    <div class="num">Cours 6</div>
-    <div class="title">Sauvegarde &amp; Résilience</div>
-    <div class="desc">RPO/RTO, types de backup, PITR, règle 3-2-1</div>
-  </a>
-  <a class="card" href="revision-07-explain.html">
-    <div class="num">Cours 7</div>
-    <div class="title">EXPLAIN</div>
-    <div class="desc">Plans d'exécution MySQL et PostgreSQL, colonnes, exemples</div>
-  </a>
-  <a class="card" href="revision-08-droits.html">
-    <div class="num">Cours 8</div>
-    <div class="title">Droits &amp; Rôles</div>
-    <div class="desc">CREATE USER, GRANT, REVOKE, rôles, exercice corrigé</div>
-  </a>
+<div class="hero">
+  <h1>Admin BDD — Révision</h1>
+  <p>8 cours · fiches de révision + quiz noté sur 20</p>
+</div>
+
+<div class="wrap">
+  <p class="section-title">📖 Fiches de révision <span class="badge badge-blue">8 cours</span></p>
+  <div class="grid">
+    <a class="card fiche-card" href="revision-01-mcd.html">
+      <div class="num">Cours 1</div>
+      <div class="title">MCD (MERISE)</div>
+      <div class="desc">Entités, attributs, associations, cardinalités, ternaires, réflexives</div>
+    </a>
+    <a class="card fiche-card" href="revision-02-mcd-mld.html">
+      <div class="num">Cours 2</div>
+      <div class="title">Du MCD au MLD</div>
+      <div class="desc">4 règles de transformation : 1:1, 1:N, N:N, entité→table</div>
+    </a>
+    <a class="card fiche-card" href="revision-03-normalisation.html">
+      <div class="num">Cours 3</div>
+      <div class="title">Normalisation</div>
+      <div class="desc">1NF, 2NF, 3NF, BCNF — anomalies et décompositions</div>
+    </a>
+    <a class="card fiche-card" href="revision-04-ddl.html">
+      <div class="num">Cours 4</div>
+      <div class="title">DDL</div>
+      <div class="desc">CREATE, ALTER, DROP, types, contraintes, clés, FK, FAQ</div>
+    </a>
+    <a class="card fiche-card" href="revision-05-ddl-avance.html">
+      <div class="num">Cours 5</div>
+      <div class="title">DDL Avancé</div>
+      <div class="desc">Partitionnement RANGE/LIST/HASH, index composites, OLTP vs OLAP</div>
+    </a>
+    <a class="card fiche-card" href="revision-06-sauvegarde.html">
+      <div class="num">Cours 6</div>
+      <div class="title">Sauvegarde &amp; Résilience</div>
+      <div class="desc">RPO/RTO, types de backup, PITR, règle 3-2-1</div>
+    </a>
+    <a class="card fiche-card" href="revision-07-explain.html">
+      <div class="num">Cours 7</div>
+      <div class="title">EXPLAIN</div>
+      <div class="desc">Plans d'exécution MySQL et PostgreSQL, colonnes, exemples</div>
+    </a>
+    <a class="card fiche-card" href="revision-08-droits.html">
+      <div class="num">Cours 8</div>
+      <div class="title">Droits &amp; Rôles</div>
+      <div class="desc">CREATE USER, GRANT, REVOKE, rôles, exercice corrigé</div>
+    </a>
+  </div>
+
+  <p class="section-title">🎯 Quiz notés sur 20 <span class="badge badge-green">10-12 questions chacun</span></p>
+  <div class="grid">
+    <a class="card quiz-card" href="quiz-01-mcd.html">
+      <div class="num">Quiz 1</div>
+      <div class="title">MCD (MERISE)</div>
+      <div class="desc">12 questions sur MERISE, entités, cardinalités, associations</div>
+    </a>
+    <a class="card quiz-card" href="quiz-02-mcd-mld.html">
+      <div class="num">Quiz 2</div>
+      <div class="title">Du MCD au MLD</div>
+      <div class="desc">10 questions sur les règles de transformation</div>
+    </a>
+    <a class="card quiz-card" href="quiz-03-normalisation.html">
+      <div class="num">Quiz 3</div>
+      <div class="title">Normalisation</div>
+      <div class="desc">12 questions sur 1NF, 2NF, 3NF, BCNF et anomalies</div>
+    </a>
+    <a class="card quiz-card" href="quiz-04-ddl.html">
+      <div class="num">Quiz 4</div>
+      <div class="title">DDL</div>
+      <div class="desc">12 questions sur CREATE, contraintes, FK, auto-incrémentation</div>
+    </a>
+    <a class="card quiz-card" href="quiz-05-ddl-avance.html">
+      <div class="num">Quiz 5</div>
+      <div class="title">DDL Avancé</div>
+      <div class="desc">10 questions sur partitions, index, OLTP/OLAP</div>
+    </a>
+    <a class="card quiz-card" href="quiz-06-sauvegarde.html">
+      <div class="num">Quiz 6</div>
+      <div class="title">Sauvegarde</div>
+      <div class="desc">10 questions sur RPO, RTO, PITR, règle 3-2-1</div>
+    </a>
+    <a class="card quiz-card" href="quiz-07-explain.html">
+      <div class="num">Quiz 7</div>
+      <div class="title">EXPLAIN</div>
+      <div class="desc">12 questions sur les plans d'exécution MySQL et PostgreSQL</div>
+    </a>
+    <a class="card quiz-card" href="quiz-08-droits.html">
+      <div class="num">Quiz 8</div>
+      <div class="title">Droits &amp; Rôles</div>
+      <div class="desc">12 questions sur GRANT, REVOKE, utilisateurs, rôles</div>
+    </a>
+  </div>
 </div>
 </body>
 </html>

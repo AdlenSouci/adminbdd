@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz — Sauvegarde, Restauration & Résilience</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--accent-soft:#e3f2fd;--border:#d0d7e0;--ok:#2e7d32;--ok-bg:#e8f5e9;--ok-border:#43a047;--err:#c62828;--err-bg:#ffebee;--err-border:#ef9a9a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1419;--card:#1a2332;--text:#e8edf3;--muted:#9aa8b8;--accent:#64b5f6;--accent-soft:#1e3a5f;--border:#2d3d52;--ok:#66bb6a;--ok-bg:#1b3a1f;--ok-border:#388e3c;--err:#ef9a9a;--err-bg:#3b1515;--err-border:#c62828}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+nav.sitenav{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .75rem;background:#1565c0;position:sticky;top:0;z-index:100}
+nav.sitenav a{color:#fff;text-decoration:none;font-size:.82rem;font-weight:600;padding:.25rem .5rem;border-radius:5px;white-space:nowrap;opacity:.85}
+nav.sitenav a:hover{opacity:1;background:rgba(255,255,255,.18)}
+.container{max-width:38rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+h1{font-size:1.3rem;font-weight:800;margin-bottom:.2rem}
+.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.qblock{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.9rem;transition:border-color .2s}
+.qnum{font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.qtxt{font-weight:600;font-size:.98rem;margin-bottom:.75rem}
+.opts{display:flex;flex-direction:column;gap:.4rem}
+.opt{display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;padding:.35rem .45rem;border-radius:7px;border:1px solid transparent;transition:background .15s}
+.opt:hover{background:var(--accent-soft)}
+.opt input{margin-top:.2rem;flex-shrink:0;accent-color:var(--accent)}
+.opt span{font-size:.93rem}
+.feedback{font-size:.88rem;font-weight:600;margin-top:.6rem;padding:.4rem .6rem;border-radius:7px;display:none}
+.feedback.ok{display:block;color:var(--ok);background:var(--ok-bg);border:1px solid var(--ok-border)}
+.feedback.err{display:block;color:var(--err);background:var(--err-bg);border:1px solid var(--err-border)}
+.qblock.correct{border-color:var(--ok-border)}
+.qblock.wrong{border-color:var(--err-border)}
+.btn{display:block;width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1rem;letter-spacing:.02em}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+#result{display:none;background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:1.5rem;text-align:center;margin-top:1.2rem}
+#result .score{font-size:3rem;font-weight:900;color:var(--accent);line-height:1}
+#result .label{font-size:1.05rem;margin-top:.4rem;color:var(--muted)}
+#result .mention{font-size:1.2rem;font-weight:700;margin-top:.6rem}
+.restart{display:inline-block;margin-top:1rem;padding:.6rem 1.2rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none}
+code{font-size:.88em;background:rgba(0,0,0,.07);padding:.1em .35em;border-radius:4px}
+@media(prefers-color-scheme:dark){code{background:rgba(255,255,255,.12)}}
+</style>
+</head>
+<body>
+<nav class="sitenav">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="revision-01-mcd.html">1. MCD</a>
+  <a href="revision-02-mcd-mld.html">2. MCD→MLD</a>
+  <a href="revision-03-normalisation.html">3. Normalisation</a>
+  <a href="revision-04-ddl.html">4. DDL</a>
+  <a href="revision-05-ddl-avance.html">5. DDL Avancé</a>
+  <a href="revision-06-sauvegarde.html">6. Sauvegarde</a>
+  <a href="revision-07-explain.html">7. EXPLAIN</a>
+  <a href="revision-08-droits.html">8. Droits</a>
+  <span style="opacity:.35;margin:0 .2rem">|</span>
+  <a href="quiz-01-mcd.html" style="background:rgba(255,255,255,.15)">Quiz 1</a>
+  <a href="quiz-02-mcd-mld.html" style="background:rgba(255,255,255,.15)">Quiz 2</a>
+  <a href="quiz-03-normalisation.html" style="background:rgba(255,255,255,.15)">Quiz 3</a>
+  <a href="quiz-04-ddl.html" style="background:rgba(255,255,255,.15)">Quiz 4</a>
+  <a href="quiz-05-ddl-avance.html" style="background:rgba(255,255,255,.15)">Quiz 5</a>
+  <a href="quiz-06-sauvegarde.html" style="background:rgba(255,255,255,.15)">Quiz 6</a>
+  <a href="quiz-07-explain.html" style="background:rgba(255,255,255,.15)">Quiz 7</a>
+  <a href="quiz-08-droits.html" style="background:rgba(255,255,255,.15)">Quiz 8</a>
+</nav>
+<div class="container">
+  <h1>Quiz — Sauvegarde, Restauration & Résilience</h1>
+  <p class="sub">RPO, RTO, types de backup, PITR, règle 3-2-1 · 10 questions · note sur 20</p>
+  <form id="quizform">
+
+    <div class="qblock" id="qb0">
+      <p class="qnum">Question 1 / 10</p>
+      <p class="qtxt">Que signifie RPO ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q0" value="0"><span>Recovery Point Objective — combien de données puis-je perdre ?</span></label><label class="opt"><input type="radio" name="q0" value="1"><span>Recovery Process Operation — la procédure de restauration</span></label><label class="opt"><input type="radio" name="q0" value="2"><span>Restore Priority Order — l'ordre de restauration</span></label><label class="opt"><input type="radio" name="q0" value="3"><span>Recovery Performance Output — la vitesse de restauration</span></label></div>
+      <p class="feedback" id="fb0"></p>
+    </div>
+    <div class="qblock" id="qb1">
+      <p class="qnum">Question 2 / 10</p>
+      <p class="qtxt">Que signifie RTO ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q1" value="0"><span>Recovery Time Objective — en combien de temps dois-je restaurer ?</span></label><label class="opt"><input type="radio" name="q1" value="1"><span>Restore Transfer Operation</span></label><label class="opt"><input type="radio" name="q1" value="2"><span>Recovery Test Output</span></label><label class="opt"><input type="radio" name="q1" value="3"><span>Real Time Operations</span></label></div>
+      <p class="feedback" id="fb1"></p>
+    </div>
+    <div class="qblock" id="qb2">
+      <p class="qnum">Question 3 / 10</p>
+      <p class="qtxt">Quel type de sauvegarde copie intégralement la base de données ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q2" value="0"><span>Incrémentielle</span></label><label class="opt"><input type="radio" name="q2" value="1"><span>Différentielle</span></label><label class="opt"><input type="radio" name="q2" value="2"><span>Complète</span></label><label class="opt"><input type="radio" name="q2" value="3"><span>Partielle</span></label></div>
+      <p class="feedback" id="fb2"></p>
+    </div>
+    <div class="qblock" id="qb3">
+      <p class="qnum">Question 4 / 10</p>
+      <p class="qtxt">Quelle sauvegarde ne copie que les changements depuis la dernière sauvegarde complète ou incrémentielle ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q3" value="0"><span>Complète</span></label><label class="opt"><input type="radio" name="q3" value="1"><span>Différentielle</span></label><label class="opt"><input type="radio" name="q3" value="2"><span>Incrémentielle</span></label><label class="opt"><input type="radio" name="q3" value="3"><span>Partielle</span></label></div>
+      <p class="feedback" id="fb3"></p>
+    </div>
+    <div class="qblock" id="qb4">
+      <p class="qnum">Question 5 / 10</p>
+      <p class="qtxt">Le PITR (Point-in-Time Recovery) nécessite obligatoirement :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q4" value="0"><span>Uniquement des sauvegardes complètes</span></label><label class="opt"><input type="radio" name="q4" value="1"><span>Une sauvegarde complète + les journaux de transactions (binary logs)</span></label><label class="opt"><input type="radio" name="q4" value="2"><span>Uniquement les binary logs</span></label><label class="opt"><input type="radio" name="q4" value="3"><span>Une réplication en temps réel</span></label></div>
+      <p class="feedback" id="fb4"></p>
+    </div>
+    <div class="qblock" id="qb5">
+      <p class="qnum">Question 6 / 10</p>
+      <p class="qtxt">Comment activer les binary logs dans MySQL ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q5" value="0"><span>SET GLOBAL binary_logs = ON</span></label><label class="opt"><input type="radio" name="q5" value="1"><span>log-bin=mysql-bin dans [mysqld]</span></label><label class="opt"><input type="radio" name="q5" value="2"><span>CREATE BINARY LOGS</span></label><label class="opt"><input type="radio" name="q5" value="3"><span>ENABLE BINLOG</span></label></div>
+      <p class="feedback" id="fb5"></p>
+    </div>
+    <div class="qblock" id="qb6">
+      <p class="qnum">Question 7 / 10</p>
+      <p class="qtxt">Que signifie la règle 3-2-1 ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q6" value="0"><span>3 backups par jour, 2 vérifications, 1 test mensuel</span></label><label class="opt"><input type="radio" name="q6" value="1"><span>3 copies, 2 supports différents, 1 copie hors site</span></label><label class="opt"><input type="radio" name="q6" value="2"><span>3 serveurs, 2 datacenters, 1 cloud</span></label><label class="opt"><input type="radio" name="q6" value="3"><span>3 niveaux de chiffrement, 2 clés, 1 coffre</span></label></div>
+      <p class="feedback" id="fb6"></p>
+    </div>
+    <div class="qblock" id="qb7">
+      <p class="qnum">Question 8 / 10</p>
+      <p class="qtxt">Quelle est une conséquence possible d'une perte de données sans backup ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q7" value="0"><span>Uniquement une perte de temps</span></label><label class="opt"><input type="radio" name="q7" value="1"><span>Perte de revenus, sanctions RGPD, atteinte à la réputation, arrêt des opérations</span></label><label class="opt"><input type="radio" name="q7" value="2"><span>Un simple redémarrage du serveur suffit</span></label><label class="opt"><input type="radio" name="q7" value="3"><span>Aucune conséquence grave</span></label></div>
+      <p class="feedback" id="fb7"></p>
+    </div>
+    <div class="qblock" id="qb8">
+      <p class="qnum">Question 9 / 10</p>
+      <p class="qtxt">Le processus PITR consiste à :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q8" value="0"><span>Sauvegarder toutes les heures</span></label><label class="opt"><input type="radio" name="q8" value="1"><span>Restaurer la dernière sauvegarde complète, puis appliquer les journaux jusqu'à l'instant souhaité</span></label><label class="opt"><input type="radio" name="q8" value="2"><span>Dupliquer la base en temps réel</span></label><label class="opt"><input type="radio" name="q8" value="3"><span>Exporter en CSV puis réimporter</span></label></div>
+      <p class="feedback" id="fb8"></p>
+    </div>
+    <div class="qblock" id="qb9">
+      <p class="qnum">Question 10 / 10</p>
+      <p class="qtxt">Bonne pratique d'automatisation des sauvegardes : les fichiers doivent :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q9" value="0"><span>Être stockés sur le même serveur que la production</span></label><label class="opt"><input type="radio" name="q9" value="1"><span>Avoir un nommage avec date, être compressés, avec rotation et notification d'erreur</span></label><label class="opt"><input type="radio" name="q9" value="2"><span>Être en clair (non compressés) pour faciliter la restauration</span></label><label class="opt"><input type="radio" name="q9" value="3"><span>Ne jamais être supprimés</span></label></div>
+      <p class="feedback" id="fb9"></p>
+    </div>
+    <button class="btn" type="submit">Corriger et voir ma note</button>
+  </form>
+  <div id="result">
+    <div class="score" id="scoreVal"></div>
+    <div class="label">/ 20</div>
+    <div class="mention" id="mention"></div>
+    <br>
+    <button class="restart" onclick="location.reload()">Recommencer</button>
+    &nbsp;
+    <a class="restart" href="index.html">Accueil</a>
+  </div>
+</div>
+<script>
+const ANSWERS = [0,0,2,2,1,1,1,1,1,1];
+const EXPL = ["RPO = combien de données puis-je me permettre de perdre ? Ex. RPO=1h → backup toutes les heures.","RTO = en combien de temps dois-je retrouver mes données ? Ex. RTO=30min → restauration ultra-rapide.","Complète = copie intégrale. Simple mais gourmand en temps et espace.","Incrémentielle = seulement les changements depuis le dernier backup (complète ou incrémentielle).","Sans les binary logs, la PITR est impossible. Toujours les activer en production.","Dans my.cnf : [mysqld] / log-bin=mysql-bin","3 copies · 2 supports différents (ex. disque + bande) · 1 copie hors site (cloud/coffre).","Les conséquences sont multiples : financières, juridiques (RGPD), opérationnelles, réputationnelles.","1. Restaurer le dernier backup complet. 2. Rejouer les binary logs jusqu'à l'instant T.","Nommage daté + compression + rotation (gérer l'espace) + notification en cas d'échec."];
+const N = 10;
+document.getElementById('quizform').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let correct = 0;
+  for (let i = 0; i < N; i++) {
+    const sel = this.querySelector('input[name="q'+i+'"]:checked');
+    const fb = document.getElementById('fb'+i);
+    const qb = document.getElementById('qb'+i);
+    const opts = qb.querySelectorAll('.opt');
+    // disable
+    qb.querySelectorAll('input').forEach(r => r.disabled = true);
+    if (sel && parseInt(sel.value) === ANSWERS[i]) {
+      correct++;
+      fb.textContent = '✓ Bonne réponse !' + (EXPL[i] ? ' ' + EXPL[i] : '');
+      fb.className = 'feedback ok';
+      qb.className = 'qblock correct';
+    } else {
+      const correctOpt = opts[ANSWERS[i]].querySelector('span').textContent;
+      fb.textContent = '✗ Mauvaise réponse. Bonne réponse : ' + correctOpt + (EXPL[i] ? ' — ' + EXPL[i] : '');
+      fb.className = 'feedback err';
+      qb.className = 'qblock wrong';
+    }
+  }
+  const note = Math.round((correct / N) * 20 * 10) / 10;
+  document.getElementById('scoreVal').textContent = note.toString().replace('.',',');
+  let mention = '';
+  if (note >= 18) mention = '🏆 Excellent !';
+  else if (note >= 14) mention = '👍 Bien !';
+  else if (note >= 10) mention = '📚 Assez bien — relis la fiche.';
+  else mention = '⚠️ À retravailler — relis le cours.';
+  document.getElementById('mention').textContent = mention + '  (' + correct + '/' + N + ' bonnes réponses)';
+  document.getElementById('result').style.display = 'block';
+  document.querySelector('.btn').disabled = true;
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>

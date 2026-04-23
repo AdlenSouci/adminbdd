@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz — Normalisation des bases de données</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--accent-soft:#e3f2fd;--border:#d0d7e0;--ok:#2e7d32;--ok-bg:#e8f5e9;--ok-border:#43a047;--err:#c62828;--err-bg:#ffebee;--err-border:#ef9a9a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1419;--card:#1a2332;--text:#e8edf3;--muted:#9aa8b8;--accent:#64b5f6;--accent-soft:#1e3a5f;--border:#2d3d52;--ok:#66bb6a;--ok-bg:#1b3a1f;--ok-border:#388e3c;--err:#ef9a9a;--err-bg:#3b1515;--err-border:#c62828}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+nav.sitenav{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .75rem;background:#1565c0;position:sticky;top:0;z-index:100}
+nav.sitenav a{color:#fff;text-decoration:none;font-size:.82rem;font-weight:600;padding:.25rem .5rem;border-radius:5px;white-space:nowrap;opacity:.85}
+nav.sitenav a:hover{opacity:1;background:rgba(255,255,255,.18)}
+.container{max-width:38rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+h1{font-size:1.3rem;font-weight:800;margin-bottom:.2rem}
+.sub{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.qblock{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem;margin-bottom:.9rem;transition:border-color .2s}
+.qnum{font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.qtxt{font-weight:600;font-size:.98rem;margin-bottom:.75rem}
+.opts{display:flex;flex-direction:column;gap:.4rem}
+.opt{display:flex;align-items:flex-start;gap:.5rem;cursor:pointer;padding:.35rem .45rem;border-radius:7px;border:1px solid transparent;transition:background .15s}
+.opt:hover{background:var(--accent-soft)}
+.opt input{margin-top:.2rem;flex-shrink:0;accent-color:var(--accent)}
+.opt span{font-size:.93rem}
+.feedback{font-size:.88rem;font-weight:600;margin-top:.6rem;padding:.4rem .6rem;border-radius:7px;display:none}
+.feedback.ok{display:block;color:var(--ok);background:var(--ok-bg);border:1px solid var(--ok-border)}
+.feedback.err{display:block;color:var(--err);background:var(--err-bg);border:1px solid var(--err-border)}
+.qblock.correct{border-color:var(--ok-border)}
+.qblock.wrong{border-color:var(--err-border)}
+.btn{display:block;width:100%;padding:.85rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1rem;letter-spacing:.02em}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+#result{display:none;background:var(--card);border:2px solid var(--accent);border-radius:14px;padding:1.5rem;text-align:center;margin-top:1.2rem}
+#result .score{font-size:3rem;font-weight:900;color:var(--accent);line-height:1}
+#result .label{font-size:1.05rem;margin-top:.4rem;color:var(--muted)}
+#result .mention{font-size:1.2rem;font-weight:700;margin-top:.6rem}
+.restart{display:inline-block;margin-top:1rem;padding:.6rem 1.2rem;background:var(--accent);color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none}
+code{font-size:.88em;background:rgba(0,0,0,.07);padding:.1em .35em;border-radius:4px}
+@media(prefers-color-scheme:dark){code{background:rgba(255,255,255,.12)}}
+</style>
+</head>
+<body>
+<nav class="sitenav">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="revision-01-mcd.html">1. MCD</a>
+  <a href="revision-02-mcd-mld.html">2. MCD→MLD</a>
+  <a href="revision-03-normalisation.html">3. Normalisation</a>
+  <a href="revision-04-ddl.html">4. DDL</a>
+  <a href="revision-05-ddl-avance.html">5. DDL Avancé</a>
+  <a href="revision-06-sauvegarde.html">6. Sauvegarde</a>
+  <a href="revision-07-explain.html">7. EXPLAIN</a>
+  <a href="revision-08-droits.html">8. Droits</a>
+  <span style="opacity:.35;margin:0 .2rem">|</span>
+  <a href="quiz-01-mcd.html" style="background:rgba(255,255,255,.15)">Quiz 1</a>
+  <a href="quiz-02-mcd-mld.html" style="background:rgba(255,255,255,.15)">Quiz 2</a>
+  <a href="quiz-03-normalisation.html" style="background:rgba(255,255,255,.15)">Quiz 3</a>
+  <a href="quiz-04-ddl.html" style="background:rgba(255,255,255,.15)">Quiz 4</a>
+  <a href="quiz-05-ddl-avance.html" style="background:rgba(255,255,255,.15)">Quiz 5</a>
+  <a href="quiz-06-sauvegarde.html" style="background:rgba(255,255,255,.15)">Quiz 6</a>
+  <a href="quiz-07-explain.html" style="background:rgba(255,255,255,.15)">Quiz 7</a>
+  <a href="quiz-08-droits.html" style="background:rgba(255,255,255,.15)">Quiz 8</a>
+</nav>
+<div class="container">
+  <h1>Quiz — Normalisation des bases de données</h1>
+  <p class="sub">1NF, 2NF, 3NF, BCNF, anomalies · 12 questions · note sur 20</p>
+  <form id="quizform">
+
+    <div class="qblock" id="qb0">
+      <p class="qnum">Question 1 / 12</p>
+      <p class="qtxt">Quelle anomalie rend impossible l'ajout d'une donnée partielle ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q0" value="0"><span>Anomalie de suppression</span></label><label class="opt"><input type="radio" name="q0" value="1"><span>Anomalie de modification</span></label><label class="opt"><input type="radio" name="q0" value="2"><span>Anomalie d'insertion</span></label><label class="opt"><input type="radio" name="q0" value="3"><span>Redondance</span></label></div>
+      <p class="feedback" id="fb0"></p>
+    </div>
+    <div class="qblock" id="qb1">
+      <p class="qnum">Question 2 / 12</p>
+      <p class="qtxt">Quelle est la condition principale de la 1NF ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q1" value="0"><span>Pas de dépendance transitive</span></label><label class="opt"><input type="radio" name="q1" value="1"><span>Toutes les valeurs sont atomiques (indivisibles)</span></label><label class="opt"><input type="radio" name="q1" value="2"><span>Chaque attribut dépend de la clé entière</span></label><label class="opt"><input type="radio" name="q1" value="3"><span>Pas de redondance</span></label></div>
+      <p class="feedback" id="fb1"></p>
+    </div>
+    <div class="qblock" id="qb2">
+      <p class="qnum">Question 3 / 12</p>
+      <p class="qtxt">Une table viole la 1NF si :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q2" value="0"><span>Un attribut dépend d'un autre attribut non-clé</span></label><label class="opt"><input type="radio" name="q2" value="1"><span>Une cellule contient plusieurs valeurs séparées par des virgules</span></label><label class="opt"><input type="radio" name="q2" value="2"><span>La clé primaire est composée</span></label><label class="opt"><input type="radio" name="q2" value="3"><span>Il y a une dépendance partielle</span></label></div>
+      <p class="feedback" id="fb2"></p>
+    </div>
+    <div class="qblock" id="qb3">
+      <p class="qnum">Question 4 / 12</p>
+      <p class="qtxt">La 2NF exige que la table soit en 1NF ET que :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q3" value="0"><span>Chaque attribut non-clé dépende entièrement de la clé primaire (pas de dépendance partielle)</span></label><label class="opt"><input type="radio" name="q3" value="1"><span>Aucun attribut ne dépende d'un autre attribut non-clé</span></label><label class="opt"><input type="radio" name="q3" value="2"><span>La clé primaire soit simple (une seule colonne)</span></label><label class="opt"><input type="radio" name="q3" value="3"><span>Il n'y ait pas de valeurs NULL</span></label></div>
+      <p class="feedback" id="fb3"></p>
+    </div>
+    <div class="qblock" id="qb4">
+      <p class="qnum">Question 5 / 12</p>
+      <p class="qtxt">Dans (Étudiant, Cours, Professeur, VilleÉtudiant) avec PK = (Étudiant, Cours), VilleÉtudiant viole la 2NF car :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q4" value="0"><span>VilleÉtudiant dépend de Professeur</span></label><label class="opt"><input type="radio" name="q4" value="1"><span>VilleÉtudiant dépend uniquement de Étudiant (partie de la clé)</span></label><label class="opt"><input type="radio" name="q4" value="2"><span>VilleÉtudiant n'est pas atomique</span></label><label class="opt"><input type="radio" name="q4" value="3"><span>VilleÉtudiant crée une dépendance transitive</span></label></div>
+      <p class="feedback" id="fb4"></p>
+    </div>
+    <div class="qblock" id="qb5">
+      <p class="qnum">Question 6 / 12</p>
+      <p class="qtxt">La 3NF exige qu'il n'y ait pas de :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q5" value="0"><span>Clé primaire composée</span></label><label class="opt"><input type="radio" name="q5" value="1"><span>Dépendance transitive (attribut non-clé → autre attribut non-clé)</span></label><label class="opt"><input type="radio" name="q5" value="2"><span>Valeurs NULL</span></label><label class="opt"><input type="radio" name="q5" value="3"><span>Dépendance partielle</span></label></div>
+      <p class="feedback" id="fb5"></p>
+    </div>
+    <div class="qblock" id="qb6">
+      <p class="qnum">Question 7 / 12</p>
+      <p class="qtxt">Dans (Cours, Professeur, Département), Cours→Professeur et Professeur→Département. Quel est le problème ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q6" value="0"><span>Violation de la 1NF</span></label><label class="opt"><input type="radio" name="q6" value="1"><span>Dépendance partielle (violation 2NF)</span></label><label class="opt"><input type="radio" name="q6" value="2"><span>Dépendance transitive : Cours→Département via Professeur (violation 3NF)</span></label><label class="opt"><input type="radio" name="q6" value="3"><span>Violation de la BCNF uniquement</span></label></div>
+      <p class="feedback" id="fb6"></p>
+    </div>
+    <div class="qblock" id="qb7">
+      <p class="qnum">Question 8 / 12</p>
+      <p class="qtxt">Comment décompose-t-on (Cours, Professeur, Département) pour atteindre la 3NF ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q7" value="0"><span>On fusionne tout en une seule table</span></label><label class="opt"><input type="radio" name="q7" value="1"><span>Table Cours(Cours, Professeur) + Table Professeur(Professeur, Département)</span></label><label class="opt"><input type="radio" name="q7" value="2"><span>On supprime la colonne Département</span></label><label class="opt"><input type="radio" name="q7" value="3"><span>On ajoute une clé primaire composée</span></label></div>
+      <p class="feedback" id="fb7"></p>
+    </div>
+    <div class="qblock" id="qb8">
+      <p class="qnum">Question 9 / 12</p>
+      <p class="qtxt">La BCNF est :</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q8" value="0"><span>Moins stricte que la 3NF</span></label><label class="opt"><input type="radio" name="q8" value="1"><span>Plus stricte que la 3NF</span></label><label class="opt"><input type="radio" name="q8" value="2"><span>Identique à la 3NF</span></label><label class="opt"><input type="radio" name="q8" value="3"><span>Une version de la 2NF</span></label></div>
+      <p class="feedback" id="fb8"></p>
+    </div>
+    <div class="qblock" id="qb9">
+      <p class="qnum">Question 10 / 12</p>
+      <p class="qtxt">La condition de la BCNF est : pour toute dépendance fonctionnelle X→Y,</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q9" value="0"><span>Y doit être une clé candidate</span></label><label class="opt"><input type="radio" name="q9" value="1"><span>X doit être une clé candidate</span></label><label class="opt"><input type="radio" name="q9" value="2"><span>X et Y doivent être des clés candidates</span></label><label class="opt"><input type="radio" name="q9" value="3"><span>X doit être un attribut non-clé</span></label></div>
+      <p class="feedback" id="fb9"></p>
+    </div>
+    <div class="qblock" id="qb10">
+      <p class="qnum">Question 11 / 12</p>
+      <p class="qtxt">Quelle anomalie provoque la perte d'informations lors d'une suppression ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q10" value="0"><span>Anomalie d'insertion</span></label><label class="opt"><input type="radio" name="q10" value="1"><span>Anomalie de modification</span></label><label class="opt"><input type="radio" name="q10" value="2"><span>Anomalie de suppression</span></label><label class="opt"><input type="radio" name="q10" value="3"><span>Redondance</span></label></div>
+      <p class="feedback" id="fb10"></p>
+    </div>
+    <div class="qblock" id="qb11">
+      <p class="qnum">Question 12 / 12</p>
+      <p class="qtxt">Une table en 3NF est-elle forcément en BCNF ?</p>
+      <div class="opts"><label class="opt"><input type="radio" name="q11" value="0"><span>Oui, toujours</span></label><label class="opt"><input type="radio" name="q11" value="1"><span>Non, pas nécessairement (cas avec plusieurs clés candidates se chevauchant)</span></label><label class="opt"><input type="radio" name="q11" value="2"><span>Oui, si la clé primaire est simple</span></label><label class="opt"><input type="radio" name="q11" value="3"><span>Non, jamais</span></label></div>
+      <p class="feedback" id="fb11"></p>
+    </div>
+    <button class="btn" type="submit">Corriger et voir ma note</button>
+  </form>
+  <div id="result">
+    <div class="score" id="scoreVal"></div>
+    <div class="label">/ 20</div>
+    <div class="mention" id="mention"></div>
+    <br>
+    <button class="restart" onclick="location.reload()">Recommencer</button>
+    &nbsp;
+    <a class="restart" href="index.html">Accueil</a>
+  </div>
+</div>
+<script>
+const ANSWERS = [2,1,1,0,1,1,2,1,1,1,2,1];
+const EXPL = ["Anomalie d'insertion = on ne peut pas ajouter une donnée sans avoir toutes les autres.","1NF : valeurs atomiques + pas de groupes de valeurs répétées dans une cellule.","Ex : Cours = 'BD, Réseaux' dans une cellule → violation de la 1NF.","2NF élimine les dépendances partielles (un attribut qui dépend d'une PARTIE de la clé composée).","Dépendance partielle : VilleÉtudiant → Étudiant seulement, pas de (Étudiant, Cours).","3NF : tout attribut non-clé dépend DIRECTEMENT de la clé, pas d'un autre attribut non-clé.","Cours→Département est une dépendance transitive → violation de la 3NF.","Chaque table n'a plus que des dépendances directes vers sa propre clé.","BCNF : pour toute DF X→Y, X doit être une clé candidate. Plus stricte que la 3NF.","BCNF : X→Y implique que X est une clé candidate.","Anomalie de suppression : supprimer une ligne peut faire perdre d'autres données utiles.","Une table en 3NF peut violer la BCNF quand il y a plusieurs clés candidates qui se chevauchent."];
+const N = 12;
+document.getElementById('quizform').addEventListener('submit', function(e) {
+  e.preventDefault();
+  let correct = 0;
+  for (let i = 0; i < N; i++) {
+    const sel = this.querySelector('input[name="q'+i+'"]:checked');
+    const fb = document.getElementById('fb'+i);
+    const qb = document.getElementById('qb'+i);
+    const opts = qb.querySelectorAll('.opt');
+    // disable
+    qb.querySelectorAll('input').forEach(r => r.disabled = true);
+    if (sel && parseInt(sel.value) === ANSWERS[i]) {
+      correct++;
+      fb.textContent = '✓ Bonne réponse !' + (EXPL[i] ? ' ' + EXPL[i] : '');
+      fb.className = 'feedback ok';
+      qb.className = 'qblock correct';
+    } else {
+      const correctOpt = opts[ANSWERS[i]].querySelector('span').textContent;
+      fb.textContent = '✗ Mauvaise réponse. Bonne réponse : ' + correctOpt + (EXPL[i] ? ' — ' + EXPL[i] : '');
+      fb.className = 'feedback err';
+      qb.className = 'qblock wrong';
+    }
+  }
+  const note = Math.round((correct / N) * 20 * 10) / 10;
+  document.getElementById('scoreVal').textContent = note.toString().replace('.',',');
+  let mention = '';
+  if (note >= 18) mention = '🏆 Excellent !';
+  else if (note >= 14) mention = '👍 Bien !';
+  else if (note >= 10) mention = '📚 Assez bien — relis la fiche.';
+  else mention = '⚠️ À retravailler — relis le cours.';
+  document.getElementById('mention').textContent = mention + '  (' + correct + '/' + N + ' bonnes réponses)';
+  document.getElementById('result').style.display = 'block';
+  document.querySelector('.btn').disabled = true;
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+});
+</script>
+</body>
+</html>
