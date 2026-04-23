@@ -27,11 +27,26 @@ h1{font-size:1.25rem;font-weight:800;margin:0 0 .25rem;letter-spacing:-.02em}
 code{font-size:.88em;background:rgba(0,0,0,.06);padding:.1em .35em;border-radius:4px}
 pre{font-size:.78em;background:rgba(0,0,0,.05);padding:.65rem .85rem;border-radius:8px;overflow-x:auto;margin:.5rem 0;line-height:1.45}
 @media(prefers-color-scheme:dark){code{background:rgba(255,255,255,.1)}pre{background:rgba(255,255,255,.06)}}
+
+nav.sitenav{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .75rem;background:#1565c0;position:sticky;top:0;z-index:100}
+nav.sitenav a{color:#fff;text-decoration:none;font-size:.82rem;font-weight:600;padding:.25rem .5rem;border-radius:5px;white-space:nowrap;opacity:.85;transition:opacity .15s,background .15s}
+nav.sitenav a:hover{opacity:1;background:rgba(255,255,255,.18)}
+
 footer{margin-top:1.5rem;font-size:.85rem;color:var(--muted)}
 </style>
 </head>
 <body>
-<p class="top"><a href="index.html">← Accueil</a> · Fiche révision complète</p>
+<nav class="sitenav">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="revision-01-mcd.html">1. MCD</a>
+  <a href="revision-02-mcd-mld.html">2. MCD→MLD</a>
+  <a href="revision-03-normalisation.html">3. Normalisation</a>
+  <a href="revision-04-ddl.html">4. DDL</a>
+  <a href="revision-05-ddl-avance.html">5. DDL Avancé</a>
+  <a href="revision-06-sauvegarde.html">6. Sauvegarde</a>
+  <a href="revision-07-explain.html">7. EXPLAIN</a>
+  <a href="revision-08-droits.html">8. Droits</a>
+</nav>
 <h1>EXPLAIN — Analyse des plans d'exécution</h1>
 <p class="sub">Tout le cours (explain.txt) — MySQL et PostgreSQL, toutes les colonnes, exemples détaillés.</p>
 
@@ -227,6 +242,6 @@ ANALYZE employees;</pre>
   </ul>
 </section>
 
-<footer><a href="index.html">← Accueil</a> · <a href="pdf-source-07-explain.html">Texte brut (explain.txt)</a></footer>
+<footer><a href="index.html">← Accueil</a></footer>
 </body>
 </html>

@@ -1,56 +1,67 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <title>Révision — Admin BDD</title>
-  <!-- Change v= quand tu modifies le site pour forcer le rechargement du CSS -->
-  <link rel="stylesheet" href="styles.css?v=2026042316">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Révision — Admin BDD</title>
+<style>
+:root{--bg:#f0f4ff;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--border:#d0d7e0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem}
+h1{font-size:2rem;font-weight:900;text-align:center;margin-bottom:.4rem;letter-spacing:-.03em;color:var(--accent)}
+.sub{text-align:center;color:var(--muted);font-size:1rem;margin-bottom:2.5rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;width:100%;max-width:760px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem 1.3rem;text-decoration:none;color:var(--text);transition:box-shadow .15s,transform .12s;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.card:hover{box-shadow:0 6px 20px rgba(21,101,192,.18);transform:translateY(-2px)}
+.card .num{font-size:.78rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.card .title{font-size:1rem;font-weight:700;margin-bottom:.25rem}
+.card .desc{font-size:.82rem;color:var(--muted);line-height:1.4}
+</style>
 </head>
 <body>
-  <p style="margin:0 0 1rem;padding:0.5rem 0.75rem;background:var(--card,#f8fafc);border-radius:8px;font-size:0.88rem;border:1px solid var(--border,#e2e8f0);color:var(--muted,#64748b)">
-    Build <strong>17</strong> (2026-04-23). Fiches 1–8 <strong>entièrement réécrites</strong> à partir de tous les PDF + txt, aucune notion omise, CSS inclus dans chaque page. Si tu ne vois pas « Build 17 », vide le cache : <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> ou navigation privée.
-  </p>
-  <header>
-    <h1>Révision Admin BDD</h1>
-    <p style="margin:0 0 1rem;padding:0.65rem 0.85rem;background:#e8f5e9;border:1px solid #43a047;border-radius:8px;font-size:0.95rem;line-height:1.45">
-      <strong>Le site à ouvrir (GitHub Pages)</strong> — ce n’est pas la page « Code » du dépôt :<br>
-      <a href="https://adlensouci.github.io/adminbdd/" style="font-weight:700;word-break:break-all">https://adlensouci.github.io/adminbdd/</a><br>
-      <span style="font-size:0.88rem;color:#2e7d32">Sur <code>github.com/AdlenSouci/adminbdd</code> tu vois les fichiers ; les fiches lisibles, c’est le lien ci-dessus (ou navigation privée si ça n’a pas changé).</span>
-    </p>
-    <p class="sub">Huit fiches de révision HTML (contenu structuré à partir des PDF / fichiers texte du cours). Les liens <strong>Texte brut</strong> = extrait automatique, pour côte à côte si besoin.</p>
-  </header>
-
-  <nav class="toc" aria-label="Fiches de révision">
-    <a href="revision-01-mcd.html?v=2026042316"><strong>1.</strong> MCD (MERISE)</a>
-    <a href="revision-02-mcd-mld.html?v=2026042316"><strong>2.</strong> Du MCD au MLD</a>
-    <a href="revision-03-normalisation.html?v=2026042316"><strong>3.</strong> Normalisation</a>
-    <a href="revision-04-ddl.html?v=2026042316"><strong>4.</strong> DDL</a>
-    <a href="revision-05-ddl-avance.html?v=2026042316"><strong>5.</strong> DDL avancé</a>
-    <a href="revision-06-sauvegarde.html?v=2026042316"><strong>6.</strong> Sauvegarde &amp; résilience</a>
-    <a href="revision-07-explain.html?v=2026042316"><strong>7.</strong> EXPLAIN</a>
-    <a href="revision-08-droits.html?v=2026042316"><strong>8.</strong> Droits &amp; utilisateurs</a>
-  </nav>
-
-  <section style="margin-top:1.75rem">
-    <h2 style="font-size:1rem;margin-bottom:0.6rem">Texte brut (optionnel)</h2>
-    <nav class="toc" aria-label="Sources brutes">
-      <a href="pdf-source-01-mcd.html?v=2026042316">Brut 1 — MCD</a>
-      <a href="pdf-source-02-mcd-mld.html?v=2026042316">Brut 2 — MCD→MLD</a>
-      <a href="pdf-source-03-normalisation.html?v=2026042316">Brut 3</a>
-      <a href="pdf-source-04-ddl.html?v=2026042316">Brut 4 — DDL</a>
-      <a href="pdf-source-05-ddl-avance.html?v=2026042316">Brut 5</a>
-      <a href="pdf-source-06-sauvegarde.html?v=2026042316">Brut 6</a>
-      <a href="pdf-source-07-explain.html?v=2026042316">Brut 7</a>
-      <a href="pdf-source-08-droits.html?v=2026042316">Brut 8</a>
-    </nav>
-  </section>
-
-  <footer style="margin-top:2rem;font-size:0.88rem;color:var(--muted)">
-    <p><strong>GitHub Pages :</strong> après <code>git push</code>, attends 1–3 minutes puis recharge en privé. Tant que tu ne pousses pas, le site en ligne ne change pas.</p>
-    <p>Scripts : <code>GITHUB-PAGES.txt</code></p>
-  </footer>
+<h1>Admin BDD — Révision</h1>
+<p class="sub">8 fiches de révision · clique sur un cours pour réviser</p>
+<div class="grid">
+  <a class="card" href="revision-01-mcd.html">
+    <div class="num">Cours 1</div>
+    <div class="title">MCD (MERISE)</div>
+    <div class="desc">Entités, attributs, associations, cardinalités, ternaires, réflexives</div>
+  </a>
+  <a class="card" href="revision-02-mcd-mld.html">
+    <div class="num">Cours 2</div>
+    <div class="title">Du MCD au MLD</div>
+    <div class="desc">4 règles de transformation : 1:1, 1:N, N:N, entité→table</div>
+  </a>
+  <a class="card" href="revision-03-normalisation.html">
+    <div class="num">Cours 3</div>
+    <div class="title">Normalisation</div>
+    <div class="desc">1NF, 2NF, 3NF, BCNF — anomalies et décompositions</div>
+  </a>
+  <a class="card" href="revision-04-ddl.html">
+    <div class="num">Cours 4</div>
+    <div class="title">DDL</div>
+    <div class="desc">CREATE, ALTER, DROP, types, contraintes, clés, FK, FAQ</div>
+  </a>
+  <a class="card" href="revision-05-ddl-avance.html">
+    <div class="num">Cours 5</div>
+    <div class="title">DDL Avancé</div>
+    <div class="desc">Partitionnement RANGE/LIST/HASH, index composites, OLTP vs OLAP</div>
+  </a>
+  <a class="card" href="revision-06-sauvegarde.html">
+    <div class="num">Cours 6</div>
+    <div class="title">Sauvegarde &amp; Résilience</div>
+    <div class="desc">RPO/RTO, types de backup, PITR, règle 3-2-1</div>
+  </a>
+  <a class="card" href="revision-07-explain.html">
+    <div class="num">Cours 7</div>
+    <div class="title">EXPLAIN</div>
+    <div class="desc">Plans d'exécution MySQL et PostgreSQL, colonnes, exemples</div>
+  </a>
+  <a class="card" href="revision-08-droits.html">
+    <div class="num">Cours 8</div>
+    <div class="title">Droits &amp; Rôles</div>
+    <div class="desc">CREATE USER, GRANT, REVOKE, rôles, exercice corrigé</div>
+  </a>
+</div>
 </body>
 </html>
