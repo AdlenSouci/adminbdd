@@ -1,223 +1,232 @@
 ﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Révision — EXPLAIN</title>
-  <style>
-/* __FICHE_CSS_INLINED__ */
-/* Fiches de révision — lisibles, type « avant un partiel » */
-:root {
-  --bg: #f6f8fb;
-  --card: #ffffff;
-  --text: #1a2332;
-  --muted: #5c6b7a;
-  --accent: #1565c0;
-  --accent-soft: #e3f2fd;
-  --border: #d0d7e0;
-  --warn: #fff8e1;
-  --warn-border: #ffc107;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1419;
-    --card: #1a2332;
-    --text: #e8edf3;
-    --muted: #9aa8b8;
-    --accent: #64b5f6;
-    --accent-soft: #1e3a5f;
-    --border: #2d3d52;
-    --warn: #2d2618;
-    --warn-border: #ffb300;
-  }
-}
-
-* { box-sizing: border-box; }
-
-html { font-size: 17px; -webkit-text-size-adjust: 100%; }
-
-body {
-  margin: 0;
-  padding: 1rem 1rem 2.5rem;
-  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.5;
-  max-width: 36rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-.top { margin-bottom: 1.25rem; font-size: 0.88rem; color: var(--muted); }
-
-h1 {
-  font-size: 1.2rem;
-  font-weight: 800;
-  margin: 0 0 0.35rem;
-  letter-spacing: -0.02em;
-}
-
-.sub {
-  margin: 0 0 1.25rem;
-  font-size: 0.95rem;
-  color: var(--muted);
-}
-
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0.85rem 1rem 1rem;
-  margin-bottom: 0.85rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,.04);
-}
-
-.card h2 {
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin: 0 0 0.55rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 2px solid var(--accent);
-  color: var(--text);
-}
-
-.card h3 {
-  font-size: 0.88rem;
-  font-weight: 600;
-  margin: 0.65rem 0 0.35rem;
-  color: var(--muted);
-}
-
-.card ul {
-  margin: 0;
-  padding-left: 1.15rem;
-}
-
-.card li {
-  margin-bottom: 0.4rem;
-}
-
-.card li strong { color: var(--text); }
-
-.piege {
-  margin-top: 0.5rem;
-  padding: 0.5rem 0.65rem;
-  background: var(--warn);
-  border: 1px solid var(--warn-border);
-  border-radius: 8px;
-  font-size: 0.88rem;
-}
-
-.mini-table {
-  width: 100%;
-  font-size: 0.86rem;
-  border-collapse: collapse;
-  margin: 0.4rem 0 0;
-}
-
-.mini-table th, .mini-table td {
-  border: 1px solid var(--border);
-  padding: 0.35rem 0.45rem;
-  text-align: left;
-}
-
-.mini-table th { background: var(--accent-soft); font-weight: 600; }
-
-footer {
-  margin-top: 1.5rem;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<title>Fiche — EXPLAIN</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--text:#1a2332;--muted:#5c6b7a;--accent:#1565c0;--accent-soft:#e3f2fd;--border:#d0d7e0;--warn:#fff8e1;--warn-border:#ffc107;--ok:#e8f5e9;--ok-border:#43a047}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1419;--card:#1a2332;--text:#e8edf3;--muted:#9aa8b8;--accent:#64b5f6;--accent-soft:#1e3a5f;--border:#2d3d52;--warn:#2d2618;--warn-border:#ffb300;--ok:#1b3a1f;--ok-border:#66bb6a}}
+*{box-sizing:border-box}html{font-size:17px}
+body{margin:0 auto;padding:1rem 1rem 3rem;max-width:38rem;font-family:system-ui,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+a{color:var(--accent)}
+.top{font-size:.85rem;color:var(--muted);margin-bottom:1rem}
+h1{font-size:1.25rem;font-weight:800;margin:0 0 .25rem;letter-spacing:-.02em}
+.sub{margin:0 0 1.2rem;font-size:.95rem;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem 1rem;margin-bottom:.85rem;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card h2{font-size:.95rem;font-weight:700;margin:0 0 .55rem;padding-bottom:.3rem;border-bottom:2px solid var(--accent);color:var(--text)}
+.card h3{font-size:.88rem;font-weight:600;margin:.65rem 0 .3rem;color:var(--muted)}
+.card ul{margin:0;padding-left:1.15rem}.card li{margin-bottom:.38rem}
+.card li strong{color:var(--text)}
+.ok{margin-top:.5rem;padding:.45rem .65rem;background:var(--ok);border:1px solid var(--ok-border);border-radius:8px;font-size:.88rem}
+.warn{margin-top:.5rem;padding:.45rem .65rem;background:var(--warn);border:1px solid var(--warn-border);border-radius:8px;font-size:.88rem}
+.mini-table{width:100%;font-size:.82rem;border-collapse:collapse;margin:.4rem 0}
+.mini-table th,.mini-table td{border:1px solid var(--border);padding:.3rem .4rem;text-align:left;vertical-align:top}
+.mini-table th{background:var(--accent-soft);font-weight:600}
+code{font-size:.88em;background:rgba(0,0,0,.06);padding:.1em .35em;border-radius:4px}
+pre{font-size:.78em;background:rgba(0,0,0,.05);padding:.65rem .85rem;border-radius:8px;overflow-x:auto;margin:.5rem 0;line-height:1.45}
+@media(prefers-color-scheme:dark){code{background:rgba(255,255,255,.1)}pre{background:rgba(255,255,255,.06)}}
+footer{margin-top:1.5rem;font-size:.85rem;color:var(--muted)}
+</style>
 </head>
 <body>
-  <p class="top"><a href="index.html?v=2026042315">← Accueil</a> · Fiche révision</p>
-  <h1>EXPLAIN (MySQL &amp; PostgreSQL)</h1>
-  <p class="sub">Comprendre le <strong>plan d’exécution</strong> pour optimiser requêtes et index (support <code>explain.txt</code>).</p>
+<p class="top"><a href="index.html">← Accueil</a> · Fiche révision complète</p>
+<h1>EXPLAIN — Analyse des plans d'exécution</h1>
+<p class="sub">Tout le cours (explain.txt) — MySQL et PostgreSQL, toutes les colonnes, exemples détaillés.</p>
 
-  <section class="card">
-    <h2>À quoi ça sert ?</h2>
-    <ul>
-      <li>Requête lente : voir où le temps part (scan, jointure, tri).</li>
-      <li>Vérifier si les <strong>index</strong> existants sont utilisés.</li>
-      <li>Analyser l’ordre et la méthode des <strong>jointures</strong>.</li>
-      <li>Sous-requêtes : exécution répétée ou optimisée en une passe.</li>
-    </ul>
-  </section>
+<section class="card">
+  <h2>À quoi sert EXPLAIN ?</h2>
+  <ul>
+    <li>Comprendre comment le <strong>moteur planifie et exécute</strong> une requête.</li>
+    <li>Identifier les <strong>problèmes de performance</strong> et les optimiser.</li>
+  </ul>
+  <h3>Scénarios typiques</h3>
+  <ul>
+    <li><strong>Requêtes lentes :</strong> analyser le plan pour trouver le goulot d'étranglement.</li>
+    <li><strong>Création / ajustement d'index :</strong> vérifier si les index existants sont utilisés.</li>
+    <li><strong>Optimisation des jointures :</strong> comprendre l'ordre d'exécution et la méthode (hachage, boucle imbriquée…).</li>
+    <li><strong>Sous-requêtes complexes :</strong> détecter si une sous-requête est exécutée plusieurs fois.</li>
+  </ul>
+</section>
 
-  <section class="card">
-    <h2>MySQL — syntaxe</h2>
-    <ul>
-      <li><code>EXPLAIN [EXTENDED] [PARTITIONS] SELECT …</code></li>
-      <li><code>EXPLAIN FORMAT=JSON SELECT …</code> pour analyse détaillée / outils.</li>
-      <li><code>EXPLAIN EXTENDED</code> + <code>SHOW WARNINGS</code> pour voir les réécritures de l’optimiseur.</li>
-    </ul>
-  </section>
+<section class="card">
+  <h2>EXPLAIN en MySQL — Syntaxe</h2>
+<pre>EXPLAIN [EXTENDED] [PARTITIONS] SELECT ...;
+EXPLAIN EXTENDED SELECT ...;  -- puis SHOW WARNINGS pour voir les réécritures
+EXPLAIN FORMAT=JSON SELECT ...;  -- format JSON, idéal pour analyses complexes</pre>
+</section>
 
-  <section class="card">
-    <h2>MySQL — colonnes utiles du résultat</h2>
-    <ul>
-      <li><strong>id</strong> : ordre / regroupement des étapes ; sous-requêtes ont des ids différents.</li>
-      <li><strong>select_type</strong> : SIMPLE, PRIMARY, SUBQUERY, DERIVED (FROM), UNION, DEPENDENT SUBQUERY, etc.</li>
-      <li><strong>table</strong> : table ou alias concerné.</li>
-      <li><strong>type</strong> : qualité d’accès aux lignes (voir carte ci-dessous).</li>
-      <li><strong>possible_keys</strong> / <strong>key</strong> : index candidats vs index réellement utilisé.</li>
-      <li><strong>rows</strong> : estimation du nombre de lignes examinées.</li>
-      <li><strong>Extra</strong> : <code>Using where</code>, <code>Using index</code> (index seul), <code>Using temporary</code>, <code>Using filesort</code>, <code>Using index condition</code>, etc.</li>
-    </ul>
-  </section>
+<section class="card">
+  <h2>MySQL — Colonnes du résultat</h2>
+  <table class="mini-table">
+    <tr><th>Colonne</th><th>Description</th></tr>
+    <tr><td><code>id</code></td><td>Identifiant unique de l'étape. Chaque sous-requête reçoit un id différent.</td></tr>
+    <tr><td><code>select_type</code></td><td>Type de la requête (voir ci-dessous)</td></tr>
+    <tr><td><code>table</code></td><td>Table (ou alias) utilisée dans cette étape</td></tr>
+    <tr><td><code>type</code></td><td>Méthode d'accès aux lignes — reflète l'efficacité (voir ci-dessous)</td></tr>
+    <tr><td><code>possible_keys</code></td><td>Index que MySQL pourrait utiliser (ou NULL)</td></tr>
+    <tr><td><code>key</code></td><td>Index effectivement utilisé (ou NULL)</td></tr>
+    <tr><td><code>key_len</code></td><td>Longueur de l'index utilisé en octets (combien de colonnes)</td></tr>
+    <tr><td><code>ref</code></td><td>Colonnes/valeurs utilisées pour associer les tables en jointure</td></tr>
+    <tr><td><code>rows</code></td><td>Estimation du nombre de lignes à examiner</td></tr>
+    <tr><td><code>Extra</code></td><td>Informations supplémentaires (voir ci-dessous)</td></tr>
+  </table>
+</section>
 
-  <section class="card">
-    <h2>MySQL — <code>type</code> (du pire au mieux, rappel cours)</h2>
-    <ul>
-      <li><strong>ALL</strong> : scan complet table — à éviter sur grosses tables.</li>
-      <li><strong>index</strong> : scan complet d’un index.</li>
-      <li><strong>range</strong> : plage sur index (<code>&gt;</code>, <code>BETWEEN</code>, etc.).</li>
-      <li><strong>ref</strong> : accès index non unique.</li>
-      <li><strong>eq_ref</strong> : une ligne par clé (souvent PK / unique en jointure).</li>
-      <li><strong>const</strong> / <strong>system</strong> : accès direct constant (très bon).</li>
-    </ul>
-    <div class="piege">
-      Surveiller surtout <strong>type</strong> et <strong>Extra</strong> : <code>ALL</code> + gros <code>rows</code> ou <code>Using filesort</code> / <code>Using temporary</code> = pistes d’optimisation prioritaires.
-    </div>
-  </section>
+<section class="card">
+  <h2>MySQL — Valeurs de <code>select_type</code></h2>
+  <ul>
+    <li><strong>SIMPLE</strong> : requête simple, sans sous-requêtes ni unions.</li>
+    <li><strong>PRIMARY</strong> : requête principale dans le cas de sous-requêtes.</li>
+    <li><strong>SUBQUERY</strong> : sous-requête dans WHERE, FROM ou SELECT.</li>
+    <li><strong>DERIVED</strong> : sous-requête dans la clause FROM.</li>
+    <li><strong>UNION</strong> : requête faisant partie d'une union.</li>
+    <li><strong>DEPENDENT SUBQUERY</strong> : sous-requête corrélée (dépend d'une requête externe).</li>
+    <li><strong>UNCACHEABLE SUBQUERY</strong> : sous-requête qui ne peut pas être mise en cache.</li>
+  </ul>
+</section>
 
-  <section class="card">
-    <h2>Exemple cours (salaries / employees)</h2>
-    <ul>
-      <li>Avant index : <code>salaries</code> en <code>type = ALL</code>, <code>key = NULL</code> malgré <code>PRIMARY</code> en <code>possible_keys</code> → filtre sur salaire et dates sans index adapté.</li>
-      <li>Action : index du type <code>(salary, from_date, to_date)</code> ; <code>ANALYZE TABLE salaries</code> si stats obsolètes.</li>
-      <li>Après : <code>type = range</code>, index utilisé, <code>Using index condition</code> sur <code>salaries</code>.</li>
-    </ul>
-  </section>
+<section class="card">
+  <h2>MySQL — Valeurs de <code>type</code> (du pire au meilleur)</h2>
+  <table class="mini-table">
+    <tr><th>Valeur</th><th>Signification</th></tr>
+    <tr><td><code>ALL</code></td><td>Scan complet de la table. Très inefficace sur grandes tables.</td></tr>
+    <tr><td><code>index</code></td><td>Scan complet de l'index (plus rapide que ALL mais pas de filtre).</td></tr>
+    <tr><td><code>range</code></td><td>Recherche dans un intervalle via index (BETWEEN, &gt;, &lt;). Efficace.</td></tr>
+    <tr><td><code>ref</code></td><td>Utilisation d'un index non-unique pour trouver des lignes.</td></tr>
+    <tr><td><code>eq_ref</code></td><td>Index unique avec correspondance 1:1 (PK ou UNIQUE en jointure). Très efficace.</td></tr>
+    <tr><td><code>const</code></td><td>Accès par constante, une seule ligne retournée. Très rapide.</td></tr>
+    <tr><td><code>system</code></td><td>Table à une seule ligne. Cas rare, similaire à const.</td></tr>
+  </table>
+  <div class="warn">Surveiller en priorité : <strong>ALL</strong> (scan complet) avec un gros <code>rows</code> → créer un index.</div>
+</section>
 
-  <section class="card">
-    <h2>PostgreSQL — syntaxe</h2>
-    <ul>
-      <li><code>EXPLAIN [ (option [, …]) ] SELECT …</code></li>
-      <li><code>EXPLAIN (ANALYZE, BUFFERS)</code> : exécute vraiment la requête et affiche temps réel et accès disque/mémoire.</li>
-      <li>Autres options : <code>VERBOSE</code>, <code>COSTS</code>, <code>TIMING</code>, etc.</li>
-    </ul>
-  </section>
+<section class="card">
+  <h2>MySQL — Valeurs de <code>Extra</code></h2>
+  <ul>
+    <li><strong>Using where</strong> : filtres appliqués après l'accès aux données.</li>
+    <li><strong>Using index</strong> : accès via l'index uniquement, sans lire la table (index de couverture).</li>
+    <li><strong>Using temporary</strong> : table temporaire pour résultats intermédiaires (GROUP BY, ORDER BY complexes).</li>
+    <li><strong>Using filesort</strong> : tri externe (ORDER BY sans index adapté). À optimiser.</li>
+    <li><strong>Using join buffer</strong> : tampon de jointure utilisé (Nested Loop sans index).</li>
+    <li><strong>Using index condition</strong> : conditions WHERE appliquées directement via l'index (ICP).</li>
+    <li><strong>No matching min/max row</strong> : aucune ligne ne correspond, peut être optimisé.</li>
+  </ul>
+</section>
 
-  <section class="card">
-    <h2>PostgreSQL — nœuds courants</h2>
-    <ul>
-      <li><strong>Seq Scan</strong> : parcours séquentiel de toute la table.</li>
-      <li><strong>Index Scan</strong> / <strong>Bitmap Index Scan</strong> : lecture via index (bitmap regroupe les accès heap).</li>
-      <li><strong>Hash Join</strong> / <strong>Nested Loop</strong> / <strong>Merge Join</strong> : stratégies de jointure.</li>
-    </ul>
-  </section>
+<section class="card">
+  <h2>Exemple détaillé MySQL — Avant optimisation</h2>
+<pre>SELECT e.emp_no, e.first_name, s.salary
+FROM employees e
+JOIN salaries s ON e.emp_no = s.emp_no
+WHERE s.salary &gt; 50000
+  AND CURRENT_DATE BETWEEN s.from_date AND s.to_date;</pre>
+  <h3>Résultat EXPLAIN</h3>
+  <table class="mini-table">
+    <tr><th>table</th><th>type</th><th>key</th><th>rows</th><th>Extra</th></tr>
+    <tr><td>s (salaries)</td><td><strong>ALL</strong></td><td>NULL</td><td>299 379</td><td>Using where</td></tr>
+    <tr><td>e (employees)</td><td>eq_ref</td><td>PRIMARY</td><td>1</td><td>—</td></tr>
+  </table>
+  <h3>Problèmes identifiés</h3>
+  <ul>
+    <li>Scan complet de <code>salaries</code> (<code>type = ALL</code>) : MySQL parcourt toutes les lignes.</li>
+    <li>Aucun index utilisé pour le filtre sur <code>salary</code> et les dates (<code>key = NULL</code>).</li>
+  </ul>
+  <h3>Solution : créer un index couvrant</h3>
+<pre>CREATE INDEX idx_salary_dates ON salaries (salary, from_date, to_date);
+ANALYZE TABLE salaries;  -- mettre les statistiques à jour</pre>
+  <h3>Résultat après optimisation</h3>
+  <table class="mini-table">
+    <tr><th>table</th><th>type</th><th>key</th><th>rows</th><th>Extra</th></tr>
+    <tr><td>salaries</td><td><strong>range</strong></td><td>idx_salary_dates</td><td>~500</td><td>Using index condition</td></tr>
+    <tr><td>employees</td><td>eq_ref</td><td>PRIMARY</td><td>1</td><td>—</td></tr>
+  </table>
+  <div class="ok">type passe de ALL à range, rows de 299 379 à ~500 : gain massif.</div>
+</section>
 
-  <footer>
-    <a href="index.html?v=2026042315">Accueil</a> ·
-    <a href="pdf-source-07-explain.html?v=2026042315">Texte brut (explain.txt)</a>
-  </footer>
+<section class="card">
+  <h2>EXPLAIN en PostgreSQL — Syntaxe et options</h2>
+<pre>EXPLAIN [ (options) ] SELECT ...;</pre>
+  <table class="mini-table">
+    <tr><th>Option</th><th>Description</th></tr>
+    <tr><td><code>ANALYZE</code></td><td>Exécute réellement la requête et mesure les temps réels.</td></tr>
+    <tr><td><code>VERBOSE</code></td><td>Détails supplémentaires sur les nœuds du plan.</td></tr>
+    <tr><td><code>BUFFERS</code></td><td>Affiche l'utilisation des tampons mémoire (cache disque).</td></tr>
+    <tr><td><code>COSTS</code></td><td>Active/désactive l'affichage des coûts estimés.</td></tr>
+    <tr><td><code>TIMING</code></td><td>Inclut/exclut les mesures de temps d'exécution.</td></tr>
+  </table>
+<pre>EXPLAIN (ANALYZE, BUFFERS) SELECT ...;  -- exécute + mesures réelles + tampons</pre>
+</section>
+
+<section class="card">
+  <h2>PostgreSQL — Nœuds du plan d'exécution</h2>
+  <table class="mini-table">
+    <tr><th>Nœud</th><th>Description</th></tr>
+    <tr><td>Seq Scan</td><td>Parcours séquentiel de toute la table.</td></tr>
+    <tr><td>Index Scan</td><td>Utilisation d'un index pour trouver des lignes spécifiques.</td></tr>
+    <tr><td>Bitmap Heap Scan</td><td>Lecture via un bitmap pour regrouper les lectures disque.</td></tr>
+    <tr><td>Hash Join</td><td>Jointure par table de hachage (performant sur grandes données).</td></tr>
+    <tr><td>Nested Loop</td><td>Jointure par boucle imbriquée (inefficace sur grandes tables).</td></tr>
+    <tr><td>Merge Join</td><td>Jointure par fusion (données déjà triées).</td></tr>
+    <tr><td>Gather</td><td>Agrège les résultats de travailleurs parallèles.</td></tr>
+    <tr><td>Parallel Hash Join</td><td>Jointure par hachage en parallèle.</td></tr>
+    <tr><td>Parallel Seq Scan</td><td>Scan séquentiel parallèle (charge répartie sur plusieurs workers).</td></tr>
+  </table>
+</section>
+
+<section class="card">
+  <h2>Exemple PostgreSQL détaillé (cours)</h2>
+  <ul>
+    <li><strong>Gather</strong> : agrège les résultats parallèles. Workers Planned: 2, Workers Launched: 2.</li>
+    <li><strong>Parallel Hash Join</strong> : jointure salaries ↔ employees via hachage sur emp_no.</li>
+    <li><strong>Parallel Seq Scan on salaries</strong> : filtre <code>salary &gt; 50000 AND CURRENT_DATE BETWEEN from_date AND to_date</code>. Rows Removed by Filter: 874 744.</li>
+    <li><strong>Parallel Hash</strong> : création table de hachage pour employees (18 Mo mémoire).</li>
+    <li><strong>Parallel Seq Scan on employees</strong> : 100 008 lignes traitées par worker.</li>
+    <li>Planning Time: 1.014 ms · Execution Time: 143.514 ms.</li>
+  </ul>
+  <h3>Interprétation</h3>
+  <ul>
+    <li>Scans séquentiels parallèles : PostgreSQL répartit le travail (gain de temps).</li>
+    <li>874 744 lignes rejetées par le filtre → index sur salary/dates améliorerait.</li>
+    <li>Accès disque (read) vs cache (shared hit) : le cache améliore la perf globale.</li>
+  </ul>
+  <h3>Suggestions optimisation PostgreSQL</h3>
+<pre>CREATE INDEX idx_salary_date ON salaries (salary, from_date, to_date);
+ANALYZE salaries;
+ANALYZE employees;</pre>
+</section>
+
+<section class="card">
+  <h2>Comparaison MySQL vs PostgreSQL</h2>
+  <table class="mini-table">
+    <tr><th>Critère</th><th>MySQL</th><th>PostgreSQL</th></tr>
+    <tr><td>Mesures temps réel</td><td>Non (outils externes)</td><td>Oui (option ANALYZE)</td></tr>
+    <tr><td>Richesse des détails</td><td>Moins détaillé</td><td>Informations plus granulaires</td></tr>
+    <tr><td>Format JSON</td><td>Oui (FORMAT=JSON)</td><td>Non natif</td></tr>
+    <tr><td>Parallélisme</td><td>Limité</td><td>Nœuds Gather, Parallel Scan</td></tr>
+  </table>
+</section>
+
+<section class="card">
+  <h2>Exercices du cours</h2>
+  <ul>
+    <li><strong>Exercice 1 :</strong> diagnostiquer une requête avec <code>LEFT JOIN</code> sur 3 tables (departments, dept_emp, employees + GROUP BY). Analyser les index utilisés.</li>
+    <li><strong>Exercice 2 :</strong> comparer INNER JOIN vs LEFT JOIN — plan d'exécution, performances, cas métier de chaque type.</li>
+    <li><strong>Exercice 3 (PG) :</strong> <code>EXPLAIN (ANALYZE, BUFFERS)</code> sur une requête avec MAX() + GROUP BY — impact de MAX() sur le plan.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Conclusion</h2>
+  <ul>
+    <li>EXPLAIN est <strong>fondamental</strong> pour diagnostiquer et améliorer les performances SQL.</li>
+    <li>MySQL : base solide pour l'analyse des index et jointures.</li>
+    <li>PostgreSQL : analyse avancée avec mesures temps réel et statistiques détaillées.</li>
+    <li>Colonnes à surveiller en priorité : <strong>type</strong> (ALL = problème) et <strong>Extra</strong> (filesort, temporary = optimisation possible).</li>
+  </ul>
+</section>
+
+<footer><a href="index.html">← Accueil</a> · <a href="pdf-source-07-explain.html">Texte brut (explain.txt)</a></footer>
 </body>
 </html>
